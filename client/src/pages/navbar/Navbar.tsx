@@ -1,15 +1,12 @@
 import { Link } from "react-router";
 
-export const Navbar = () => {
-  // styles for demonstration only, do not follow this approach
-  return (
-    <nav style={{
-      padding: "1rem",
-      display: "flex",
-      gap: "1rem",
-    }}>
-      <Link to="/">Home</Link>
-      <Link to="/about">About</Link>
-    </nav>
-  );
-};
+export const Navbar = () => (
+  <nav className="flex items-center gap-6 px-6 py-4 bg-gray-900">
+    <Link to="/" className="text-white hover:text-blue-200 font-medium">
+      Home
+    </Link>
+    <Link to="/about" className="text-white hover:text-blue-200 font-medium">
+      About
+    </Link>
+  </nav>
+);
