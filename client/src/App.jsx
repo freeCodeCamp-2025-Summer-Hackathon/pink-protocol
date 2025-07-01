@@ -1,11 +1,18 @@
 import './App.css';
+import { Route, Routes } from 'react-router';
+import { Home } from './pages/home/Home.js';
+import { Navbar } from './pages/navbar/Navbar.js';
+import { About } from './pages/about/About.js';
 
-const App = () => {
+export const App = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold">Pink Protocol</h1>
-    </div>
+    <>
+      <Navbar/>
+
+      <Routes>
+        <Route path="/" element={<Home/>}></Route>
+        <Route path="/about" element={<About/>}></Route>
+      </Routes>
+    </>
   );
 };
-
-export default App;
