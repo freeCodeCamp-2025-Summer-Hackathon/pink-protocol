@@ -1,17 +1,21 @@
-import { Route, Routes } from 'react-router';
-import { Home } from './pages/home/Home.js';
-import { Navbar } from './pages/navbar/Navbar.js';
-import { About } from './pages/about/About.js';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from './Layout';
 
-export const App = () => {
-  return (
-    <>
-      <Navbar/>
+const PagePlaceholder = () => (
+  <></>
+);
 
-      <Routes>
-        <Route path="/" element={<Home/>}></Route>
-        <Route path="/about" element={<About/>}></Route>
-      </Routes>
-    </>
-  );
-};
+export const App = () => (
+  <Routes>
+    <Route element={<Layout/>}>
+      <Route index element={<PagePlaceholder title="Dashboard"/>}/>
+      <Route path="/upload" element={<PagePlaceholder title="Upload"/>}/>
+      <Route path="/collections" element={<PagePlaceholder title="Collections"/>}/>
+      <Route path="/inbox" element={<PagePlaceholder title="Inbox"/>}/>
+      <Route path="/settings" element={<PagePlaceholder title="Settings"/>}/>
+    </Route>
+  </Routes>
+);
+
+export default App;
