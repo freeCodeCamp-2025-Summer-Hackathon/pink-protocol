@@ -30,8 +30,8 @@ def get_users(session: Session, skip: int = 0, limit: int = 10):
     statement = sa.select(models.User).offset(skip).limit(limit)
     return session.scalars(statement).all()
 
-def update_user(session: Session, user_id: int, user_data: schemas.UserUpdate) -> tuple[models.user, str]:
-    user_to_update = session.query(models.user).filter_by(id=user_id).first()
+def update_user(session: Session, user_id: int, user_data: schemas.UserUpdate) -> tuple[models.User, str]:
+    user_to_update = session.query(models.User).filter_by(id=user_id).first()
     
     # Check that the user to be updated actually exists
     err = validate_is_user(session=session, user_id=user_id)
