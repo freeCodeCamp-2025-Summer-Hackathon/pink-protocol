@@ -18,8 +18,7 @@ const navItems = [
 ];
 
 const SidebarItem = ({ icon: Icon, text, to, open }) => {
-  const base =
-    "relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group";
+  const base = "font-inter relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group";
   const active = "bg-honey-100 text-honey-800";
   const rest = "hover:bg-honey-50 text-stone-600";
 
@@ -38,7 +37,7 @@ const SidebarItem = ({ icon: Icon, text, to, open }) => {
 };
 
 export const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <aside className="h-screen sticky top-0">
@@ -46,7 +45,7 @@ export const Sidebar = () => {
         <div className="p-4 pb-2 flex justify-between items-center">
           <div className={`flex items-center overflow-hidden transition-all ${open ? "w-32" : "w-0"}`}>
             <Squares2X2Icon className="w-8 h-8 text-honey-500"/>
-            <span className="font-bold text-lg ml-2">ArtHive</span>
+            <span className="font-jost font-bold text-lg ml-2">ArtHive</span>
           </div>
           <button onClick={() => setOpen(!open)} className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200">
             <ChevronLeftIcon className={`w-6 h-6 text-stone-600 transition-transform ${!open && "rotate-180"}`}/>
@@ -63,14 +62,14 @@ export const Sidebar = () => {
 
         <div className="border-t border-stone-200 flex p-3">
           <div
-            className="w-10 h-10 flex-shrink-0 flex justify-center items-center rounded-md bg-honey-100 text-honey-800 font-semibold">
+            className="font-inter w-10 h-10 flex-shrink-0 flex justify-center items-center rounded-md bg-honey-100 text-honey-800 font-semibold">
             FF
           </div>
           <div
             className={`flex justify-between items-center overflow-hidden transition-all ${open ? "w-40 ml-3" : "w-0"}`}>
             <div className="leading-4">
-              <h4 className="font-semibold text-stone-700">Name</h4>
-              <span className="text-xs text-stone-500">email@example.com</span>
+              <h4 className="font-jost font-semibold text-stone-700">Name</h4>
+              <span className="font-inter text-xs text-stone-500">email@example.com</span>
             </div>
             <NavLink to="/settings">
               <Cog6ToothIcon className="h-6 w-6 text-stone-500 hover:text-honey-600 cursor-pointer"/>
