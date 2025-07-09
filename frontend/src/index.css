@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Jost:wght@500;700&display=swap");
+
 @import "tailwindcss";
 
 @theme {
@@ -27,4 +29,8 @@
 
     --color-charcoal-500: #1a1a1a;
     --color-cream-50: #fff7e6;
+
+    --font-inter: "Inter", system-ui, sans-serif;
+    --font-jost: "Jost", var(--font-inter);
+    --font-lora: "Lora", serif;
 }
