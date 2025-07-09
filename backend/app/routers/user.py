@@ -17,14 +17,21 @@ def get_user(user_id: int, session: Session = Depends(get_session)):
 def get_users(skip: int = 0, limit: int = 10, session: Session = Depends(get_session)):
     users = crud_users.get_users(session=session, skip=skip, limit=limit)
     # if users is []: # TODO: determine if we want to raise exception if no users exist, or just return empty list
-    #     ...
+    # ...
     return users
 
 @router.post("/users",response_model=schemas.UserResponse)
-def post_student(user: schemas.UserCreate, session: Session = Depends(get_session)):
+def post_user(user: schemas.UserCreate, session: Session = Depends(get_session)):
     user, err = crud_users.post_user(session=session, user=user)
     if err is not None:
         raise HTTPException(status_code=404, detail=f"unable to add user: {err}")
+    return user
+
+@router.put("/users/{user_id}", response_model=schemas.UserResponse)
+def update_user(user_id: int, user_data: schemas.UserUpdate, session: Session = Depends(get_session)):
+    user, err = crud_users.update_user(session=session, user_id=user_id, user_data=user_data)
+    if err is not None:
+        raise HTTPException(status_code=404, detail=f"error: {err}")
     return user
 
 @router.delete("/users/{user_id}", response_model=str)

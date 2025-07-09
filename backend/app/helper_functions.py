@@ -2,7 +2,6 @@ import re
 import sqlalchemy as sa
 
 from . import models
-
 # TODO: Define additional helper functions.
 # TODO: Consider creating helper_functions directory so helper functions can be defined cleanly on a per-table level.
 
