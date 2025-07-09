@@ -1,0 +1,29 @@
+###
+
+post http://localhost:8000/users/1
+Content-Type: application/json
+
+{
+    "name": "Cooper Molloy",
+    "email": "cdmolloy36@gmail.com",
+    "username": "ArcherCSK"
+}
+
+###
+
+post http://localhost:8000/users/2
+Content-Type: application/json
+
+{
+    "name": "Logan",
+    "email": "idk@gmail.com",
+    "username": "loggith"
+}
+
+###
+
+get http://localhost:8000/users/6
+
+###
+
+delete http://localhost:8000/users/5
