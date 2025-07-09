@@ -2,7 +2,9 @@ import datetime
 from datetime import timezone
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
-from . import models, schemas
+
+from . import models
+from . import schemas
 from .helper_functions import *
 
 def post_user(session: Session, user: schemas.UserCreate) -> tuple[models.User, str]:
@@ -11,11 +13,11 @@ def post_user(session: Session, user: schemas.UserCreate) -> tuple[models.User, 
     if err is not None:
         return None, err
 
-    user = models.Student(
+    user = models.User(
         name=user.name,
         email=user.email,
         username=user.username,
-        password_hash=hash_password(user.password)
+        # password_hash=hash_password(user.password)
     )
     session.add(user)
     session.commit()
