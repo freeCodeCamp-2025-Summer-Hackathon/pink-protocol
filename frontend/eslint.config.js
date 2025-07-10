@@ -1,36 +1,60 @@
-import { defineConfig } from 'eslint/config'
-import { FlatCompat } from '@eslint/compat'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
+import prettierConfig from 'eslint-config-prettier'
+import importPlugin from 'eslint-plugin-import'
+import prettierPlugin from 'eslint-plugin-prettier'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
-import importPlugin from 'eslint-plugin-import'
-import prettier from 'eslint-plugin-prettier'
 import globals from 'globals'
 
 const compat = new FlatCompat({
   baseDirectory: path.dirname(fileURLToPath(import.meta.url)),
 })
 
-export default defineConfig([
-  { ignores: ['dist'] },
+export default [
+  { ignores: ['dist/', '../backend/**'] },
 
   js.configs.recommended,
   react.configs.flat.recommended,
   reactHooks.configs['recommended-latest'],
   importPlugin.flatConfigs.recommended,
-
   ...compat.extends('plugin:jsx-a11y/recommended'),
 
   {
     files: ['**/*.{js,jsx}'],
+
     languageOptions: {
-      parserOptions: { ecmaVersion: 'latest', sourceType: 'module', ecmaFeatures: { jsx: true } },
-      globals: { ...globals.browser },
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
-    plugins: { prettier },
+    plugins: {
+      react,
+      import: importPlugin,
+      prettier: prettierPlugin,
+    },
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['.js', '.jsx'],
+        },
+      },
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
+      ...reactHooks.configs.recommended.rules,
+
       'prettier/prettier': 'error',
       'react/function-component-definition': [
         'error',
@@ -40,15 +64,19 @@ export default defineConfig([
         },
       ],
       'react/jsx-sort-props': ['warn', { callbacksLast: true, shorthandLast: true }],
+      'react/react-in-jsx-scope': 'off',
       'import/order': [
         'warn',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           'newlines-between': 'always',
+          alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
       'no-console': 'warn',
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]', args: 'none' }],
     },
   },
-])
+
+  prettierConfig,
+]
