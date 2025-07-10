@@ -24,6 +24,22 @@ export default [
   ...compat.extends('plugin:jsx-a11y/recommended'),
 
   {
+    files: ['prettier.config.cjs'],
+    languageOptions: {
+      globals: {
+        ...globals.commonjs,
+      },
+    },
+  },
+
+  {
+    files: ['vite.config.js'],
+    rules: {
+      'import/no-unresolved': 'off',
+    },
+  },
+
+  {
     files: ['**/*.{js,jsx}'],
 
     languageOptions: {
@@ -38,8 +54,6 @@ export default [
       },
     },
     plugins: {
-      react,
-      import: importPlugin,
       prettier: prettierPlugin,
     },
     settings: {
@@ -54,7 +68,7 @@ export default [
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-
+      'react/prop-types': 'off',
       'prettier/prettier': 'error',
       'react/function-component-definition': [
         'error',
