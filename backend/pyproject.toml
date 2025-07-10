@@ -1,0 +1,19 @@
+# Ruff 
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "F", # pycodestyle warnings
+    "W", # pyflakes
+    "I", # isort
+    "N", # pep8-naming
+    "UP" # pyupgrade
+]
+ignore = ["E501"]  # Line too long (handled by formatter)
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space" # default = 4 spaces
