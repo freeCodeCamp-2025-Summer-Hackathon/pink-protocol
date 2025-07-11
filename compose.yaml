@@ -1,0 +1,34 @@
+services:
+  # "app" automatically becomes network alias
+  app:
+    image: node:18-alpine
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    command: uvicorn app.main:app --reload #consider using fastapi command
+    ports:
+      - 127.0.0.1:8000:8000
+    working_dir: /app
+    volumes:
+      # why is this the path?
+      - ./:/app
+    depends_on:
+      postgres-db:
+        condition: service_healthy # makes sure db is connected before webapp starts
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/arthive # do we need to provide specifics here?
+
+  postgres-db:
+    image: postgresql:latest
+    volumes:
+      - arthive-postgres-data:/var/lib/postgresql/data
+    environment:
+      # TODO: mount secrets using `_FILE` convention
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: arthive
+    ports:
+      - "5432:5432"
+
+volumes:
+  arthive-postgres-data:
