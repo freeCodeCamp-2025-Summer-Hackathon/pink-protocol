@@ -1,6 +1,8 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
 from typing import Optional
+
+from pydantic import BaseModel, EmailStr
+
 
 # User related schemas
 class UserCreate(BaseModel):
@@ -9,15 +11,18 @@ class UserCreate(BaseModel):
     username: str
     # password: str
 
+
 class UserUpdate(BaseModel):
     name: Optional[str] = None
     email: Optional[EmailStr] = None
     username: Optional[str] = None
     # password: Optional[str] = None
 
+
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
 
 class UserResponse(BaseModel):
     id: int
@@ -29,14 +34,17 @@ class UserResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 # Post related schemas
 class PostBase(BaseModel):
     title: str
     description: str | None = None
     published: bool = True
 
+
 class PostCreate(PostBase):
     pass
+
 
 class PostResponse(PostBase):
     id: int

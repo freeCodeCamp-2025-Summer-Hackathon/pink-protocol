@@ -1,13 +1,16 @@
-import sqlalchemy as sa
-from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime
-from typing import List, Optional
+
+import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column
+
 
 class Base(sa.orm.DeclarativeBase):
     pass
 
+
 # TODO: add additional tables (collections, likes, comments)
 # TODO: update model attributes based on discussion about initial required params
+
 
 class User(Base):
     __tablename__ = "users"
@@ -31,7 +34,8 @@ class User(Base):
     # For debugging in terminal
     def __repr__(self):
         return f"{self.__class__.__name__}(id={self.id}, name={self.name}, email={self.email}, type={self.type})"
-    
+
+
 class Post(Base):
     __tablename__ = "posts"
 
