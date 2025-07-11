@@ -3,10 +3,11 @@ repos:
     # Ruff version
     rev: v0.12.2
     hooks:
-      - id: ruff-format
-        files: ^backend/
       - id: ruff-check
         # arg[1] makes sure to keep all fixes in one commit as opposed to having a separate commit
         # for "apply ruff fixes"
         args: [--fix, --exit-non-zero-on-fix]
         files: ^backend/
+      - id: ruff-format
+        files: ^backend/
+      
