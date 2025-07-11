@@ -1,5 +1,5 @@
 # use slim version of python for faster build times
-FROM python:3.9-slim-buster 
+FROM python:3.10-slim 
 
 # only consider files from /app directory
 WORKDIR /app
