@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Jost:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Jost:wght@500;700&display=swap;&family=Great+Vibes&display=swap");
 
 @import "tailwindcss";
 
@@ -33,4 +33,5 @@
     --font-inter: "Inter", system-ui, sans-serif;
     --font-jost: "Jost", var(--font-inter);
     --font-lora: "Lora", serif;
+    --font-great-vibes: "Great Vibes", cursive;
 }
