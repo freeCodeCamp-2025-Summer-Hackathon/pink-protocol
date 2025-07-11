@@ -37,6 +37,9 @@ const SidebarItem = ({ icon: Icon, text, to, open }) => {
 }
 
 export const Sidebar = () => {
+  console.log("Testing Husky")
+
+
   const [open, setOpen] = useState(true)
 
   return (
@@ -47,8 +50,10 @@ export const Sidebar = () => {
             className={`flex items-center overflow-hidden transition-all ${open ? 'w-32' : 'w-0'}`}
           >
             <Squares2X2Icon className="text-honey-500 h-8 w-8" />
+
             <span className="font-jost ml-2 text-lg font-bold">ArtHive</span>
           </div>
+
           <button
             className="rounded-lg bg-stone-100 p-1.5 hover:bg-stone-200"
             onClick={() => setOpen(!open)}
