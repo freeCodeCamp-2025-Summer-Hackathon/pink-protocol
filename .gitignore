@@ -9,3 +9,7 @@ __pycache__/
 
 #IDE files
 .vscode/
+.idea/
+
+# Node dependencies
+node_modules/
