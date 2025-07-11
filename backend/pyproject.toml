@@ -1,5 +1,6 @@
 # Ruff 
 [tool.ruff]
+src = ["."]
 line-length = 100
 target-version = "py39"
 
@@ -12,7 +13,7 @@ select = [
     "N", # pep8-naming
     "UP" # pyupgrade
 ]
-ignore = ["E501"]  # Line too long (handled by formatter)
+ignore = ["E501", "F403", "F405"]  # Line too long (handled by formatter)
 
 [tool.ruff.format]
 quote-style = "double"
