@@ -37,14 +37,6 @@ const SidebarItem = ({ icon: Icon, text, to, open }) => {
 }
 
 export const Sidebar = () => {
-  console.log("Testing Husky")
-
-  console.log("Testing Husky again")
-  console.log("Testing Husky again")
-
-
-  "aaah random text"
-s
   const [open, setOpen] = useState(true)
 
   return (
