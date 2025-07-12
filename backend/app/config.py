@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     database_password: str
     database_name: str
     database_username: str
+
+    # we do not currently use the fields below
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int

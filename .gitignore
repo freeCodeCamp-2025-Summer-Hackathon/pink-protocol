@@ -9,3 +9,7 @@ __pycache__/
 
 #IDE files
 .vscode/
+
+#Docker Compose secrets
+*.txt
+!requirements.txt
