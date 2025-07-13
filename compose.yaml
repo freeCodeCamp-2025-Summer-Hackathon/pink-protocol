@@ -1,10 +1,13 @@
 services:
   # "app" automatically becomes network alias
   app-backend:
+    container_name: app-backend
+    env_file:
+      - .env.docker
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: [ "sh", "-c", "alembic upgrade head && uvicorn app.main:app --reload" ] # TODO: consider using fastapi command
+    command: [ "sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --reload" ] # TODO: consider using fastapi command
     ports:
       - "8000:8000"
     working_dir: /app
@@ -14,25 +17,19 @@ services:
       postgres-db:
         condition: service_healthy # makes sure db is connected before webapp starts. Need to define health check
     environment:
-      DATABASE_USERNAME: ${DATABASE_USERNAME}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_PORT: ${DATABASE_PORT}
-      DATABASE_HOSTNAME: ${DATABASE_HOSTNAME}
-      SECRET_KEY: ${SECRET_KEY}
-      ALGORITHM: ${ALGORITHM}
-      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}
       DATABASE_PASSWORD: /run/secrets/db_password
     secrets:
       - db_password
 
   postgres-db:
     image: postgres:latest
+    container_name: postgres-db
     volumes:
-      - arthive-postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_DB: ${DATABASE_NAME}
-      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_PASSWORD: /run/secrets/db_password
     ports:
       - "${DATABASE_PORT}:5432"
     healthcheck:
@@ -49,4 +46,4 @@ secrets:
     file: ./backend/db_password.txt
 
 volumes:
-  arthive-postgres-data:
+  postgres-data:

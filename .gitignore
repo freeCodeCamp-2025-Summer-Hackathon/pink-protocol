@@ -5,7 +5,7 @@ backend/venv/
 __pycache__/
 
 #Environment variables
-.env
+.env*
 
 #IDE files
 .vscode/

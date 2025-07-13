@@ -16,8 +16,8 @@ def get_user(user_id: int, session: Session = Depends(get_session)):
 @router.get("/users", response_model=list[schemas.UserResponse])
 def get_users(skip: int = 0, limit: int = 10, session: Session = Depends(get_session)):
     users = crud_users.get_users(session=session, skip=skip, limit=limit)
-    # if users is []: # TODO: determine if we want to raise exception if no users exist, or just return empty list
-    # ...
+    if users is []: # TODO: determine if we want to raise exception if no users exist, or just return empty list
+        raise HTTPException(status_code=204, detail=f"no users yet!")
     return users
 
 @router.post("/users",response_model=schemas.UserResponse)
