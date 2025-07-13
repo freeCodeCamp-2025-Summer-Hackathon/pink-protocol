@@ -9,6 +9,10 @@ __pycache__/
 
 #IDE files
 .vscode/
+.idea/
 
 # Ruff cache
 .ruff_cache
+
+# Node dependencies
+node_modules/
