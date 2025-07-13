@@ -11,5 +11,8 @@ __pycache__/
 .vscode/
 .idea/
 
+# Ruff cache
+.ruff_cache
+
 # Node dependencies
 node_modules/
