@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
     database_hostname: str
     database_port: str
@@ -39,5 +40,6 @@ def get_db_password():
        return password 
 
     raise ValueError("check that compose.yaml secret, db_password.txt, or environment variable has password")
+
 
 settings = Settings()

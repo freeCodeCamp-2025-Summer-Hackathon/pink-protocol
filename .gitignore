@@ -9,7 +9,14 @@ __pycache__/
 
 #IDE files
 .vscode/
+.idea/
 
 #Docker Compose secrets
 *.txt
 !requirements.txt
+
+# Ruff cache
+.ruff_cache
+
+# Node dependencies
+node_modules/

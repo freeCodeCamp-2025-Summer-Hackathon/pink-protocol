@@ -1,21 +1,20 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { Layout } from './Layout';
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
 
-const PagePlaceholder = () => (
-  <></>
-);
+import { Layout } from './Layout'
+
+const PagePlaceholder = () => <></>
 
 export const App = () => (
   <Routes>
-    <Route element={<Layout/>}>
-      <Route index element={<PagePlaceholder title="Dashboard"/>}/>
-      <Route path="/upload" element={<PagePlaceholder title="Upload"/>}/>
-      <Route path="/collections" element={<PagePlaceholder title="Collections"/>}/>
-      <Route path="/inbox" element={<PagePlaceholder title="Inbox"/>}/>
-      <Route path="/settings" element={<PagePlaceholder title="Settings"/>}/>
+    <Route element={<Layout />}>
+      <Route element={<PagePlaceholder title="Dashboard" />} index />
+      <Route element={<PagePlaceholder title="Upload" />} path="/upload" />
+      <Route element={<PagePlaceholder title="Collections" />} path="/collections" />
+      <Route element={<PagePlaceholder title="Inbox" />} path="/inbox" />
+      <Route element={<PagePlaceholder title="Settings" />} path="/settings" />
     </Route>
   </Routes>
-);
+)
 
-export default App;
+export default App
