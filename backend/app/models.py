@@ -1,7 +1,9 @@
 from datetime import datetime
 
+import ForeignKey
+import list
 import sqlalchemy as sa
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class Base(sa.orm.DeclarativeBase):
@@ -16,6 +18,7 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    posts: Mapped[list["Post"]] = relationship("Posts", cascade="all, delete")
     name: Mapped[str] = mapped_column(nullable=False)
     username: Mapped[str] = mapped_column(sa.String, unique=True, nullable=False)
     email: Mapped[str] = mapped_column(sa.String, unique=True, nullable=False)
@@ -40,6 +43,7 @@ class Post(Base):
     __tablename__ = "posts"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     name: Mapped[str] = mapped_column(nullable=False)
     caption: Mapped[str] = mapped_column(nullable=False)
     created_by: Mapped[int] = mapped_column(sa.ForeignKey("users.id", ondelete="CASCADE"))
@@ -48,3 +52,15 @@ class Post(Base):
     # For debugging in terminal
     def __repr__(self):
         return f"{self.__class__.__name__}(id={self.id}, name={self.name}, created_by={self.created_by}, caption={self.caption})"
+
+
+# Check if each collection can be of posts by different users. Might be a functionality to add later.
+class Collection(Base):
+    __tablename__ = "colletions"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column(
+        nullable=False
+    )  # Check with team if the description can be null
