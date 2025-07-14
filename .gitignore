@@ -5,11 +5,15 @@ backend/venv/
 __pycache__/
 
 #Environment variables
-.env
+.env*
 
 #IDE files
 .vscode/
 .idea/
+
+#Docker Compose secrets
+*.txt
+!requirements.txt
 
 # Ruff cache
 .ruff_cache
