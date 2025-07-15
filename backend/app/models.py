@@ -26,17 +26,17 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    username: Mapped[str] = mapped_column(sa.String, unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(sa.String, unique=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
+    updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     posts: Mapped[list["Post"]] = relationship(
         back_populates="creator", cascade="all, delete-orphan"
     )
     collections_user: Mapped[list["Collection"]] = relationship(
         back_populates="owner", cascade="all, delete-orphan"
     )
-    name: Mapped[str] = mapped_column(nullable=False)
-    username: Mapped[str] = mapped_column(sa.String, unique=True, nullable=False)
-    email: Mapped[str] = mapped_column(sa.String, unique=True, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
-    updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     # password_hash: Mapped[str] = mapped_column(nullable=False)
     # type: Mapped[str] = mapped_column(nullable=False) # also important for joined table inheritance, not necessary otherwise
 
@@ -56,13 +56,13 @@ class Post(Base):
     __tablename__ = "posts"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    caption: Mapped[str] = mapped_column(nullable=False)
+    created_by: Mapped[int] = mapped_column(sa.ForeignKey("users.id", ondelete="CASCADE"))
     creator: Mapped["User"] = relationship(back_populates="posts")
     collections_post: Mapped[list["Collection"]] = relationship(
         secondary=collections_posts_association_table, back_populates="posts"
     )
-    name: Mapped[str] = mapped_column(nullable=False)
-    caption: Mapped[str] = mapped_column(nullable=False)
-    created_by: Mapped[int] = mapped_column(sa.ForeignKey("users.id", ondelete="CASCADE"))
     # content # TODO: Figure out how we represent a post's content. If it's a link, it can be stored here. If raw data...
 
     # For debugging in terminal
@@ -75,15 +75,15 @@ class Collection(Base):
     __tablename__ = "collections"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    posts: Mapped[list["Post"]] = relationship(
-        secondary=collections_posts_association_table, back_populates="collections_post"
-    )
-    owner: Mapped["User"] = relationship(back_populates="collections_user")
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(
         nullable=False
     )  # Check with team if the description can be null
     created_by: Mapped[int] = mapped_column(sa.ForeignKey("users.id", ondelete="CASCADE"))
+    owner: Mapped["User"] = relationship(back_populates="collections_user")
+    posts: Mapped[list["Post"]] = relationship(
+        secondary=collections_posts_association_table, back_populates="collections_post"
+    )
 
     def __repr__(self):
         return f"{self.__class__.__name__}(id={self.id}, name={self.name}, created_by={self.created_by})"
