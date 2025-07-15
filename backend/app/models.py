@@ -76,7 +76,6 @@ class Collection(Base):
     __tablename__ = "collections"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     posts: Mapped[list["Post"]] = relationship(
         secondary=collections_posts_association_table, back_populates="collections_post"
     )
@@ -85,3 +84,7 @@ class Collection(Base):
     description: Mapped[str] = mapped_column(
         nullable=False
     )  # Check with team if the description can be null
+    created_by: Mapped[int] = mapped_column(sa.ForeignKey("users.id", ondelete="CASCADE"))
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(id={self.id}, name={self.name}, created_by={self.created_by})"
