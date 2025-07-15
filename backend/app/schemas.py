@@ -54,3 +54,30 @@ class PostResponse(PostBase):
 
     class Config:
         from_attributes = True
+
+
+# Collection related schemas
+class CollectionBase(BaseModel):
+    user_id: int
+    posts: Optional[list[PostBase]] = None
+    owner: str
+    name: str
+    # keeping this as required for now to match Alfredo's Collection model
+    description: str
+
+
+class CollectionCreate(CollectionBase):
+    pass
+
+
+class CollectionUpdate(BaseModel):
+    posts: Optional[list[PostBase]] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+
+
+class CollectionResponse(CollectionBase):
+    id: int
+    name: str
+    owner: str
+    posts: Optional[list[PostBase]]
