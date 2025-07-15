@@ -43,6 +43,7 @@ class Post(Base):
     name: Mapped[str] = mapped_column(nullable=False)
     caption: Mapped[str] = mapped_column(nullable=False)
     created_by: Mapped[int] = mapped_column(sa.ForeignKey("users.id", ondelete="CASCADE"))
+    # Add created_at & updated_at here as well?
     # content # TODO: Figure out how we represent a post's content. If it's a link, it can be stored here. If raw data...
 
     # For debugging in terminal
