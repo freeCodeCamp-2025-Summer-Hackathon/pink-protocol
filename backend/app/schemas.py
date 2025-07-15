@@ -38,6 +38,7 @@ class UserResponse(BaseModel):
 # Post related schemas
 class PostBase(BaseModel):
     title: str
+    # content: {type}
     description: str | None = None
     published: bool = True
 
@@ -46,14 +47,31 @@ class PostCreate(PostBase):
     pass
 
 
+class PostUpdate(PostBase):
+    title: Optional[str] = None
+    # content: Optional[type] = None
+    description: Optional[str] = None
+    published: Optional[bool] = None
+
+
 class PostResponse(PostBase):
     id: int
     artist_id: int
     artist: UserResponse
+    like_count: int  # to be computed from Like table
     created_at: datetime
 
     class Config:
         from_attributes = True
+
+
+# Interaction related schemas
+# figured we could stick with a simple "like/unlike" interface for now
+class Like(BaseModel):
+    id: int
+    user_id: int
+    post_id: int
+    created_at: datetime
 
 
 # Collection related schemas
