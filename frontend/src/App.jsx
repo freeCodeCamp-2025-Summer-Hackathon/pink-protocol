@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom'
 
 import { Layout } from './Layout'
 
+import { LoginPage }  from './pages/LoginPage/LoginPage'
+
 const PagePlaceholder = () => <></>
 
 export const App = () => (
@@ -13,6 +15,7 @@ export const App = () => (
       <Route element={<PagePlaceholder title="Collections" />} path="/collections" />
       <Route element={<PagePlaceholder title="Inbox" />} path="/inbox" />
       <Route element={<PagePlaceholder title="Settings" />} path="/settings" />
+      <Route path="/login" element={<LoginPage/>}/>
     </Route>
   </Routes>
 )
