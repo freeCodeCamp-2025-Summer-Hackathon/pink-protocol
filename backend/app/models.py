@@ -56,7 +56,6 @@ class Post(Base):
     __tablename__ = "posts"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     creator: Mapped["User"] = relationship(back_populates="posts")
     collections_post: Mapped[list["Collection"]] = relationship(
         secondary=collections_posts_association_table, back_populates="posts"
