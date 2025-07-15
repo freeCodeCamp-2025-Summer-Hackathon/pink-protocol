@@ -6,6 +6,7 @@ import {
   EnvelopeIcon,
   Cog6ToothIcon,
   Squares2X2Icon,
+  ArrowRightEndOnRectangleIcon,
 } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -15,6 +16,7 @@ const navItems = [
   { icon: PlusIcon, label: 'Upload', path: '/upload' },
   { icon: BookmarkIcon, label: 'Collections', path: '/collections' },
   { icon: EnvelopeIcon, label: 'Inbox', path: '/inbox' },
+  {icon: ArrowRightEndOnRectangleIcon, label:'Login', path: '/login' }
 ]
 
 const SidebarItem = ({ icon: Icon, text, to, open }) => {
@@ -41,7 +43,7 @@ export const Sidebar = () => {
 
   return (
     <aside className="sticky top-0 h-screen">
-      <nav className="flex h-full flex-col border-r border-stone-200 bg-white shadow-sm">
+      <nav className="flex h-full flex-col border-r border-honey-200 bg-honey-400 shadow-sm">
         <div className="flex items-center justify-between p-4 pb-2">
           <div
             className={`flex items-center overflow-hidden transition-all ${open ? 'w-32' : 'w-0'}`}
@@ -52,7 +54,7 @@ export const Sidebar = () => {
           </div>
 
           <button
-            className="rounded-lg bg-stone-100 p-1.5 hover:bg-stone-200"
+            className="rounded-lg bg-honey-100 p-1.5 hover:bg-honey-200"
             onClick={() => setOpen(!open)}
           >
             <ChevronLeftIcon
@@ -69,7 +71,7 @@ export const Sidebar = () => {
           ))}
         </ul>
 
-        <div className="flex border-t border-stone-200 p-3">
+        <div className="flex border-t border-honey-200 p-3">
           <div className="font-inter bg-honey-100 text-honey-800 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md font-semibold">
             FF
           </div>
@@ -77,11 +79,11 @@ export const Sidebar = () => {
             className={`flex items-center justify-between overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}
           >
             <div className="leading-4">
-              <h4 className="font-jost font-semibold text-stone-700">Name</h4>
-              <span className="font-inter text-xs text-stone-500">email@example.com</span>
+              <h4 className="font-jost font-semibold text-stone-800">Name</h4>
+              <span className="font-inter text-xs text-stone-700">email@example.com</span>
             </div>
             <NavLink to="/settings">
-              <Cog6ToothIcon className="hover:text-honey-600 h-6 w-6 cursor-pointer text-stone-500" />
+              <Cog6ToothIcon className="hover:text-honey-900 h-6 w-6 cursor-pointer text-stone-700" />
             </NavLink>
           </div>
         </div>
