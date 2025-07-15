@@ -2,10 +2,8 @@ from datetime import datetime
 
 import list
 import sqlalchemy as sa
-from sqlalchemy import ForeignKey
+from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from backend.app.models import collections_posts_association_table
 
 
 class Base(sa.orm.DeclarativeBase):
@@ -14,6 +12,14 @@ class Base(sa.orm.DeclarativeBase):
 
 # TODO: add additional tables (collections, likes, comments)
 # TODO: update model attributes based on discussion about initial required params
+
+
+collections_posts_association_table = Table(
+    "association_table",
+    Base.metadata,
+    Column("posts", ForeignKey("posts.id"), primary_key=True),
+    Column("collections", ForeignKey("collections.id"), primary_key=True),
+)
 
 
 class User(Base):
