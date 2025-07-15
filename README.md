@@ -52,7 +52,7 @@ While your venv is active, run `pip install -r requirements.txt`.
 
 #### Starting the FastAPI App
 While your venv is active, run `uvicorn [path_to_app_dir]/app.main:app --reload` or `fastapi run`.
-Navigate to [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs) and get buzzing! To shut down the app, stop it in the terminal or close the window.
+Navigate to [http://0.0.0.0:8000/](http://0.0.0.0:8000/) and get buzzing! To shut down the app, stop it in the terminal or close the window.
 
 ## Acknowledgements
 Thank you to freeCodeCamp, the hackathon leaders & staff, and Naomi for organizing this hackathon and providing your support/mentorship!
