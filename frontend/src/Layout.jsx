@@ -4,7 +4,7 @@ import { Sidebar } from './pages/sidebar/Sidebar'
 
 export const Layout = () => {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-zinc-900">
       <Sidebar />
       <main className="flex-1 p-8">
         <Outlet />
