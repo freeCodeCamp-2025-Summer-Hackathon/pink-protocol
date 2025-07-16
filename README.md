@@ -22,7 +22,10 @@ ACCESS_TOKEN_EXPIRE_MINUTES=60
 ```
 
 ### Docker Setup
+NOTE: THE DOCKER SETUP DOES NOT CURRENTLY WORK.
 * To use ArtHive, ensure that you have [docker](https://www.docker.com/) installed and running. In the project root, run `docker pull arthive-app`. <!-- we should tag this differently... just arthive, no -app -->
+
+<!-- Update this section with the appropriate command, `docker run -p 8000:8000 your-username/your-app:latest`, when we support CD pipeline -->
 
 #### Docker Secrets
 * Include a `backend/db_password.txt` file with the following:
