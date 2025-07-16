@@ -17,5 +17,5 @@ COPY . .
 EXPOSE 8000
 
 # run command to start up the app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["fastapi run"]
 # run `docker run -p 8000:8000 -d arthive-app:latest`
