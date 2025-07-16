@@ -7,7 +7,6 @@ from ..database import get_session
 # Post-related endpoints
 router = APIRouter()
 
-# TODO: add error handling
 
 # Do we handle likes in a separate table with post_id & user_id foreign keys? YES
 # Then have separate endpoints for posting & deleting likes like:
@@ -42,12 +41,16 @@ def post_post(post: schemas.PostCreate, session: Session = Depends(get_session))
 
 @router.put("/posts/{post_id}", response_model=schemas.PostResponse)
 def update_post(post_id: int, session: Session = Depends(get_session)):
-    post = crud_posts.update_post()
-    return post  # we need error checking. Look at the users endpoints, we should raise HTTPExceptions if stuff doesn't go well
+    post, err = crud_posts.update_post(post_id=post_id, session=session)
+    if err is not None:
+        raise HTTPException(status_code=404, detail=f"unable to update post: {err}")
+    return post
 
 
 @router.delete("/posts/{post_id}", response_model=str)
 def delete_post(post_id: int, session: Session = Depends(get_session)):
-    post_name, post_id, created_by = crud_posts.delete_post(session=session, post_id=post_id)
+    post_name, post_id, created_by, err = crud_posts.delete_post(session=session, post_id=post_id)
+    if err is not None:
+        raise HTTPException(status_code=404, detail=f"error: {err}")
 
     return f"{post_name} (post_id: {post_id}) uploaded by {created_by} has been deleted"

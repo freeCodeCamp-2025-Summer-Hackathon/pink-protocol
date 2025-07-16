@@ -8,6 +8,7 @@ from . import models
 # TODO: Consider creating helper_functions directory so helper functions can be defined cleanly on a per-table level.
 
 
+# User related helpers
 def validate_email(
     session: sa.orm.Session, email: str
 ):  # This may not be needed since we use EmailStr typing in pydantic schema
@@ -65,4 +66,31 @@ def validate_is_user(session: sa.orm.Session, user_id: int):
     user = session.query(models.User).filter_by(id=user_id).first()
     if user is None:
         err = f"User {user_id} does not exist"
+    return err
+
+
+# Post related helpers
+def validate_is_post(session: sa.orm.Session, post_id: int):
+    err = None
+    post = session.query(models.Post).filter_by(id=post_id).first()
+    if post is None:
+        err = f"Post {post_id} does not exist"
+    return err
+
+
+def validate_post_fields(name: str, caption: str):
+    # TODO: Include check for content also once we determine how and what thats going to look like
+    err = None
+    if not name or name.strip() == "":
+        err = "Post name is required"
+    elif not caption or caption.strip() == "":
+        err = "Post caption is required"
+    return err
+
+
+def validate_post_name(session: sa.orm.Session, name: str):
+    err = None
+    post = session.query(models.Post).filter_by(name=name).first()
+    if post is not None:
+        err = f'Post name "{name}" is already in use'
     return err
