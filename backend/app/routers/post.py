@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from .. import crud_posts, schemas
@@ -9,23 +9,41 @@ router = APIRouter()
 
 # TODO: add error handling
 
-# Do we handle likes in a separate table with post_id & user_id foreign keys?
+# Do we handle likes in a separate table with post_id & user_id foreign keys? YES
 # Then have separate endpoints for posting & deleting likes like:
 # POST /posts/{id}/like
 # DELETE /posts/{id}/like
 # GET /posts/{id} # returns PostResponse with computed like_count
 
 
+@router.get("/posts/{post_id}", response_model=schemas.PostResponse)
+def get_post(post_id: int, session: Session = Depends(get_session)):
+    post = crud_posts.get_post(session=session, post_id=post_id)
+    if post is None:
+        raise HTTPException(status_code=404, detail="a post with this id does not exist")
+    return post
+
+
+@router.get("/posts", response_model=list[schemas.PostResponse])
+def get_posts(skip: int = 0, limit: int = 10, session: Session = Depends(get_session)):
+    posts = crud_posts.get_posts(session=session, skip=skip, limit=limit)
+    if posts == []:
+        raise HTTPException(status_code=204, detail="no posts yet!")
+    return posts
+
+
 @router.post("/posts", response_model=schemas.PostResponse)
 def post_post(post: schemas.PostCreate, session: Session = Depends(get_session)):
-    post = crud_posts.post_post(session=session, post=post)
+    post, err = crud_posts.post_post(session=session, post=post)
+    if err is not None:
+        raise HTTPException(status_code=404, detail=f"unable to add post: {err}")
     return post
 
 
 @router.put("/posts/{post_id}", response_model=schemas.PostResponse)
 def update_post(post_id: int, session: Session = Depends(get_session)):
     post = crud_posts.update_post()
-    return post
+    return post  # we need error checking. Look at the users endpoints, we should raise HTTPExceptions if stuff doesn't go well
 
 
 @router.delete("/posts/{post_id}", response_model=str)
