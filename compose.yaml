@@ -7,7 +7,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: [ "sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --reload" ] # TODO: consider using fastapi command
+    command: [ "sh", "-c", "alembic upgrade head && fastapi run" ] # TODO: consider using fastapi command
     ports:
       - "8000:8000"
     working_dir: /app
