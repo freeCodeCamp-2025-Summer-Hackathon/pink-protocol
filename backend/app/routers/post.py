@@ -9,9 +9,15 @@ router = APIRouter()
 
 # TODO: add error handling
 
+# Do we handle likes in a separate table with post_id & user_id foreign keys?
+# Then have separate endpoints for posting & deleting likes like:
+# POST /posts/{id}/like
+# DELETE /posts/{id}/like
+# GET /posts/{id} # returns PostResponse with computed like_count
+
 
 @router.post("/posts", response_model=schemas.PostResponse)
-def post_post(post: schemas.PostCreateCreate, session: Session = Depends(get_session)):
+def post_post(post: schemas.PostCreate, session: Session = Depends(get_session)):
     post = crud_posts.post_post(session=session, post=post)
     return post
 
