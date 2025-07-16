@@ -41,13 +41,6 @@ def validate_email_unique(session: sa.orm.Session, email: str):
     return False
 
 
-def hash_password(
-    password: str,
-):  # What return type should the hash be? What libraries should we use? secrets?
-    # ...
-    return password
-
-
 def validate_password(session: sa.orm.Session, password: str):
     # ...
     return True
