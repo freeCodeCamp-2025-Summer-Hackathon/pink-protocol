@@ -59,6 +59,7 @@ class Post(Base):
     published: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
+    # Add created_at & updated_at here as well?
     # content # TODO: Figure out how we represent a post's content. If it's a link, it can be stored here. If raw data...
 
     # For debugging in terminal
