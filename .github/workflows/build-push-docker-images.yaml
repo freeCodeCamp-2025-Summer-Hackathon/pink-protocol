@@ -1,0 +1,36 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      packages: write
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+            python-version: '3.10.12'
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME_PINKPROTOCOL }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: build docker image for backend
+        run: docker build ./backend -t ${{ secrets.DOCKER_USERNAME_PINKPROTOCOL }}/${{ env.IMAGE_NAME }}
+        
+      - name: push backend image to Docker Hub
+        run: docker image push arthive-app-backend:latest
