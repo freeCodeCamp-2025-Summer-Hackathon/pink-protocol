@@ -35,8 +35,8 @@ def get_posts(skip: int = 0, limit: int = 10, session: Session = Depends(get_ses
 
 
 @router.post("/posts", response_model=schemas.PostResponse)
-def create_post(
-    post: schemas.PostCreate,
+async def create_post(
+    # post: schemas.PostCreate,
     session: Session = Depends(get_session),
     name: str = Form(...),
     caption: str = Form(...),
@@ -44,16 +44,17 @@ def create_post(
     image_file: UploadFile = File(...),
     current_user: User = Depends(get_current_user),
 ):
-    uploaded_img_data = upload_img(image_file)
+    uploaded_img_data = await upload_img(image_file)
     img_url = uploaded_img_data.get("url")
     # img_delete_hash = uploaded_img_data.get('delete_hash')
 
     if not img_url:
         raise HTTPException(status_code=500, detail="Invalid URL")
 
-    post, err = crud_posts.create_post(
+    db_post, err = crud_posts.create_post(
         session=session,
-        post=post,
+        # post=post,
+        name=name,
         caption=caption,
         published=published,
         img_url=img_url,
@@ -61,7 +62,7 @@ def create_post(
     )
     if err is not None:
         raise HTTPException(status_code=404, detail=f"unable to add post: {err}")
-    return post
+    return db_post
 
 
 @router.put("/posts/{post_id}", response_model=schemas.PostResponse)

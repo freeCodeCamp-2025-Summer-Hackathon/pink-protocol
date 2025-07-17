@@ -19,25 +19,25 @@ def get_posts(session: Session, skip: int = 0, limit: int = 10):
 
 
 def create_post(
-    session: Session, post: schemas.PostCreate
+    session: Session, name: str, caption: str, published: bool, img_url: str, created_by: int
 ) -> tuple[models.User, str]:  # Changed this from post_post to create_post to avoid confusion
-    err = validate_post_fields(post.name, post.caption)
-    err = validate_post_name(session=session, name=post.name)
+    err = validate_post_fields(name, caption)
+    err = validate_post_name(session=session, name=name)
     if err is not None:
         return None, err
 
-    post = models.Post(
-        name=post.name,
-        caption=post.caption,
-        published=post.published,
-        created_by=post.created_by,
-        img_url=post.img_url,
+    db_post = models.Post(
+        name=name,
+        caption=caption,
+        published=published,
+        created_by=created_by,
+        img_url=img_url,
         # img_delete_hash=post.img_delete_hash
     )
-    session.add(post)
+    session.add(db_post)
     session.commit()
-    session.refresh(post)
-    return post, None
+    session.refresh(db_post)
+    return db_post, None
 
 
 def update_post(session: Session, post_id: int, post_data: schemas.PostUpdate):

@@ -29,13 +29,15 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(nullable=False)
 
     posts: Mapped[list["Post"]] = relationship(
-        back_populates="creator", cascade="all, delete-orphan"
+        back_populates="creator", cascade="all, delete-orphan", foreign_keys="Post.created_by"
     )
     collections_user: Mapped[list["Collection"]] = relationship(
-        back_populates="owner", cascade="all, delete-orphan"
+        back_populates="owner", cascade="all, delete-orphan", foreign_keys="Collection.user_id"
     )  # Why not just "collections?"
-    likes: Mapped[list["Like"]] = relationship(back_populates="user")
-    comments: Mapped[list["Comment"]] = relationship(back_populates="user")
+    likes: Mapped[list["Like"]] = relationship(back_populates="user", foreign_keys="Like.user_id")
+    comments: Mapped[list["Comment"]] = relationship(
+        back_populates="user", foreign_keys="Comment.user_id"
+    )
 
     # For debugging in terminal
     def __repr__(self):
@@ -46,14 +48,16 @@ class Post(Base):
     __tablename__ = "posts"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    # user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     created_by: Mapped[int] = mapped_column(sa.ForeignKey("users.id", ondelete="CASCADE"))
-    creator: Mapped["User"] = relationship(back_populates="posts")
+    creator: Mapped["User"] = relationship(back_populates="posts", foreign_keys="Post.created_by")
     collections_post: Mapped[list["Collection"]] = relationship(
         secondary=collections_posts_association_table, back_populates="posts"
     )  # what does this do? Allow for a post to belong to multiple collections? | YES
-    likes: Mapped[list["Like"]] = relationship(back_populates="post")
-    comments: Mapped[list["Comment"]] = relationship(back_populates="post")
+    likes: Mapped[list["Like"]] = relationship(back_populates="post", foreign_keys="Like.post_id")
+    comments: Mapped[list["Comment"]] = relationship(
+        back_populates="post", foreign_keys="Comment.post_id"
+    )
     name: Mapped[str] = mapped_column(nullable=False)
     caption: Mapped[str] = mapped_column(nullable=False)
     img_url: Mapped[str] = mapped_column(nullable=False)
@@ -76,7 +80,9 @@ class Collection(Base):
     posts: Mapped[list["Post"]] = relationship(
         secondary=collections_posts_association_table, back_populates="collections_post"
     )
-    owner: Mapped["User"] = relationship(back_populates="collections_user")
+    owner: Mapped["User"] = relationship(
+        back_populates="collections_user", foreign_keys="Collection.user_id"
+    )
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
     private: Mapped[bool] = mapped_column(default=False)
@@ -92,7 +98,7 @@ class Interaction(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    post_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey("posts.id"), nullable=False)
     type: Mapped[str] = mapped_column(nullable=False)
 
     # # This is important for joined table inheritance if we were to support different types of users (user, admin, etc.)

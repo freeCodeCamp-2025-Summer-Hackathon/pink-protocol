@@ -9,7 +9,7 @@ class UserCreate(BaseModel):
     name: str
     email: EmailStr
     username: str
-    # password: str
+    password: str
 
 
 class UserUpdate(BaseModel):
