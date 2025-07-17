@@ -37,10 +37,11 @@ class UserResponse(BaseModel):
 
 # Post related schemas
 class PostBase(BaseModel):
-    title: str
-    # content: {type}
-    description: str | None = None
-    published: bool = True
+    name: str
+    caption: str | None = None
+    published: bool = False
+    img_url: str
+    # img_delete_hash: str
 
 
 class PostCreate(PostBase):
@@ -56,8 +57,10 @@ class PostUpdate(PostBase):
 
 class PostResponse(PostBase):
     id: int
-    artist_id: int
-    artist: UserResponse
+    created_by: int
+    creator: UserResponse
+    img_url: str
+    # img_delete_hash: str
     like_count: int  # to be computed from Like table
     created_at: datetime
 

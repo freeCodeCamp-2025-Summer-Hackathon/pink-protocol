@@ -56,7 +56,8 @@ class Post(Base):
     comments: Mapped[list["Comment"]] = relationship(back_populates="post")
     name: Mapped[str] = mapped_column(nullable=False)
     caption: Mapped[str] = mapped_column(nullable=False)
-    content: Mapped[str] = mapped_column(nullable=False)
+    img_url: Mapped[str] = mapped_column(nullable=False)
+    # img_delete_hash: Mapped[str] = mapped_column(nullable=False) # Consider logic for image deletion
     published: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())

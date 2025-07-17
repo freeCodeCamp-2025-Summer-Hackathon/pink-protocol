@@ -1,8 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.orm import Session
+
+from backend.app.helper_functions import get_current_user
+from backend.app.models import User
 
 from .. import crud_posts, schemas
 from ..database import get_session
+from ..image_upload import upload_img
 
 # Post-related endpoints
 router = APIRouter()
@@ -32,8 +36,30 @@ def get_posts(skip: int = 0, limit: int = 10, session: Session = Depends(get_ses
 
 
 @router.post("/posts", response_model=schemas.PostResponse)
-def post_post(post: schemas.PostCreate, session: Session = Depends(get_session)):
-    post, err = crud_posts.post_post(session=session, post=post)
+def create_post(
+    post: schemas.PostCreate,
+    session: Session = Depends(get_session),
+    name: str = Form(...),
+    caption: str = Form(...),
+    published: bool = Form(False),
+    image_file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+):
+    uploaded_img_data = upload_img(image_file)
+    img_url = uploaded_img_data.get("url")
+    # img_delete_hash = uploaded_img_data.get('delete_hash')
+
+    if not img_url:
+        raise HTTPException(status_code=500, detail="Invalid URL")
+
+    post, err = crud_posts.create_post(
+        session=session,
+        post=post,
+        caption=caption,
+        published=published,
+        img_url=img_url,
+        created_by=current_user.id,
+    )
     if err is not None:
         raise HTTPException(status_code=404, detail=f"unable to add post: {err}")
     return post

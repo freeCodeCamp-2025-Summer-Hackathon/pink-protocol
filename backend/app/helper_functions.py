@@ -1,8 +1,10 @@
 import re
 
 import sqlalchemy as sa
+from fastapi import Depends, HTTPException, status
 
 from . import models
+from .database import get_session
 
 # TODO: Define additional helper functions.
 # TODO: Consider creating helper_functions directory so helper functions can be defined cleanly on a per-table level.
@@ -87,3 +89,27 @@ def validate_post_name(session: sa.orm.Session, name: str):
     if post is not None:
         err = f'Post name "{name}" is already in use'
     return err
+
+
+def get_current_user(session: sa.orm.Session = Depends(get_session)) -> models.User:
+    try:
+        current_user = models.User(
+            id=models.User.id,
+            name=models.User.name,
+            username=models.User.username,
+            email=models.User.email,
+            password_hash=models.User.password_hash,
+            # Not sure if I need created_at and updated_at here
+            created_at=models.User.created_at,
+            updated_at=models.User.updated_at,
+        )
+
+        return current_user
+
+    except Exception as e:
+        print(f"Authentication dependency error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )

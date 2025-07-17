@@ -18,7 +18,9 @@ def get_posts(session: Session, skip: int = 0, limit: int = 10):
     return session.scalars(statement).all()
 
 
-def post_post(session: Session, post: schemas.PostCreate) -> tuple[models.User, str]:
+def create_post(
+    session: Session, post: schemas.PostCreate
+) -> tuple[models.User, str]:  # Changed this from post_post to create_post to avoid confusion
     err = validate_post_fields(post.name, post.caption)
     err = validate_post_name(session=session, name=post.name)
     if err is not None:
@@ -27,8 +29,10 @@ def post_post(session: Session, post: schemas.PostCreate) -> tuple[models.User, 
     post = models.Post(
         name=post.name,
         caption=post.caption,
-        # content=post.content,
+        published=post.published,
         created_by=post.created_by,
+        img_url=post.img_url,
+        # img_delete_hash=post.img_delete_hash
     )
     session.add(post)
     session.commit()
