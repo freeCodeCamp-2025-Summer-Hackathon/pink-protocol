@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
 from .. import crud_posts, schemas
@@ -32,16 +34,22 @@ def get_posts(skip: int = 0, limit: int = 10, session: Session = Depends(get_ses
 
 
 @router.post("/posts", response_model=schemas.PostResponse)
-def post_post(post: schemas.PostCreate, session: Session = Depends(get_session)):
-    post, err = crud_posts.post_post(session=session, post=post)
+def post_post(
+    post: schemas.PostCreate,
+    user_id: Annotated[int | None, Header()],
+    session: Session = Depends(get_session),
+):
+    post, err = crud_posts.post_post(session=session, post=post, user_id=user_id)
     if err is not None:
         raise HTTPException(status_code=404, detail=f"unable to add post: {err}")
     return post
 
 
 @router.put("/posts/{post_id}", response_model=schemas.PostResponse)
-def update_post(post_id: int, session: Session = Depends(get_session)):
-    post, err = crud_posts.update_post(post_id=post_id, session=session)
+def update_post(
+    post_id: int, user_id: Annotated[int | None, Header()], session: Session = Depends(get_session)
+):
+    post, err = crud_posts.update_post(post_id=post_id, session=session, user_id=user_id)
     if err is not None:
         raise HTTPException(status_code=404, detail=f"unable to update post: {err}")
     return post

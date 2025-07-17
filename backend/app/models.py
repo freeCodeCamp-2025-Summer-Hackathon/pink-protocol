@@ -28,11 +28,9 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     password_hash: Mapped[str] = mapped_column(nullable=False)
 
-    posts: Mapped[list["Post"]] = relationship(
-        back_populates="creator", cascade="all, delete-orphan"
-    )
-    collections_user: Mapped[list["Collection"]] = relationship(
-        back_populates="owner", cascade="all, delete-orphan"
+    posts: Mapped[list["Post"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    collections: Mapped[list["Collection"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
     )  # Why not just "collections?"
     likes: Mapped[list["Like"]] = relationship(back_populates="user")
     comments: Mapped[list["Comment"]] = relationship(back_populates="user")
@@ -46,24 +44,22 @@ class Post(Base):
     __tablename__ = "posts"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(nullable=False)
+    caption: Mapped[str] = mapped_column(nullable=False)
+    created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
+    updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    created_by: Mapped[int] = mapped_column(sa.ForeignKey("users.id", ondelete="CASCADE"))
-    creator: Mapped["User"] = relationship(back_populates="posts")
-    collections_post: Mapped[list["Collection"]] = relationship(
+    user: Mapped["User"] = relationship(back_populates="posts")
+    collections: Mapped[list["Collection"]] = relationship(
         secondary=collections_posts_association_table, back_populates="posts"
     )  # what does this do? Allow for a post to belong to multiple collections? | YES
     likes: Mapped[list["Like"]] = relationship(back_populates="post")
     comments: Mapped[list["Comment"]] = relationship(back_populates="post")
-    name: Mapped[str] = mapped_column(nullable=False)
-    caption: Mapped[str] = mapped_column(nullable=False)
-    published: Mapped[bool] = mapped_column(default=False)
-    created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
-    updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     # content # TODO: Figure out how we represent a post's content. If it's a link, it can be stored here. If raw data...
 
     # For debugging in terminal
     def __repr__(self):
-        return f"{self.__class__.__name__}(id={self.id}, name={self.name}, created_by={self.created_by}, caption={self.caption})"
+        return f"{self.__class__.__name__}(id={self.id}, title={self.title}, created_by={self.user_id}, caption={self.caption})"
 
 
 # Check if each collection can be of posts by different users. Might be a functionality to add later.
@@ -73,9 +69,9 @@ class Collection(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     posts: Mapped[list["Post"]] = relationship(
-        secondary=collections_posts_association_table, back_populates="collections_post"
+        secondary=collections_posts_association_table, back_populates="collections"
     )
-    owner: Mapped["User"] = relationship(back_populates="collections_user")
+    user: Mapped["User"] = relationship(back_populates="collections")
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
     private: Mapped[bool] = mapped_column(default=False)
@@ -91,7 +87,7 @@ class Interaction(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    post_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey("posts.id"), nullable=False)
     type: Mapped[str] = mapped_column(nullable=False)
 
     # # This is important for joined table inheritance if we were to support different types of users (user, admin, etc.)

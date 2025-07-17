@@ -39,8 +39,7 @@ class UserResponse(BaseModel):
 class PostBase(BaseModel):
     title: str
     # content: {type}
-    description: str | None = None
-    published: bool = True
+    caption: Optional[str] = None
 
 
 class PostCreate(PostBase):
@@ -50,16 +49,17 @@ class PostCreate(PostBase):
 class PostUpdate(PostBase):
     title: Optional[str] = None
     # content: Optional[type] = None
-    description: Optional[str] = None
-    published: Optional[bool] = None
+    caption: Optional[str] = None
 
 
 class PostResponse(PostBase):
     id: int
-    artist_id: int
-    artist: UserResponse
-    like_count: int  # to be computed from Like table
+    title: str
+    caption: Optional[str] = None
     created_at: datetime
+    user_id: int
+    # comments : list[Comment]
+    # like_count: int  # to be computed from Like table
 
     class Config:
         from_attributes = True

@@ -81,9 +81,9 @@ def validate_post_fields(name: str, caption: str):
     return err
 
 
-def validate_post_name(session: sa.orm.Session, name: str):
+def validate_post_title(session: sa.orm.Session, title: str):
     err = None
-    post = session.query(models.Post).filter_by(name=name).first()
+    post = session.query(models.Post).filter_by(title=title).first()
     if post is not None:
-        err = f'Post name "{name}" is already in use'
+        err = f'Post title "{title}" is already in use'
     return err
