@@ -36,4 +36,4 @@ jobs:
         run: docker build ./backend -t ${{ secrets.DOCKER_USERNAME }}/${{ env.BACKEND_IMAGE_NAME }}
         
       - name: push backend image to Docker Hub
-        run: docker image push arthive-app-backend:latest
+        run: docker image push ${{ secrets.DOCKER_USERNAME }}/${{ env.BACKEND_IMAGE_NAME }}
