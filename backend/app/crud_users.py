@@ -2,6 +2,7 @@ import datetime
 from datetime import timezone
 
 import sqlalchemy as sa
+from passlib.hash import pbkdf2_sha256
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -18,7 +19,7 @@ def post_user(session: Session, user: schemas.UserCreate) -> tuple[models.User, 
         name=user.name,
         email=user.email,
         username=user.username,
-        # password_hash=hash_password(user.password)
+        password_hash=pbkdf2_sha256.hash(user.password),
     )
     session.add(user)
     session.commit()
