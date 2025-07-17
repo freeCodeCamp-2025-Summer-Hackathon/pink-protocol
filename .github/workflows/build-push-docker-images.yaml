@@ -2,9 +2,12 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "cmolloy36/tooling/add-docker-image-building-workflow" ]
   pull_request:
     branches: [ "main" ]
+
+env:
+  BACKEND_IMAGE_NAME: arthive-app-backend
 
 jobs:
   build:
@@ -30,7 +33,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: build docker image for backend
-        run: docker build ./backend -t ${{ secrets.DOCKER_USERNAME_PINKPROTOCOL }}/${{ env.IMAGE_NAME }}
+        run: docker build ./backend -t ${{ secrets.DOCKER_USERNAME_PINKPROTOCOL }}/${{ env.BACKEND_IMAGE_NAME }}
         
       - name: push backend image to Docker Hub
         run: docker image push arthive-app-backend:latest
