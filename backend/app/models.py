@@ -56,10 +56,10 @@ class Post(Base):
     comments: Mapped[list["Comment"]] = relationship(back_populates="post")
     name: Mapped[str] = mapped_column(nullable=False)
     caption: Mapped[str] = mapped_column(nullable=False)
+    content: Mapped[str] = mapped_column(nullable=False)
     published: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
-    # content # TODO: Figure out how we represent a post's content. If it's a link, it can be stored here. If raw data...
 
     # For debugging in terminal
     def __repr__(self):
