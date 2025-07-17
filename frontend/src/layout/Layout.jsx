@@ -4,9 +4,9 @@ import { Sidebar } from '../sidebar/Sidebar.jsx'
 
 export const Layout = () => {
   return (
-    <div className="flex min-h-screen bg-gray-100 dark:bg-[#27272a]">
+    <div className="flex min-h-screen bg-white">
       <Sidebar />
-      <main className="flex-1 p-8">
+      <main className="flex-1">
         <Outlet />
       </main>
     </div>
