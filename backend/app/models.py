@@ -26,7 +26,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(sa.String, unique=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
-    password_hash: Mapped[str] = mapped_column(nullable=False)
+    # password_hash: Mapped[str] = mapped_column(nullable=False)
 
     posts: Mapped[list["Post"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     collections: Mapped[list["Collection"]] = relationship(
