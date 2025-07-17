@@ -1,4 +1,5 @@
 import React from 'react'
+import SignUp from './pages/SignUp'
 import { Routes, Route } from 'react-router-dom'
 
 import { Layout } from './Layout'
@@ -13,6 +14,7 @@ export const App = () => (
       <Route element={<PagePlaceholder title="Collections" />} path="/collections" />
       <Route element={<PagePlaceholder title="Inbox" />} path="/inbox" />
       <Route element={<PagePlaceholder title="Settings" />} path="/settings" />
+      <Route element={<SignUp />} path="/signup" />
     </Route>
   </Routes>
 )
