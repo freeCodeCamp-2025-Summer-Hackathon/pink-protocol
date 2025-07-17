@@ -1,12 +1,11 @@
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
-from backend.app.helper_functions import get_current_user
-from backend.app.models import User
-
 from .. import crud_posts, schemas
 from ..database import get_session
+from ..helper_functions import get_current_user
 from ..image_upload import upload_img
+from ..models import User
 
 # Post-related endpoints
 router = APIRouter()
