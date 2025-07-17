@@ -92,20 +92,20 @@ const SignUp = () => {
 
   return (
     <div
-      className={`flex h-auto w-full flex-row items-center justify-center transition-all duration-500 ease-in-out ${visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}
+      className={`dark:bg-[#27272a] flex h-auto w-full flex-row items-center justify-center transition-all duration-500 ease-in-out ${visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}
     >
       <div className="flex items-center justify-center p-2">
         <img alt="Logo" className="h-auto w-[500px]" src={logo} />
       </div>
-      <div className="flex h-auto max-w-md flex-col items-center justify-center rounded-xl border-2 border-black [box-shadow:0_4px_10px_rgba(0,_0,_0,_0.1)]">
-        <h2 className="mt-8 mb-8 text-center text-[2rem] underline">Sign Up</h2>
+      <div className="dark:bg-[#27272a] bg-white flex h-auto max-w-md flex-col items-center justify-center rounded-xl border-2 border-black dark:border-white [box-shadow:0_4px_10px_rgba(0,_0,_0,_0.1)]">
+        <h2 className="dark:text-white text-black mt-8 mb-8 text-center text-[2rem] underline">Sign Up</h2>
         {error && <p className="pr-8 pl-8 text-justify text-[1rem] text-[#8A1538]">{error}</p>}
         {success && <p className="pr-8 pl-8 text-justify text-[1rem] text-[#27AE60]">{success}</p>}
         <form className="w-full space-y-6 p-8" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email_address">Email Address:</label>
+            <label htmlFor="email_address" className="dark:text-white text-black">Email Address:</label>
             <input
-              className="box-border w-full rounded-xl border border-black p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
+              className="dark:text-white text-black placeholder-gray-200 dark:placeholder-gray-500 bg-white dark:bg-[#27272a] box-border w-full rounded-xl border dark:border-white border-black p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
               id="email_address"
               name="email_address"
               placeholder="jane.doe@email.com"
@@ -116,9 +116,9 @@ const SignUp = () => {
             />
           </div>
           <div>
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="username" className="dark:text-white text-black">Username:</label>
             <input
-              className="box-border w-full rounded-xl border border-black p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
+              className="placeholder-gray-200 dark:placeholder-gray-500 bg-white dark:bg-[#27272a] box-border w-full rounded-xl border border-black dark:border-white dark:focus:border[#a78bfa] p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
               id="username"
               name="username"
               placeholder="jane_doe"
@@ -129,12 +129,12 @@ const SignUp = () => {
             />
           </div>
           <div className="mb-4 w-full">
-            <label className="mb-1 block" htmlFor="password">
+            <label className="mb-1 block dark:text-white text-black" htmlFor="password">
               Password:
             </label>
             <div className="relative">
               <input
-                className="box-border w-full rounded-xl border border-black p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
+                className="placeholder-gray-200 dark:placeholder-gray-500 bg-white dark:bg-[#27272a] box-border w-full rounded-xl border border-black dark:border-white dark:focus:border[#a78bfa] p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
                 id="password"
                 name="password"
                 placeholder="Secrethivecode@123"
@@ -149,17 +149,17 @@ const SignUp = () => {
                 onClick={togglePasswordVisibility}
               >
                 {showPassword ? (
-                  <EyeIcon className="h-6 w-6 text-black" />
+                  <EyeIcon className="h-6 w-6 text-black dark:text-white" />
                 ) : (
-                  <EyeSlashIcon className="h-6 w-6 text-black" />
+                  <EyeSlashIcon className="h-6 w-6 text-black dark:text-white" />
                 )}
               </button>
             </div>
           </div>
           <div>
-            <label htmlFor="confirm_password"> Confirm Password:</label>
+            <label htmlFor="confirm_password"className="dark:text-white text-black"> Confirm Password:</label>
             <input
-              className="box-border w-full rounded-xl border border-black p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
+              className="placeholder-gray-200 dark:placeholder-gray-500 bg-white dark:bg-[#27272a] box-border w-full rounded-xl border border-black dark:border-white dark:focus:border[#a78bfa] p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
               id="confirm_password"
               name="confirm_password"
               type="password"
@@ -169,7 +169,7 @@ const SignUp = () => {
             />
           </div>
           <button
-            className="w-full cursor-pointer rounded-lg border-none bg-[#5e4f8d] p-[0.8rem] text-[1.1rem] text-white transition-[background-color,transform,box-shadow] duration-2000 ease-in-out hover:scale-[1.05] hover:bg-[#7b6ebf] hover:shadow-lg"
+            className="w-full cursor-pointer rounded-lg border-none dark:bg-[#7c3aed] bg-[#5e4f8d] p-[0.8rem] text-[1.1rem] text-white transition-[background-color,transform,box-shadow] duration-2000 ease-in-out hover:scale-[1.05] hover:bg-[#7b6ebf] hover:shadow-lg"
             disabled={isSubmitting}
             type="submit"
           >
@@ -177,7 +177,7 @@ const SignUp = () => {
           </button>
         </form>
         <a
-          className="mb-8 block text-center text-sm text-[#5e4f8d] underline hover:opacity-80 dark:text-[#D4AF37]"
+          className="mb-8 block text-center text-sm text-[#5e4f8d] underline hover:opacity-80 dark:text-[#7c3aed]"
           href="/login"
         >
           Already part of the hive? Log in here!{' '}

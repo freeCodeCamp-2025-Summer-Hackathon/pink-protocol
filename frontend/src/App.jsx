@@ -1,8 +1,8 @@
 import React from 'react'
-import SignUp from './pages/SignUp'
 import { Routes, Route } from 'react-router-dom'
 
 import { Layout } from './Layout'
+import SignUp from './pages/SignUp'
 
 const PagePlaceholder = () => <></>
 
