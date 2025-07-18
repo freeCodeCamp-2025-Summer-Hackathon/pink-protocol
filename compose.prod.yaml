@@ -4,9 +4,7 @@ services:
     container_name: app-backend
     env_file:
       - .env
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: pinkprotocol/arthive-app-backend:latest
     command: [ "sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --reload" ] # TODO: consider using fastapi command
     ports:
       - "8000:8000"
