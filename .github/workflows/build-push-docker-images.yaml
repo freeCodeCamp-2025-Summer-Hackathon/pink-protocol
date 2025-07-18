@@ -36,5 +36,4 @@ jobs:
         with:
           push: true
           tags: 
-            ${{ secrets.DOCKER_USERNAME }}/${{ env.BACKEND_IMAGE_NAME }}:latest
-            ${{ secrets.DOCKER_USERNAME }}/arthive-app-backend:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/${{ env.BACKEND_IMAGE_NAME }}:latest,${{ secrets.DOCKER_USERNAME }}/arthive-app-backend:${{ github.sha }}
