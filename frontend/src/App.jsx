@@ -2,11 +2,11 @@ import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { Layout } from './layout/Layout.jsx'
-import SignUp from './pages/SignUp'
 
 const PagePlaceholder = () => <></>
 
 const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage.jsx'))
+const SignUp = lazy(() => import('./SignUp.jsx'))
 
 export const App = () => (
   <Suspense fallback={null}>
