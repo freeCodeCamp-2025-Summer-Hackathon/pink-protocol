@@ -7,6 +7,7 @@ const PagePlaceholder = () => <></>
 
 const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage.jsx'))
 const SignUp = lazy(() => import('./SignUp.jsx'))
+const Login = lazy(() => import('./Login.jsx'))
 
 export const App = () => (
   <Suspense fallback={null}>
@@ -18,6 +19,7 @@ export const App = () => (
         <Route element={<PagePlaceholder title="Settings" />} path="/settings" />
       </Route>
       <Route element={<SignUp />} path="/signup" />
+      <Route element={<Login />} path="/login"/>
     </Routes>
   </Suspense>
 )
