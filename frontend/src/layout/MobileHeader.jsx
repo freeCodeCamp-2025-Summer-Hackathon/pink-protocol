@@ -6,7 +6,7 @@ export const MobileHeader = ({ onMenuClick }) => {
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center">
           <Squares2X2Icon className="text-honey-500 h-8 w-8" />
-          <span className="font-jost ml-2 text-lg font-bold">ArtHive</span>
+          <span className="font-inter ml-2 text-lg font-bold">ArtHive</span>
         </div>
         <button
           aria-label="Open menu"
