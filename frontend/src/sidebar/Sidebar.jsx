@@ -3,7 +3,6 @@ import {
   HomeIcon,
   PlusIcon,
   BookmarkIcon,
-  EnvelopeIcon,
   Cog6ToothIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/outline'
