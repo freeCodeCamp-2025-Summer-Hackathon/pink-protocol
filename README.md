@@ -6,6 +6,7 @@ ArtHive is a social-media platform that enables users to post art, engage with a
 This project was completed by pink-protocol as part of [freeCodeCamp's](https://www.freecodecamp.org/) 2025 Hackathon!
 
 ## Usage
+* To use ArtHive locally, copy this repository with `git clone https://github.com/freeCodeCamp-2025-Summer-Hackathon/pink-protocol`.
 
 ### Environment Variables
 * Include a `.env` file in the project root with the following variables (replace fields encapsulated in "\[\]" with your own values):
@@ -22,20 +23,18 @@ ACCESS_TOKEN_EXPIRE_MINUTES=60
 ```
 
 ### Docker Setup
-NOTE: THE DOCKER SETUP DOES NOT CURRENTLY WORK.
-* To use ArtHive, ensure that you have [docker](https://www.docker.com/) installed and running. In the project root, run `docker pull arthive-app`. <!-- we should tag this differently... just arthive, no -app -->
-
-<!-- Update this section with the appropriate command, `docker run -p 8000:8000 your-username/your-app:latest`, when we support CD pipeline -->
+* To use ArtHive, ensure that you have [docker](https://www.docker.com/) installed and running. In the project root, run `docker pull pinkprotocol/arthive-app-backend`.
 
 #### Docker Secrets
 * Include a `backend/db_password.txt` file with the following:
 \[password\]
 
 #### Running the App
-* In the project root, run `docker compose up -d`. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and get buzzing! To shut down the app, run `docker compose down -v` (the `-v` flag is optional, using it removes data from the volume). <!-- We want to direct them to the root endpoint, right? -->
+* In the project root, run `docker compose up -d`. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and get buzzing! To shut down the app, run `docker compose down -v` (the `-v` flag is optional, using it removes data from the volume).
+  * If you want to run the app using your latest changes to the backend, run `docker compose up --build`.
+  * If you want to pull the latest images from Docker Hub, use `docker compose -f compose.prod.yaml up`
 
 ### Local Setup
-* To use ArtHive locally, copy this repository with `git clone https://github.com/freeCodeCamp-2025-Summer-Hackathon/pink-protocol`.
 
 #### Installing Python Dependencies
 * Set up a virtual environment in the `backend/` directory with `python3 -m venv [your_venv_here]`.
