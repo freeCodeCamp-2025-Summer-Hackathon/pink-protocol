@@ -9,9 +9,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 
-import logo from '../logo/Logo.png'
-
-const SignUp = () => {
+export const SignUp = () => {
   const [formData, setFormData] = useState({
     email_address: '',
     username: '',
@@ -19,7 +17,7 @@ const SignUp = () => {
     confirm_password: '',
   })
 
-  const [error, setError] = useState('')
+  const [error, setError] = useState(null)
   const [success, setSuccess] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -41,7 +39,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
+    setError(null)
     setSuccess('')
     setIsSubmitting(true)
 
@@ -118,7 +116,12 @@ const SignUp = () => {
         <div className="relative hidden flex-col items-center justify-center p-12 lg:flex lg:w-1/2">
           <div className="max-w-md space-y-8 text-center">
             <div className="relative">
-              <img alt="ArtHive Logo" className="mx-auto drop-shadow-lg" src={logo} width={500} />
+              <img
+                alt="ArtHive Logo"
+                className="mx-auto drop-shadow-lg"
+                src="/logo.png"
+                width={500}
+              />
               <div className="absolute -top-4 -right-4 h-8 w-8 animate-pulse rounded-full bg-yellow-400"></div>
               <div className="absolute -bottom-2 -left-6 h-6 w-6 animate-pulse rounded-full bg-orange-400 delay-300"></div>
             </div>
@@ -161,15 +164,21 @@ const SignUp = () => {
           <div className="w-full max-w-md rounded-2xl bg-white/80 p-6 shadow-2xl backdrop-blur-sm">
             <div className="mb-8 space-y-2 text-center">
               <div className="mb-4 lg:hidden">
-                <img alt="ArtHive Logo" className="mx-auto" src={logo} width={200} />
+                <img alt="ArtHive Logo" className="mx-auto" src="/logo.png" width={200} />
               </div>
               <h2 className="text-2xl font-bold text-gray-800">Join the Hive!</h2>
               <p className="text-gray-600">Create your account to start buzzing with creativity.</p>
             </div>
 
-            {error && <p className="pr-8 pl-8 text-justify text-[1rem] text-[#8A1538]">{error}</p>}
+            {error && (
+              <p className="mb-4 rounded-md bg-red-100 p-3 text-center text-sm text-red-700">
+                {error}
+              </p>
+            )}
             {success && (
-              <p className="pr-8 pl-8 text-justify text-[1rem] text-[#27AE60]">{success}</p>
+              <p className="mb-4 rounded-md bg-green-100 p-3 text-center text-sm text-green-700">
+                {success}
+              </p>
             )}
 
             <form className="space-y-4" onSubmit={handleSubmit}>
@@ -178,8 +187,9 @@ const SignUp = () => {
                   Email Address
                 </label>
                 <input
-                  className="h-11 w-full rounded-md border border-gray-200 px-3 focus:border-yellow-400 focus:ring-yellow-400"
+                  className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 focus:border-yellow-400 focus:ring-yellow-400"
                   id="email_address"
+                  name="email_address"
                   placeholder="artist@arthive.com"
                   type="email"
                   value={formData.email_address}
@@ -192,8 +202,9 @@ const SignUp = () => {
                   Username
                 </label>
                 <input
-                  className="h-11 w-full rounded-md border border-gray-200 px-3 focus:border-yellow-400 focus:ring-yellow-400"
+                  className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 focus:border-yellow-400 focus:ring-yellow-400"
                   id="username"
+                  name="username"
                   placeholder="artist123"
                   type="text"
                   value={formData.username}
@@ -207,8 +218,9 @@ const SignUp = () => {
                 </label>
                 <div className="relative">
                   <input
-                    className="h-11 w-full rounded-md border border-gray-200 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
+                    className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
                     id="password"
+                    name="password"
                     placeholder="SecretHive@123"
                     type={showPassword ? 'text' : 'password'}
                     value={formData.password}
@@ -221,9 +233,9 @@ const SignUp = () => {
                     onClick={togglePasswordVisibility}
                   >
                     {showPassword ? (
-                      <EyeIcon className="h-4 w-4" />
+                      <EyeIcon className="h-5 w-5" />
                     ) : (
-                      <EyeSlashIcon className="h-4 w-4" />
+                      <EyeSlashIcon className="h-5 w-5" />
                     )}
                   </button>
                 </div>
@@ -234,10 +246,11 @@ const SignUp = () => {
                 </label>
                 <div className="relative">
                   <input
-                    className="h-11 w-full rounded-md border border-gray-200 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
+                    className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
                     id="confirm_password"
+                    name="confirm_password"
                     placeholder="Confirm your password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     value={formData.confirm_password}
                     required
                     onChange={handleChange}
@@ -245,14 +258,14 @@ const SignUp = () => {
                 </div>
               </div>
               <button
-                className="hover:-to-orange-600 h-11 w-full rounded-md bg-gradient-to-r from-yellow-500 to-orange-500 font-medium text-white shadow-lg transition-all duration-200 hover:from-yellow-600 hover:shadow-xl hover:scale-[1.05] ease-in-out"
+                className="flex h-11 w-full items-center justify-center rounded-md bg-gradient-to-r from-yellow-500 to-orange-500 font-medium text-white shadow-lg transition-all duration-200 ease-in-out hover:scale-[1.02] hover:from-yellow-600 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
                 disabled={isSubmitting}
                 type="submit"
               >
-                {isSubmitting ? 'Submitting...' : 'Sign Up'}
+                {isSubmitting ? 'Creating Account...' : 'Sign Up'}
               </button>
             </form>
-            <div className="mt-4 text-center">
+            <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 Already part of the hive?{' '}
                 <Link
@@ -264,7 +277,7 @@ const SignUp = () => {
               </p>
             </div>
 
-            <div className="mt-4 border-t border-gray-100 pt-4">
+            <div className="mt-6 border-t border-gray-200 pt-4">
               <p className="text-center text-xs leading-relaxed text-gray-500">
                 By signing up, you agree to our{' '}
                 <Link className="text-yellow-600 hover:underline" to="/terms">

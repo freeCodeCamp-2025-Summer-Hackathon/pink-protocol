@@ -31,6 +31,5 @@
   --color-cream-50: #fff7e6;
 
   --font-inter: 'Inter', system-ui, sans-serif;
-  --font-jost: 'Jost', var(--font-inter);
-  --font-lora: 'Lora', serif;
+  --font-source-serif-pro: 'Source Serif Pro', serif;
 }

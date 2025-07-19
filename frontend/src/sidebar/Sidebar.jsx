@@ -3,9 +3,9 @@ import {
   HomeIcon,
   PlusIcon,
   BookmarkIcon,
-  EnvelopeIcon,
   Cog6ToothIcon,
   Squares2X2Icon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -14,17 +14,21 @@ const navItems = [
   { icon: HomeIcon, label: 'Dashboard', path: '/' },
   { icon: PlusIcon, label: 'Upload', path: '/upload' },
   { icon: BookmarkIcon, label: 'Collections', path: '/collections' },
-  { icon: EnvelopeIcon, label: 'Inbox', path: '/inbox' },
 ]
 
-const SidebarItem = ({ icon: Icon, text, to, open }) => {
+const SidebarItem = ({ icon: Icon, text, to, open, onClick }) => {
   const base =
-    'font-inter relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group'
+    'font-source-serif-pro relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group'
   const active = 'bg-honey-100 text-honey-800'
   const rest = 'hover:bg-honey-50 text-stone-600'
 
   return (
-    <NavLink className={({ isActive }) => `${base} ${isActive ? active : rest}`} to={to} end>
+    <NavLink
+      className={({ isActive }) => `${base} ${isActive ? active : rest}`}
+      to={to}
+      end
+      onClick={onClick}
+    >
       <Icon className="h-6 w-6" />
       <span className={`overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}>{text}</span>
       {!open && (
@@ -36,35 +40,56 @@ const SidebarItem = ({ icon: Icon, text, to, open }) => {
   )
 }
 
-export const Sidebar = () => {
+export const Sidebar = ({ isOpen, onClose }) => {
   const [open, setOpen] = useState(true)
 
+  const handleItemClick = () => {
+    if (window.innerWidth < 1024) {
+      onClose()
+    }
+  }
+
   return (
-    <aside className="sticky top-0 h-screen">
-      <nav className="flex h-full flex-col border-r border-stone-200 bg-white shadow-sm">
+    <aside
+      className={`fixed top-0 left-0 z-50 h-screen w-full transition-transform duration-300 ease-in-out sm:w-80 lg:sticky lg:w-auto lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} `}
+    >
+      <nav className="flex h-full w-full flex-col border-r border-stone-200 bg-white shadow-lg lg:w-auto lg:shadow-sm">
+        {/* Header */}
         <div className="flex items-center justify-between p-4 pb-2">
           <div
             className={`flex items-center overflow-hidden transition-all ${open ? 'w-32' : 'w-0'}`}
           >
             <Squares2X2Icon className="text-honey-500 h-8 w-8" />
-
-            <span className="font-jost ml-2 text-lg font-bold">ArtHive</span>
+            <span className="font-inter ml-2 text-lg font-bold">ArtHive</span>
           </div>
 
           <button
-            className="rounded-lg bg-stone-100 p-1.5 hover:bg-stone-200"
+            className="hidden rounded-lg bg-stone-100 p-1.5 hover:bg-stone-200 lg:block"
             onClick={() => setOpen(!open)}
           >
             <ChevronLeftIcon
               className={`h-6 w-6 text-stone-600 transition-transform ${!open && 'rotate-180'}`}
             />
           </button>
+
+          <button
+            className="rounded-lg bg-stone-100 p-1.5 hover:bg-stone-200 lg:hidden"
+            onClick={onClose}
+          >
+            <XMarkIcon className="h-6 w-6 text-stone-600" />
+          </button>
         </div>
 
         <ul className="flex-1 px-3">
           {navItems.map((item) => (
             <li key={item.label}>
-              <SidebarItem icon={item.icon} open={open} text={item.label} to={item.path} />
+              <SidebarItem
+                icon={item.icon}
+                open={open}
+                text={item.label}
+                to={item.path}
+                onClick={handleItemClick}
+              />
             </li>
           ))}
         </ul>
@@ -77,10 +102,10 @@ export const Sidebar = () => {
             className={`flex items-center justify-between overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}
           >
             <div className="leading-4">
-              <h4 className="font-jost font-semibold text-stone-700">Name</h4>
-              <span className="font-inter text-xs text-stone-500">email@example.com</span>
+              <h4 className="font-inter font-semibold text-stone-700">Name</h4>
+              <span className="font-source-serif text-xs text-stone-500">email@example.com</span>
             </div>
-            <NavLink to="/settings">
+            <NavLink to="/settings" onClick={handleItemClick}>
               <Cog6ToothIcon className="hover:text-honey-600 h-6 w-6 cursor-pointer text-stone-500" />
             </NavLink>
           </div>
