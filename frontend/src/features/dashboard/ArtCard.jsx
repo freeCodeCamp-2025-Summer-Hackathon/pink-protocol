@@ -1,25 +1,18 @@
 import { Bookmark } from 'lucide-react'
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 
 export const ArtCard = ({ art }) => {
   const [isSaved, setIsSaved] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
-  const imgRef = useRef(null)
-
-  useEffect(() => {
-    if (imgRef.current?.complete) {
-      setImageLoaded(true)
-    }
-  }, [])
 
   return (
     <article className="group relative mb-3 break-inside-avoid overflow-hidden rounded-xl bg-white shadow transition-shadow hover:shadow-lg sm:mb-4 sm:rounded-2xl">
-      <div className="relative">
-        {!imageLoaded && <div className="absolute inset-0 animate-pulse bg-gray-200"></div>}
+      <div className="relative aspect-[2/3] w-full bg-gray-200">
         <img
           alt={art.title}
-          className={`w-full object-cover transition-transform group-hover:scale-105 ${imageLoaded ? 'block' : 'hidden'}`}
-          ref={imgRef}
+          className={`h-full w-full object-cover transition-opacity duration-500 group-hover:scale-105 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
           src={art.imageUrl || '/placeholder.svg'}
           onError={(e) => {
             e.target.onerror = null
