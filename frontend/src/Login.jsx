@@ -41,7 +41,28 @@ export const Login = () => {
     setShowPassword((prev) => !prev)
   }
 
-  
+  const onSubmit = async (data) => {
+    setError(null)
+    setSuccess("")
+    setIsSubmitting(true)
+
+    try {
+      await axios.post("/api/login", data)
+      setSuccess("🐝 Welcome back to the hive! Buzzing you in...")
+      setTimeout(() => {
+        navigate("/dashboard")
+      }, 2000)
+    } catch (err) {
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(`🐝 ${err.response.data.error}`)
+      } else {
+        setError("🐝 Stung by a glitch! We couldn't log you in.")
+      }
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
 }
 
 export default Login
