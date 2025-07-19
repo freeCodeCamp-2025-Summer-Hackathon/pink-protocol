@@ -176,12 +176,12 @@ const SignUp = () => {
             {isSubmitting ? 'Submitting...' : 'Sign Up'}
           </button>
         </form>
-        <a
+        <Link
           className="mb-8 block text-center text-sm text-[#5e4f8d] underline hover:opacity-80 dark:text-[#7c3aed]"
-          href="/login"
+          to="/login"
         >
           Already part of the hive? Log in here!{' '}
-        </a>
+        </Link>
       </div>
     </div>
   )
