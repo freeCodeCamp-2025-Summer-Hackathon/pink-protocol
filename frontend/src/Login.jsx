@@ -16,3 +16,32 @@ const loginUserSchema = z.object({
   email: z.email('Invalid email format').nonempty('Email is required!'),
   password: z.string().nonempty('Password is required!'),
 })
+
+export const Login = () => {
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginUserSchema),
+  })
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev)
+  }
+
+  
+}
+
+export default Login
