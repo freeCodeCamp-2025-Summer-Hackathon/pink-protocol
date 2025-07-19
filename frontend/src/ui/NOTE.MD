@@ -1,0 +1,1 @@
+For _pure_ UI components, like buttons.
