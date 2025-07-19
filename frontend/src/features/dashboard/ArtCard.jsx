@@ -15,7 +15,7 @@ export const ArtCard = ({ art }) => {
   }, [])
 
   return (
-    <article className="group relative break-inside-avoid overflow-hidden rounded-2xl bg-white shadow transition-shadow hover:shadow-lg">
+    <article className="group relative mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow transition-shadow hover:shadow-lg">
       <div className="relative">
         {!imageLoaded && <div className="absolute inset-0 animate-pulse bg-gray-200"></div>}
 
