@@ -157,7 +157,7 @@ const SignUp = () => {
             </div>
           </div>
           <div>
-            <label htmlFor="confirm_password"className="dark:text-white text-black"> Confirm Password:</label>
+            <label htmlFor="confirm_password" className="dark:text-white text-black"> Confirm Password:</label>
             <input
               className="placeholder-gray-200 dark:placeholder-gray-500 bg-white dark:bg-[#27272a] box-border w-full rounded-xl border border-black dark:border-white dark:focus:border[#a78bfa] p-[0.8rem] text-[1rem] transition-[border-color,box-shadow] duration-500 ease-in-out focus:border-2 focus:border-[#5e4f8d] focus:shadow-[0_0_8px_rgba(94,79,141,0.5)] focus:outline-none"
               id="confirm_password"
