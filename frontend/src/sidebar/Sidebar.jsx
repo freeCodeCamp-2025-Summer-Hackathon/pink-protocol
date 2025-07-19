@@ -18,7 +18,7 @@ const navItems = [
 
 const SidebarItem = ({ icon: Icon, text, to, open, onClick }) => {
   const base =
-    'font-source-serif relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group'
+    'font-source-serif-pro relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group'
   const active = 'bg-honey-100 text-honey-800'
   const rest = 'hover:bg-honey-50 text-stone-600'
 

@@ -30,7 +30,7 @@ export const GalleryGrid = () => {
         <h1 className="font-inter text-2xl font-black tracking-wide text-stone-900 uppercase sm:text-3xl lg:text-4xl">
           The Hive
         </h1>
-        <p className="font-source-serif mt-2 text-lg leading-relaxed font-light text-stone-600 sm:text-xl">
+        <p className="font-source-serif-pro mt-2 text-lg leading-relaxed font-light text-stone-600 sm:text-xl">
           Buzz through the hive&#39;s latest creations
         </p>
       </header>
