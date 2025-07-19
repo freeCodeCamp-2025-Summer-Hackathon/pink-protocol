@@ -169,7 +169,7 @@ const SignUp = () => {
             />
           </div>
           <button
-            className="w-full cursor-pointer rounded-lg border-none dark:bg-[#7c3aed] bg-[#5e4f8d] p-[0.8rem] text-[1.1rem] text-white transition-[background-color,transform,box-shadow] duration-2000 ease-in-out hover:scale-[1.05] hover:bg-[#7b6ebf] hover:shadow-lg"
+            className="w-full cursor-pointer rounded-lg border-none dark:bg-purple-600 bg-indigo-700 p-[0.8rem] text-[1.1rem] text-white transition-[background-color,transform,box-shadow] duration-2000 ease-in-out hover:scale-[1.05] hover:bg-indigo-500 hover:shadow-lg"
             disabled={isSubmitting}
             type="submit"
           >
