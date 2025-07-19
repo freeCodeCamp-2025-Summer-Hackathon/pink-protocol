@@ -15,7 +15,6 @@ export const App = () => (
         <Route element={<DashboardPage />} index />
         <Route element={<PagePlaceholder title="Upload" />} path="/upload" />
         <Route element={<PagePlaceholder title="Collections" />} path="/collections" />
-        <Route element={<PagePlaceholder title="Inbox" />} path="/inbox" />
         <Route element={<PagePlaceholder title="Settings" />} path="/settings" />
       </Route>
       <Route element={<SignUp />} path="/signup" />

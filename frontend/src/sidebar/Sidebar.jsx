@@ -14,7 +14,6 @@ const navItems = [
   { icon: HomeIcon, label: 'Dashboard', path: '/' },
   { icon: PlusIcon, label: 'Upload', path: '/upload' },
   { icon: BookmarkIcon, label: 'Collections', path: '/collections' },
-  { icon: EnvelopeIcon, label: 'Inbox', path: '/inbox' },
 ]
 
 const SidebarItem = ({ icon: Icon, text, to, open }) => {
