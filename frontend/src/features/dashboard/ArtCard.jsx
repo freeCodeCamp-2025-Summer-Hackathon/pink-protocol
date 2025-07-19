@@ -1,6 +1,8 @@
 import { Bookmark } from 'lucide-react'
 import { useState } from 'react'
 
+const IMAGE_NOT_FOUND_PLACEHOLDER = 'https://placehold.co/400x600/cccccc/ffffff?text=Image+Not+Found'
+
 export const ArtCard = ({ art }) => {
   const [isSaved, setIsSaved] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
@@ -16,7 +18,7 @@ export const ArtCard = ({ art }) => {
           src={art.imageUrl || '/placeholder.svg'}
           onError={(e) => {
             e.target.onerror = null
-            e.target.src = 'https://placehold.co/400x600/cccccc/ffffff?text=Image+Not+Found'
+            e.target.src = IMAGE_NOT_FOUND_PLACEHOLDER
             setImageLoaded(true)
           }}
           onLoad={() => setImageLoaded(true)}
