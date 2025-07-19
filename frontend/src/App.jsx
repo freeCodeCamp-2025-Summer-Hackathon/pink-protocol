@@ -19,7 +19,7 @@ export const App = () => (
         <Route element={<PagePlaceholder title="Settings" />} path="/settings" />
       </Route>
       <Route element={<SignUp />} path="/signup" />
-      <Route element={<Login />} path="/login"/>
+      <Route element={<Login />} path="/login" />
     </Routes>
   </Suspense>
 )
