@@ -1,7 +1,8 @@
 import { Bookmark } from 'lucide-react'
 import { useState } from 'react'
 
-const IMAGE_NOT_FOUND_PLACEHOLDER = 'https://placehold.co/400x600/cccccc/ffffff?text=Image+Not+Found'
+const IMAGE_NOT_FOUND_PLACEHOLDER =
+  'https://placehold.co/400x600/cccccc/ffffff?text=Image+Not+Found'
 
 export const ArtCard = ({ art }) => {
   const [isSaved, setIsSaved] = useState(false)
