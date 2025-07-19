@@ -14,8 +14,8 @@ export const App = () => (
       <Route element={<PagePlaceholder title="Collections" />} path="/collections" />
       <Route element={<PagePlaceholder title="Inbox" />} path="/inbox" />
       <Route element={<PagePlaceholder title="Settings" />} path="/settings" />
-      <Route element={<SignUp />} path="/signup" />
     </Route>
+    <Route element={<SignUp />} path="/signup" />
   </Routes>
 )
 
