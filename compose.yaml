@@ -3,21 +3,22 @@ services:
   app-backend:
     container_name: app-backend
     env_file:
-      - .env.docker
+      - .env
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: [ "sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --reload" ] # TODO: consider using fastapi command
+    command: [ "sh", "-c", "alembic upgrade head && fastapi run" ] # TODO: consider using fastapi command
     ports:
       - "8000:8000"
     working_dir: /app
-    # volumes:
-    #   - ./backend:/app
+    volumes:
+      - ./backend:/app
     depends_on:
       postgres-db:
         condition: service_healthy # makes sure db is connected before webapp starts. Need to define health check
     environment:
       DATABASE_PASSWORD: /run/secrets/db_password
+      DATABASE_HOSTNAME: postgres-db
     secrets:
       - db_password
 
