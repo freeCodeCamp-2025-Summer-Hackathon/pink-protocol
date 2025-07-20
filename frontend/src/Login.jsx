@@ -19,7 +19,7 @@ const loginUserSchema = z.object({
 
 export const Login = () => {
   const [error, setError] = useState(null)
-  const [success, setSuccess] = useState("")
+  const [success, setSuccess] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -43,14 +43,14 @@ export const Login = () => {
 
   const onSubmit = async (data) => {
     setError(null)
-    setSuccess("")
+    setSuccess('')
     setIsSubmitting(true)
 
     try {
-      await axios.post("/api/login", data)
-      setSuccess("🐝 Welcome back to the hive! Buzzing you in...")
+      await axios.post('/api/login', data)
+      setSuccess('🐝 Welcome back to the hive! Buzzing you in...')
       setTimeout(() => {
-        navigate("/dashboard")
+        navigate('/dashboard')
       }, 2000)
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
@@ -66,7 +66,7 @@ export const Login = () => {
   return (
     <div
       className={`relative min-h-screen transition-all duration-500 ease-in-out ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
       }`}
     >
       <div className="absolute inset-0">
@@ -83,7 +83,12 @@ export const Login = () => {
         <div className="relative hidden flex-col items-center justify-center p-12 lg:flex lg:w-1/2">
           <div className="max-w-md space-y-8 text-center">
             <div className="relative">
-              <img alt="ArtHive Logo" className="mx-auto drop-shadow-lg" src="/logo.png" width={500} />
+              <img
+                alt="ArtHive Logo"
+                className="mx-auto drop-shadow-lg"
+                src="/logo.png"
+                width={500}
+              />
               <div className="absolute -top-4 -right-4 h-8 w-8 animate-pulse rounded-full bg-yellow-400"></div>
               <div className="absolute -bottom-2 -left-6 h-6 w-6 animate-pulse rounded-full bg-orange-400 delay-300"></div>
             </div>
@@ -92,7 +97,8 @@ export const Login = () => {
                 Welcome to the <span className="text-yellow-600">Hive</span>
               </h1>
               <p className="text-lg leading-relaxed text-gray-600">
-                Ready to buzz back into your creative sanctuary? Your artistic journey continues here.
+                Ready to buzz back into your creative sanctuary? Your artistic journey continues
+                here.
               </p>
             </div>
             <div className="grid grid-cols-3 gap-4 pt-8">
@@ -128,10 +134,16 @@ export const Login = () => {
               <p className="text-gray-600">Sign in to continue your creative journey.</p>
             </div>
 
-            {error && <p className="mb-4 rounded-md bg-red-100 p-3 text-center text-sm text-red-700">{error}</p>}
+            {error && (
+              <p className="mb-4 rounded-md bg-red-100 p-3 text-center text-sm text-red-700">
+                {error}
+              </p>
+            )}
 
             {success && (
-              <p className="mb-4 rounded-md bg-green-100 p-3 text-center text-sm text-green-700">{success}</p>
+              <p className="mb-4 rounded-md bg-green-100 p-3 text-center text-sm text-green-700">
+                {success}
+              </p>
             )}
 
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -144,7 +156,7 @@ export const Login = () => {
                   id="email"
                   placeholder="artist@arthive.com"
                   type="email"
-                  {...register("email")}
+                  {...register('email')}
                 />
                 {errors.email && <p className="text-sm text-red-600">🍯 {errors.email.message}</p>}
               </div>
@@ -158,18 +170,24 @@ export const Login = () => {
                     className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
                     id="password"
                     placeholder="Enter your password"
-                    type={showPassword ? "text" : "password"}
-                    {...register("password")}
+                    type={showPassword ? 'text' : 'password'}
+                    {...register('password')}
                   />
                   <button
                     className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     type="button"
                     onClick={togglePasswordVisibility}
                   >
-                    {showPassword ? <EyeIcon className="h-5 w-5" /> : <EyeSlashIcon className="h-5 w-5" />}
+                    {showPassword ? (
+                      <EyeIcon className="h-5 w-5" />
+                    ) : (
+                      <EyeSlashIcon className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
-                {errors.password && <p className="text-sm text-red-600">🍯 {errors.password.message}</p>}
+                {errors.password && (
+                  <p className="text-sm text-red-600">🍯 {errors.password.message}</p>
+                )}
               </div>
 
               <div className="flex items-center justify-between">
@@ -196,14 +214,17 @@ export const Login = () => {
                 disabled={isSubmitting}
                 type="submit"
               >
-                {isSubmitting ? "Buzzing you in..." : "Sign In"}
+                {isSubmitting ? 'Buzzing you in...' : 'Sign In'}
               </button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                New to the hive?{" "}
-                <Link className="font-medium text-yellow-600 hover:text-yellow-700 hover:underline" to="/signup">
+                New to the hive?{' '}
+                <Link
+                  className="font-medium text-yellow-600 hover:text-yellow-700 hover:underline"
+                  to="/signup"
+                >
                   Join the buzz!
                 </Link>
               </p>
@@ -211,11 +232,11 @@ export const Login = () => {
 
             <div className="mt-6 border-t border-gray-200 pt-4">
               <p className="text-center text-xs leading-relaxed text-gray-500">
-                By signing in, you agree to our{" "}
+                By signing in, you agree to our{' '}
                 <Link className="text-yellow-600 hover:underline" to="/terms">
                   Terms of Service
-                </Link>{" "}
-                and{" "}
+                </Link>{' '}
+                and{' '}
                 <Link className="text-yellow-600 hover:underline" to="/privacy">
                   Privacy Policy
                 </Link>
@@ -227,7 +248,6 @@ export const Login = () => {
       </div>
     </div>
   )
-
 }
 
 export default Login
