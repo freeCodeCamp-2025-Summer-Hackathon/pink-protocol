@@ -14,7 +14,7 @@ import { z } from 'zod'
 
 const loginUserSchema = z.object({
   email: z.email('🍯 Invalid email format! Buzz buzz, try again.').nonempty('🍯 Email must bee filled!'),
-  password: z.string().nonempty('Password is required!'),
+  password: z.string().nonempty('🍯 Password must bee filled!'),
 })
 
 export const Login = () => {
