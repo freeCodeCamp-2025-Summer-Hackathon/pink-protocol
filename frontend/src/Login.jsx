@@ -12,33 +12,14 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import { z } from 'zod'
 
-const signupUserSchema = z
-  .object({
-    email_address: z
-      .email("🍯 That doesn't look like a valid email address!")
-      .nonempty('🍯 Email must bee filled!'),
-    username: z
-      .string()
-      .nonempty('🍯 Username must bee filled!')
-      .min(3, '🍯 Username must bee at least 3 characters long!')
-      .max(20, "🍯 Username can't bee longer than 20 characters!"),
-    password: z
-      .string()
-      .nonempty('🍯 Password must bee filled!')
-      .min(8, '🍯 Password must bee at least 8 characters long!')
-      .max(20, "🍯 Password can't bee longer than 20 characters!")
-      .regex(
-        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,16}$/,
-        "🍯 Don't get kicked from the hive — your password needs some sting: 8-16 characters, uppercase, lowercase, number, and a symbol."
-      ),
-    confirm_password: z.string().nonempty('🍯 Please confirm your password!'),
-  })
-  .refine((data) => data.password === data.confirm_password, {
-    message: "🍯 Passwords must match — we can't have rebels in the hive.",
-    path: ['confirm_password'],
-  })
+const loginUserSchema = z.object({
+  email: z
+    .email('🍯 Invalid email format! Buzz buzz, try again.')
+    .nonempty('🍯 Email must bee filled!'),
+  password: z.string().nonempty('🍯 Password must bee filled!'),
+})
 
-export const SignUp = () => {
+export const Login = () => {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -51,7 +32,7 @@ export const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(signupUserSchema),
+    resolver: zodResolver(loginUserSchema),
   })
 
   useEffect(() => {
@@ -68,16 +49,16 @@ export const SignUp = () => {
     setIsSubmitting(true)
 
     try {
-      await axios.post('/api/signup', data)
-      setSuccess("🐝 You're part of the buzz now. Let's make some art!")
+      await axios.post('/api/login', data)
+      setSuccess('🐝 Welcome back to the hive! Buzzing you in...')
       setTimeout(() => {
-        navigate('/')
+        navigate('/dashboard')
       }, 2000)
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
         setError(`🐝 ${err.response.data.error}`)
       } else {
-        setError("🐝 Stung by a glitch! We couldn't complete your registration.")
+        setError("🐝 Stung by a glitch! We couldn't log you in.")
       }
     } finally {
       setIsSubmitting(false)
@@ -99,6 +80,7 @@ export const SignUp = () => {
           <div className="absolute right-1/3 bottom-40 h-12 w-12 rounded-full bg-yellow-400 blur-md"></div>
         </div>
       </div>
+
       <div className="relative flex min-h-screen">
         <div className="relative hidden flex-col items-center justify-center p-12 lg:flex lg:w-1/2">
           <div className="max-w-md space-y-8 text-center">
@@ -117,8 +99,8 @@ export const SignUp = () => {
                 Welcome to the <span className="text-yellow-600">Hive</span>
               </h1>
               <p className="text-lg leading-relaxed text-gray-600">
-                Join our creative community where artists buzz with inspiration and collaboration
-                flows like honey.
+                Ready to buzz back into your creative sanctuary? Your artistic journey continues
+                here.
               </p>
             </div>
             <div className="grid grid-cols-3 gap-4 pt-8">
@@ -143,14 +125,15 @@ export const SignUp = () => {
             </div>
           </div>
         </div>
+
         <div className="flex w-full items-center justify-center p-6 lg:w-1/2 lg:p-12">
           <div className="w-full max-w-md rounded-2xl bg-white/80 p-6 shadow-2xl backdrop-blur-sm">
             <div className="mb-8 space-y-2 text-center">
               <div className="mb-4 lg:hidden">
                 <img alt="ArtHive Logo" className="mx-auto" src="/logo.png" width={200} />
               </div>
-              <h2 className="text-2xl font-bold text-gray-800">Join the Hive!</h2>
-              <p className="text-gray-600">Create your account to start buzzing with creativity.</p>
+              <h2 className="text-2xl font-bold text-gray-800">Welcome Back!</h2>
+              <p className="text-gray-600">Sign in to continue your creative journey.</p>
             </div>
 
             {error && (
@@ -167,35 +150,17 @@ export const SignUp = () => {
 
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700" htmlFor="email_address">
+                <label className="text-sm font-medium text-gray-700" htmlFor="email">
                   Email Address
                 </label>
                 <input
                   className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 focus:border-yellow-400 focus:ring-yellow-400"
-                  id="email_address"
+                  id="email"
                   placeholder="artist@arthive.com"
                   type="email"
-                  {...register('email_address')}
+                  {...register('email')}
                 />
-                {errors.email_address && (
-                  <p className="text-sm text-red-600">{errors.email_address.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700" htmlFor="username">
-                  Username
-                </label>
-                <input
-                  className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 focus:border-yellow-400 focus:ring-yellow-400"
-                  id="username"
-                  placeholder="artist123"
-                  type="text"
-                  {...register('username')}
-                />
-                {errors.username && (
-                  <p className="text-sm text-red-600">{errors.username.message}</p>
-                )}
+                {errors.email && <p className="text-sm text-red-600">🍯 {errors.email.message}</p>}
               </div>
 
               <div className="space-y-2">
@@ -206,7 +171,7 @@ export const SignUp = () => {
                   <input
                     className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
                     id="password"
-                    placeholder="SecretHive@123"
+                    placeholder="Enter your password"
                     type={showPassword ? 'text' : 'password'}
                     {...register('password')}
                   />
@@ -223,26 +188,27 @@ export const SignUp = () => {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-sm text-red-600">{errors.password.message}</p>
+                  <p className="text-sm text-red-600">🍯 {errors.password.message}</p>
                 )}
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700" htmlFor="confirm_password">
-                  Confirm Password
-                </label>
-                <div className="relative">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
                   <input
-                    className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
-                    id="confirm_password"
-                    placeholder="Confirm your password"
-                    type={showPassword ? 'text' : 'password'}
-                    {...register('confirm_password')}
+                    className="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+                    id="remember-me"
+                    type="checkbox"
                   />
+                  <label className="ml-2 text-sm text-gray-600" htmlFor="remember-me">
+                    Remember me
+                  </label>
                 </div>
-                {errors.confirm_password && (
-                  <p className="text-sm text-red-600">{errors.confirm_password.message}</p>
-                )}
+                <Link
+                  className="text-sm font-medium text-yellow-600 hover:text-yellow-700 hover:underline"
+                  to="/forgot-password"
+                >
+                  Forgot password?
+                </Link>
               </div>
 
               <button
@@ -250,24 +216,25 @@ export const SignUp = () => {
                 disabled={isSubmitting}
                 type="submit"
               >
-                {isSubmitting ? 'Creating Account...' : 'Sign Up'}
+                {isSubmitting ? 'Buzzing you in...' : 'Sign In'}
               </button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Already part of the hive?{' '}
+                New to the hive?{' '}
                 <Link
                   className="font-medium text-yellow-600 hover:text-yellow-700 hover:underline"
-                  to="/login"
+                  to="/signup"
                 >
-                  Buzz in here!
+                  Join the buzz!
                 </Link>
               </p>
             </div>
+
             <div className="mt-6 border-t border-gray-200 pt-4">
               <p className="text-center text-xs leading-relaxed text-gray-500">
-                By signing up, you agree to our{' '}
+                By signing in, you agree to our{' '}
                 <Link className="text-yellow-600 hover:underline" to="/terms">
                   Terms of Service
                 </Link>{' '}
@@ -285,4 +252,4 @@ export const SignUp = () => {
   )
 }
 
-export default SignUp
+export default Login
