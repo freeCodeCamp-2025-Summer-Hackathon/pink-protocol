@@ -1,6 +1,5 @@
-import re
-
 import sqlalchemy as sa
+from passlib.hash import pbkdf2_sha256
 
 from . import models
 
@@ -8,28 +7,12 @@ from . import models
 
 
 # User related helpers
-def validate_email(
-    session: sa.orm.Session, email: str
-):  # This may not be needed since we use EmailStr typing in pydantic schema
+def validate_email(session: sa.orm.Session, email: str):
     err = None
-    if not validate_email_regex(email):
-        err = "invalid email format"
-
     if not validate_email_unique(session, email):
         err = "a user with this email already exists"
 
     return err
-
-
-def validate_email_regex(
-    email,
-):  # This may not be needed since we use EmailStr typing in pydantic schema
-    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-
-    if re.match(pattern, email):
-        return True
-
-    return False
 
 
 def validate_email_unique(session: sa.orm.Session, email: str):
@@ -40,9 +23,31 @@ def validate_email_unique(session: sa.orm.Session, email: str):
     return False
 
 
-def validate_password(session: sa.orm.Session, password: str):
-    # ...
-    return True
+def validate_password(
+    session: sa.orm.Session, password: str, username: str = None, email: str = None
+):
+    err = None
+    password_valid = False
+    user = None
+
+    if username is not None:
+        user = session.query(models.User).filter_by(username=username).first()
+        if user is None:
+            err = "Incorrect username"
+            return err
+
+    if email is not None:
+        user = session.query(models.User).filter_by(email=email).first()
+        if user is None:
+            err = "Incorrect email"
+            return err
+
+    password_valid = pbkdf2_sha256.verify(password, user.password_hash)
+
+    if not password_valid:
+        err = "Incorrect password"
+
+    return err
 
 
 def validate_username(session: sa.orm.Session, username: str):
@@ -53,11 +58,32 @@ def validate_username(session: sa.orm.Session, username: str):
     return err
 
 
-def validate_is_user(session: sa.orm.Session, user_id: int):
+# Optional arguments added to be able to reuse function for multiple different user validation checks
+def validate_is_user(
+    session: sa.orm.Session,
+    user_id: int = None,
+    username: str = None,
+    email: str = None,
+):
     err = None
-    user = session.query(models.User).filter_by(id=user_id).first()
-    if user is None:
-        err = f"User id: {user_id} does not exist"
+
+    if user_id is not None:
+        id = session.query(models.User).filter_by(id=user_id).first()
+        if id is None:
+            err = f"User id: {id} does not exist"
+
+    elif username is not None:
+        username = session.query(models.User).filter_by(username=username).first()
+        if username is None:
+            err = f'User "{username}" does not exist'
+
+    elif email is not None:
+        email = session.query(models.User).filter_by(email=email).first()
+        if email is None:
+            err = f'User with the email of "{email}" does not exist'
+
+    else:
+        err = "User does not exist"
     return err
 
 
