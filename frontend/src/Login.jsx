@@ -13,7 +13,9 @@ import { useNavigate, Link } from 'react-router-dom'
 import { z } from 'zod'
 
 const loginUserSchema = z.object({
-  email: z.email('🍯 Invalid email format! Buzz buzz, try again.').nonempty('🍯 Email must bee filled!'),
+  email: z
+    .email('🍯 Invalid email format! Buzz buzz, try again.')
+    .nonempty('🍯 Email must bee filled!'),
   password: z.string().nonempty('🍯 Password must bee filled!'),
 })
 

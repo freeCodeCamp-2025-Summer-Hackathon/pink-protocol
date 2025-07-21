@@ -1,41 +1,46 @@
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { EyeIcon, EyeSlashIcon, SwatchIcon, UserGroupIcon, SparklesIcon } from "@heroicons/react/24/solid"
-import axios from "axios"
-import { useState, useEffect } from "react"
-import { useNavigate, Link } from "react-router-dom"
+import {
+  EyeIcon,
+  EyeSlashIcon,
+  SwatchIcon,
+  UserGroupIcon,
+  SparklesIcon,
+} from '@heroicons/react/24/solid'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate, Link } from 'react-router-dom'
+import { z } from 'zod'
 
 const signupUserSchema = z
   .object({
     email_address: z
-      .string()
-      .nonempty("🍯 Email must bee filled!")
-      .email("🍯 That doesn't look like a valid email address!"),
+      .email("🍯 That doesn't look like a valid email address!")
+      .nonempty('🍯 Email must bee filled!'),
     username: z
       .string()
-      .nonempty("🍯 Username must bee filled!")
-      .min(3, "🍯 Username must bee at least 3 characters long!")
+      .nonempty('🍯 Username must bee filled!')
+      .min(3, '🍯 Username must bee at least 3 characters long!')
       .max(20, "🍯 Username can't bee longer than 20 characters!"),
     password: z
       .string()
-      .nonempty("🍯 Password must bee filled!")
-      .min(8, "🍯 Password must bee at least 8 characters long!")
+      .nonempty('🍯 Password must bee filled!')
+      .min(8, '🍯 Password must bee at least 8 characters long!')
       .max(20, "🍯 Password can't bee longer than 20 characters!")
       .regex(
         /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,16}$/,
-        "🍯 Don't get kicked from the hive — your password needs some sting: 8-16 characters, uppercase, lowercase, number, and a symbol.",
+        "🍯 Don't get kicked from the hive — your password needs some sting: 8-16 characters, uppercase, lowercase, number, and a symbol."
       ),
-    confirm_password: z.string().nonempty("🍯 Please confirm your password!"),
+    confirm_password: z.string().nonempty('🍯 Please confirm your password!'),
   })
   .refine((data) => data.password === data.confirm_password, {
     message: "🍯 Passwords must match — we can't have rebels in the hive.",
-    path: ["confirm_password"],
+    path: ['confirm_password'],
   })
 
 export const SignUp = () => {
   const [error, setError] = useState(null)
-  const [success, setSuccess] = useState("")
+  const [success, setSuccess] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -59,14 +64,14 @@ export const SignUp = () => {
 
   const onSubmit = async (data) => {
     setError(null)
-    setSuccess("")
+    setSuccess('')
     setIsSubmitting(true)
 
     try {
-      await axios.post("/api/signup", data)
+      await axios.post('/api/signup', data)
       setSuccess("🐝 You're part of the buzz now. Let's make some art!")
       setTimeout(() => {
-        navigate("/")
+        navigate('/')
       }, 2000)
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
@@ -82,7 +87,7 @@ export const SignUp = () => {
   return (
     <div
       className={`relative min-h-screen transition-all duration-500 ease-in-out ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
       }`}
     >
       <div className="absolute inset-0">
@@ -98,7 +103,12 @@ export const SignUp = () => {
         <div className="relative hidden flex-col items-center justify-center p-12 lg:flex lg:w-1/2">
           <div className="max-w-md space-y-8 text-center">
             <div className="relative">
-              <img alt="ArtHive Logo" className="mx-auto drop-shadow-lg" src="/logo.png" width={500} />
+              <img
+                alt="ArtHive Logo"
+                className="mx-auto drop-shadow-lg"
+                src="/logo.png"
+                width={500}
+              />
               <div className="absolute -top-4 -right-4 h-8 w-8 animate-pulse rounded-full bg-yellow-400"></div>
               <div className="absolute -bottom-2 -left-6 h-6 w-6 animate-pulse rounded-full bg-orange-400 delay-300"></div>
             </div>
@@ -107,7 +117,8 @@ export const SignUp = () => {
                 Welcome to the <span className="text-yellow-600">Hive</span>
               </h1>
               <p className="text-lg leading-relaxed text-gray-600">
-                Join our creative community where artists buzz with inspiration and collaboration flows like honey.
+                Join our creative community where artists buzz with inspiration and collaboration
+                flows like honey.
               </p>
             </div>
             <div className="grid grid-cols-3 gap-4 pt-8">
@@ -142,10 +153,16 @@ export const SignUp = () => {
               <p className="text-gray-600">Create your account to start buzzing with creativity.</p>
             </div>
 
-            {error && <p className="mb-4 rounded-md bg-red-100 p-3 text-center text-sm text-red-700">{error}</p>}
+            {error && (
+              <p className="mb-4 rounded-md bg-red-100 p-3 text-center text-sm text-red-700">
+                {error}
+              </p>
+            )}
 
             {success && (
-              <p className="mb-4 rounded-md bg-green-100 p-3 text-center text-sm text-green-700">{success}</p>
+              <p className="mb-4 rounded-md bg-green-100 p-3 text-center text-sm text-green-700">
+                {success}
+              </p>
             )}
 
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -158,9 +175,11 @@ export const SignUp = () => {
                   id="email_address"
                   placeholder="artist@arthive.com"
                   type="email"
-                  {...register("email_address")}
+                  {...register('email_address')}
                 />
-                {errors.email_address && <p className="text-sm text-red-600">{errors.email_address.message}</p>}
+                {errors.email_address && (
+                  <p className="text-sm text-red-600">{errors.email_address.message}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -172,9 +191,11 @@ export const SignUp = () => {
                   id="username"
                   placeholder="artist123"
                   type="text"
-                  {...register("username")}
+                  {...register('username')}
                 />
-                {errors.username && <p className="text-sm text-red-600">{errors.username.message}</p>}
+                {errors.username && (
+                  <p className="text-sm text-red-600">{errors.username.message}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -186,18 +207,24 @@ export const SignUp = () => {
                     className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
                     id="password"
                     placeholder="SecretHive@123"
-                    type={showPassword ? "text" : "password"}
-                    {...register("password")}
+                    type={showPassword ? 'text' : 'password'}
+                    {...register('password')}
                   />
                   <button
                     className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     type="button"
                     onClick={togglePasswordVisibility}
                   >
-                    {showPassword ? <EyeIcon className="h-5 w-5" /> : <EyeSlashIcon className="h-5 w-5" />}
+                    {showPassword ? (
+                      <EyeIcon className="h-5 w-5" />
+                    ) : (
+                      <EyeSlashIcon className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
-                {errors.password && <p className="text-sm text-red-600">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="text-sm text-red-600">{errors.password.message}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -209,11 +236,13 @@ export const SignUp = () => {
                     className="h-11 w-full rounded-md border border-gray-200 bg-white/50 px-3 pr-10 focus:border-yellow-400 focus:ring-yellow-400"
                     id="confirm_password"
                     placeholder="Confirm your password"
-                    type={showPassword ? "text" : "password"}
-                    {...register("confirm_password")}
+                    type={showPassword ? 'text' : 'password'}
+                    {...register('confirm_password')}
                   />
                 </div>
-                {errors.confirm_password && <p className="text-sm text-red-600">{errors.confirm_password.message}</p>}
+                {errors.confirm_password && (
+                  <p className="text-sm text-red-600">{errors.confirm_password.message}</p>
+                )}
               </div>
 
               <button
@@ -221,25 +250,28 @@ export const SignUp = () => {
                 disabled={isSubmitting}
                 type="submit"
               >
-                {isSubmitting ? "Creating Account..." : "Sign Up"}
+                {isSubmitting ? 'Creating Account...' : 'Sign Up'}
               </button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Already part of the hive?{" "}
-                <Link className="font-medium text-yellow-600 hover:text-yellow-700 hover:underline" to="/login">
+                Already part of the hive?{' '}
+                <Link
+                  className="font-medium text-yellow-600 hover:text-yellow-700 hover:underline"
+                  to="/login"
+                >
                   Buzz in here!
                 </Link>
               </p>
             </div>
             <div className="mt-6 border-t border-gray-200 pt-4">
               <p className="text-center text-xs leading-relaxed text-gray-500">
-                By signing up, you agree to our{" "}
+                By signing up, you agree to our{' '}
                 <Link className="text-yellow-600 hover:underline" to="/terms">
                   Terms of Service
-                </Link>{" "}
-                and{" "}
+                </Link>{' '}
+                and{' '}
                 <Link className="text-yellow-600 hover:underline" to="/privacy">
                   Privacy Policy
                 </Link>
