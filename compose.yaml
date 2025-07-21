@@ -15,7 +15,7 @@ services:
       - ./backend:/app
     depends_on:
       postgres-db:
-        condition: service_healthy # makes sure db is connected before webapp starts. Need to define health check
+        condition: service_healthy
     environment:
       DATABASE_PASSWORD: /run/secrets/db_password
       DATABASE_HOSTNAME: postgres-db
