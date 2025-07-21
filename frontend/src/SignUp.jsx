@@ -20,7 +20,7 @@ const signupUserSchema = z
     password: z
       .string()
       .nonempty("🍯 Password must bee filled!")
-      .min(6, "🍯 Password must bee at least 6 characters long!")
+      .min(8, "🍯 Password must bee at least 8 characters long!")
       .max(20, "🍯 Password can't bee longer than 20 characters!")
       .regex(
         /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,16}$/,
