@@ -1,6 +1,6 @@
 import { GalleryGrid } from './GalleryGrid.jsx'
 
-const DashboardPage = () => (
+const Page = () => (
   <main className="min-h-screen">
     <div className="mx-auto max-w-6xl p-6">
       <GalleryGrid />
@@ -8,4 +8,4 @@ const DashboardPage = () => (
   </main>
 )
 
-export default DashboardPage
+export default Page
