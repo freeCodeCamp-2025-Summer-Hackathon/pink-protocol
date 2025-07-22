@@ -5,8 +5,8 @@ import { Layout } from './layout/Layout.jsx'
 
 const PagePlaceholder = () => <></>
 
-const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage.jsx'))
-const SignUp = lazy(() => import('./SignUp.jsx'))
+const DashboardPage = lazy(() => import('./features/dashboard/./page.jsx'))
+const SignUp = lazy(() => import('./auth/SignUp/page.jsx'))
 const Login = lazy(() => import('./Login.jsx'))
 
 export const App = () => (
