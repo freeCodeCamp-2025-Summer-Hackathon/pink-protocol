@@ -48,7 +48,7 @@ def post_post(
 ):
     post, err = crud_posts.post_post(session=session, post=post, user_id=user_id)
     if err is not None:
-        raise HTTPException(status_code=404, detail=f"unable to add post: {err}")
+        raise HTTPException(status_code=409, detail=f"unable to add post: {err}")
     return post
 
 
@@ -65,8 +65,14 @@ def update_post(
         session=session,
         user_id=user_id,
     )
+
     if err is not None:
-        raise HTTPException(status_code=404, detail=f"unable to update post: {err}")
+        err_lower = err.lower()
+        if "does not exist" in err_lower:
+            raise HTTPException(status_code=404, detail=f"unable to update post: {err}")
+        elif "only post owners" in err_lower:
+            raise HTTPException(status_code=403, detail=f"unable to update post: {err}")
+
     return post
 
 
@@ -81,7 +87,12 @@ def delete_post(
         post_id=post_id,
         user_id=user_id,
     )
+
     if err is not None:
-        raise HTTPException(status_code=404, detail=f"error: {err}")
+        err_lower = err.lower()
+        if "does not exist" in err_lower:
+            raise HTTPException(status_code=404, detail=f"unable to update post: {err}")
+        elif "only post owners" in err_lower:
+            raise HTTPException(status_code=403, detail=f"unable to update post: {err}")
 
     return f"{post_name} (post_id: {post_id}) uploaded by (user id: {created_by}) has been deleted"

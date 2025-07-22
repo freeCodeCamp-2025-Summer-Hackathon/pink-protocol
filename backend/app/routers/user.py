@@ -38,7 +38,7 @@ def post_user(
 ):
     user, err = crud_users.post_user(session=session, user=user)
     if err is not None:
-        raise HTTPException(status_code=404, detail=f"unable to add user: {err}")
+        raise HTTPException(status_code=409, detail=f"unable to add user: {err}")
     return user
 
 
@@ -50,8 +50,13 @@ def login_user(
     user, err = crud_users.login_user(
         session=session, username=user.username, email=user.email, password=user.password
     )
+
     if err is not None:
-        raise HTTPException(status_code=404, detail=f"error: {err}")
+        err_lower = err.lower()
+        if "incorrect" in err_lower:
+            raise HTTPException(status_code=409, detail=f"error: {err}")
+        elif "does not exist" in err_lower:
+            raise HTTPException(status_code=404, detail=f"error: {err}")
     return user
 
 
@@ -62,8 +67,13 @@ def update_user(
     session: Session = Depends(get_session),
 ):
     user, err = crud_users.update_user(session=session, user_id=user_id, user_data=user_data)
+
     if err is not None:
-        raise HTTPException(status_code=404, detail=f"error: {err}")
+        err_lower = err.lower()
+        if "incorrect" or "already exists" or "is taken" in err_lower:
+            raise HTTPException(status_code=409, detail=f"error: {err}")
+        elif "does not exist" in err_lower:
+            raise HTTPException(status_code=404, detail=f"error: {err}")
     return user
 
 
