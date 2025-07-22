@@ -22,7 +22,7 @@ export const signupUserSchema = z
       .max(20, "🍯 Password can't bee longer than 20 characters!")
       .regex(
         /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,20}$/,
-        "🍯 Don't get kicked from the hive — your password needs some sting: 8‑16 chars, upper, lower, number, symbol."
+        "🍯 Don't get kicked from the hive — your password needs some sting: 8‑20 chars, upper, lower, number, symbol."
       ),
     confirm_password: z.string().nonempty('🍯 Please confirm your password!'),
   })
