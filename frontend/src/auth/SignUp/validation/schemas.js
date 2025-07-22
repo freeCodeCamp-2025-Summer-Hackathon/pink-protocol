@@ -8,7 +8,6 @@ export const signupUserSchema = z
       .min(3, '🍯 Name must bee at least 3 characters long!')
       .max(50, "🍯 Name can't bee longer than 50 characters!"),
     email: z
-      .string()
       .email("🍯 That doesn't look like a valid email address!")
       .nonempty('🍯 Email must bee filled!'),
     username: z
@@ -22,7 +21,7 @@ export const signupUserSchema = z
       .min(8, '🍯 Password must bee at least 8 characters long!')
       .max(20, "🍯 Password can't bee longer than 20 characters!")
       .regex(
-        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,16}$/,
+        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,20}$/,
         "🍯 Don't get kicked from the hive — your password needs some sting: 8‑16 chars, upper, lower, number, symbol."
       ),
     confirm_password: z.string().nonempty('🍯 Please confirm your password!'),
