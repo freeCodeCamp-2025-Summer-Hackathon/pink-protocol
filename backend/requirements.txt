@@ -52,3 +52,4 @@ uvloop==0.21.0
 virtualenv==20.31.2
 watchfiles==1.1.0
 websockets==15.0.1
+python-jose[cryptography]==3.3.0
