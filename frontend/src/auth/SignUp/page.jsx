@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
-import { PromoPanel } from './components/PromoPanel.jsx'
+import { PromoPanel } from '../../components/PromoPanel/PromoPanel.jsx'
+
 import { SignUpForm } from './components/SignUpForm.jsx'
 import { useSignUp } from './hooks/useSignUp.js'
 
