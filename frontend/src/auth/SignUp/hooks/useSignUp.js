@@ -9,24 +9,26 @@ export const useSignUp = () => {
   const [apiError, setApiError] = useState(null)
   const [apiSuccess, setApiSuccess] = useState(null)
 
-  const submit = async (payload) => {
+  const submit = async (formData) => {
     setSubmitting(true)
     setApiError(null)
     setApiSuccess(null)
 
     try {
-      const { httpCode } = await signUpUser(payload)
+      await signUpUser(formData)
 
-      if (httpCode === 200) {
-        setApiSuccess("🐝 You're part of the buzz now. Let’s make art!")
-        setTimeout(() => navigate('/login', { replace: true }), 2000)
-      } else if (httpCode === 404) {
+      setApiSuccess("🐝 You're part of the buzz now. Let’s make art!")
+      setTimeout(() => navigate('/login', { replace: true }), 2000)
+    } catch (err) {
+      const code = err?.response?.status
+
+      if (code === 409) {
         setApiError('🐝 This email is already registered. Try buzzing in instead!')
-      } else {
+      } else if (code === 422) {
         setApiError('🐝 Missing or invalid fields—check your inputs!')
+      } else {
+        setApiError("🐝 Stung by a glitch! We couldn't register you.")
       }
-    } catch {
-      setApiError("🐝 Stung by a glitch! We couldn't register you.")
     } finally {
       setSubmitting(false)
     }
