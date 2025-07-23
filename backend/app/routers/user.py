@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from .. import crud_users, schemas
@@ -25,20 +25,21 @@ def get_users(
     limit: int = 10,
     session: Session = Depends(get_session),
 ):
-    users = crud_users.get_users(session=session, skip=skip, limit=limit)
-    if users == []:
-        raise HTTPException(status_code=204, detail="no users yet!")
-    return users
+    return crud_users.get_users(session=session, skip=skip, limit=limit)
 
 
-@router.post("/users", response_model=schemas.UserResponse)
+@router.post(
+    "/users",
+    response_model=schemas.UserResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 def post_user(
     user: schemas.UserCreate,
     session: Session = Depends(get_session),
 ):
     user, err = crud_users.post_user(session=session, user=user)
-    if err is not None:
-        raise HTTPException(status_code=404, detail=f"unable to add user: {err}")
+    if err:
+        raise HTTPException(status_code=409, detail=f"unable to add user: {err}")
     return user
 
 
@@ -50,8 +51,12 @@ def login_user(
     user, err = crud_users.login_user(
         session=session, username=user.username, email=user.email, password=user.password
     )
-    if err is not None:
-        raise HTTPException(status_code=404, detail=f"error: {err}")
+    if err:
+        err_lower = err.lower()
+        if "incorrect" in err_lower:
+            raise HTTPException(status_code=409, detail=f"error: {err}")
+        elif "does not exist" in err_lower:
+            raise HTTPException(status_code=404, detail=f"error: {err}")
     return user
 
 
@@ -62,8 +67,12 @@ def update_user(
     session: Session = Depends(get_session),
 ):
     user, err = crud_users.update_user(session=session, user_id=user_id, user_data=user_data)
-    if err is not None:
-        raise HTTPException(status_code=404, detail=f"error: {err}")
+    if err:
+        err_lower = err.lower()
+        if any(k in err_lower for k in ("incorrect", "already exists", "is taken")):
+            raise HTTPException(status_code=409, detail=f"error: {err}")
+        if "does not exist" in err_lower:
+            raise HTTPException(status_code=404, detail=f"error: {err}")
     return user
 
 
@@ -73,6 +82,6 @@ def delete_user(
     session: Session = Depends(get_session),
 ):
     user_name, user_id, err = crud_users.delete_user(session=session, user_id=user_id)
-    if err is not None:
+    if err:
         raise HTTPException(status_code=404, detail=f"error: {err}")
     return f"{user_name} (user_id: {user_id}) has been deleted"
