@@ -89,7 +89,7 @@ def delete_post(
     if err:
         err_lower = err.lower()
         if "does not exist" in err_lower:
-            raise HTTPException(status_code=404, detail=f"unable to update post: {err}")
+            raise HTTPException(status_code=404, detail=f"unable to delete post: {err}")
         elif "only post owners" in err_lower:
-            raise HTTPException(status_code=403, detail=f"unable to update post: {err}")
+            raise HTTPException(status_code=403, detail=f"unable to delete post: {err}")
     return f"{post_name} (post_id: {post_id}) uploaded by (user id: {created_by}) has been deleted"
