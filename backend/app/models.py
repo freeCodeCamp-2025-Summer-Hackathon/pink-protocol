@@ -48,6 +48,8 @@ class Post(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(nullable=False)
     caption: Mapped[str] = mapped_column(nullable=False)
+    img_url: Mapped[str] = mapped_column(nullable=False)
+    published: Mapped[bool] = mapped_column(nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)

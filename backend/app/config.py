@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     IMGBB_API_KEY: str
     # Test if the model_config variable is needed here
 
-    LOGGED_USER_SECRET_KEY: str
+    # LOGGED_USER_SECRET_KEY: str
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

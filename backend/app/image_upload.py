@@ -11,7 +11,7 @@ async def upload_img(file: UploadFile) -> dict:
     if not settings.IMGBB_API_KEY:
         raise ValueError("IMGBB_API_KEY not set in environment viariables.")
 
-    files = {"image": (file.filename, file.file.read(), file.content_type)}
+    files = {"image": (file.filename, file.file, file.content_type)}
     data = {"key": settings.IMGBB_API_KEY}
 
     async with httpx.AsyncClient() as client:

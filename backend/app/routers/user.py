@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from .. import crud_users, schemas
@@ -44,7 +44,7 @@ def post_user(
 
 @router.post("/users/login", response_model=schemas.UserResponse)
 def login_user(
-    request: Request,
+    # request: Request,
     user: schemas.UserLogin,
     session: Session = Depends(get_session),
 ):
@@ -54,7 +54,7 @@ def login_user(
     if err is not None:
         raise HTTPException(status_code=404, detail=f"error: {err}")
 
-    request.session["user_id"] = user.id
+    # request.session["user_id"] = user.id
     return user
 
 

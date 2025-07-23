@@ -1,9 +1,7 @@
 import sqlalchemy as sa
-from fastapi import Depends, HTTPException, Request, status
 from passlib.hash import pbkdf2_sha256
 
 from . import models
-from .database import get_session
 
 # TODO: Consider creating helper_functions directory so helper functions can be defined cleanly on a per-table level.
 
@@ -124,6 +122,8 @@ def verify_post_owner(session: sa.orm.Session, post_id: int, user_id: int):
     return err
 
 
+# Might be needed later for a session user
+"""
 def get_current_user(
     request: Request, session: sa.orm.Session = Depends(get_session)
 ) -> models.User:
@@ -138,4 +138,4 @@ def get_current_user(
 
     user = session.get(models.User, user_id)
 
-    return user
+    return user"""

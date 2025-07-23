@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 
 from .. import crud_posts, schemas
 from ..database import get_session
-from ..helper_functions import get_current_user
+
+# from ..helper_functions import get_current_user
 from ..image_upload import upload_img
-from ..models import User
 
 # Post-related endpoints
 router = APIRouter()
@@ -39,7 +39,7 @@ def get_posts(skip: int = 0, limit: int = 10, session: Session = Depends(get_ses
 @router.post("/posts", response_model=schemas.PostResponse)
 async def post_post(
     # post: schemas.PostCreate,
-    user_id: User = Depends(get_current_user),
+    user_id: int = Form(..., alias="user_id"),
     session: Session = Depends(get_session),
     title: str = Form(...),
     caption: str = Form(...),
@@ -53,7 +53,7 @@ async def post_post(
     if not img_url:
         raise HTTPException(status_code=500, detail="Invalid URL")
 
-    db_post, err = crud_posts.create_post(
+    db_post, err = crud_posts.post_post(
         session=session,
         # post=post,
         title=title,
