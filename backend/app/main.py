@@ -1,9 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
+from .config import Settings
 from .routers import post, user
 
+settings = Settings()
 app = FastAPI()
+app.add_middleware(SessionMiddleware, secret_key=settings.LOGGED_USER_SECRET_KEY)
 
 origins = [
     "http://localhost:5173",

@@ -32,8 +32,10 @@ class User(Base):
     collections: Mapped[list["Collection"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )  # Why not just "collections?"
-    likes: Mapped[list["Like"]] = relationship(back_populates="user")
-    comments: Mapped[list["Comment"]] = relationship(back_populates="user")
+    likes: Mapped[list["Like"]] = relationship(back_populates="user", foreign_keys="Like.user_id")
+    comments: Mapped[list["Comment"]] = relationship(
+        back_populates="user", foreign_keys="Comment.user_id"
+    )
 
     # For debugging in terminal
     def __repr__(self):
