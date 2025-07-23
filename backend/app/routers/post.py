@@ -29,11 +29,12 @@ def get_post(post_id: int, session: Session = Depends(get_session)):
 
 
 @router.get("/posts", response_model=list[schemas.PostResponse])
-def get_posts(skip: int = 0, limit: int = 10, session: Session = Depends(get_session)):
-    posts = crud_posts.get_posts(session=session, skip=skip, limit=limit)
-    if posts == []:
-        raise HTTPException(status_code=204, detail="no posts yet!")
-    return posts
+def get_posts(
+    skip: int = 0,
+    limit: int = 10,
+    session: Session = Depends(get_session),
+):
+    return crud_posts.get_posts(session=session, skip=skip, limit=limit)
 
 
 @router.post("/posts", response_model=schemas.PostResponse)
@@ -69,18 +70,41 @@ async def post_post(
 
 @router.put("/posts/{post_id}", response_model=schemas.PostResponse)
 def update_post(
-    post_id: int, user_id: Annotated[int | None, Header()], session: Session = Depends(get_session)
+    post_id: int,
+    post_data: schemas.PostUpdate,
+    user_id: Annotated[int | None, Header()],
+    session: Session = Depends(get_session),
 ):
-    post, err = crud_posts.update_post(post_id=post_id, session=session, user_id=user_id)
-    if err is not None:
-        raise HTTPException(status_code=404, detail=f"unable to update post: {err}")
+    post, err = crud_posts.update_post(
+        post_id=post_id,
+        post_data=post_data,
+        session=session,
+        user_id=user_id,
+    )
+    if err:
+        err_lower = err.lower()
+        if "does not exist" in err_lower:
+            raise HTTPException(status_code=404, detail=f"unable to update post: {err}")
+        elif "only post owners" in err_lower:
+            raise HTTPException(status_code=403, detail=f"unable to update post: {err}")
     return post
 
 
 @router.delete("/posts/{post_id}", response_model=str)
-def delete_post(post_id: int, session: Session = Depends(get_session)):
-    post_name, post_id, created_by, err = crud_posts.delete_post(session=session, post_id=post_id)
-    if err is not None:
-        raise HTTPException(status_code=404, detail=f"error: {err}")
-
-    return f"{post_name} (post_id: {post_id}) uploaded by {created_by} has been deleted"
+def delete_post(
+    post_id: int,
+    user_id: Annotated[int | None, Header()],
+    session: Session = Depends(get_session),
+):
+    post_name, post_id, created_by, err = crud_posts.delete_post(
+        session=session,
+        post_id=post_id,
+        user_id=user_id,
+    )
+    if err:
+        err_lower = err.lower()
+        if "does not exist" in err_lower:
+            raise HTTPException(status_code=404, detail=f"unable to delete post: {err}")
+        elif "only post owners" in err_lower:
+            raise HTTPException(status_code=403, detail=f"unable to delete post: {err}")
+    return f"{post_name} (post_id: {post_id}) uploaded by (user id: {created_by}) has been deleted"
