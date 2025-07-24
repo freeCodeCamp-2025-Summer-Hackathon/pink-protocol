@@ -39,7 +39,6 @@ class UserResponse(BaseModel):
 # Post related schemas
 class PostBase(BaseModel):
     title: str
-    # content: {type}
     caption: Optional[str] = None
     published: bool = False
     img_url: str
