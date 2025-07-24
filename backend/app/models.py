@@ -26,7 +26,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(sa.String, unique=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
-    password_hash: Mapped[str] = mapped_column(nullable=False)
+    password_hash: Mapped[str] = mapped_column(nullable=False, default="empty")
 
     posts: Mapped[list["Post"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     collections: Mapped[list["Collection"]] = relationship(
@@ -47,8 +47,8 @@ class Post(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(nullable=False)
-    caption: Mapped[str] = mapped_column(nullable=False)
-    img_url: Mapped[str] = mapped_column(nullable=False)
+    caption: Mapped[str] = mapped_column(nullable=False, default="empty")
+    img_url: Mapped[str] = mapped_column(nullable=False, default="empty")
     published: Mapped[bool] = mapped_column(nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
     updated_at: Mapped[datetime] = mapped_column(sa.TIMESTAMP, default=sa.func.now())
@@ -56,10 +56,9 @@ class Post(Base):
     user: Mapped["User"] = relationship(back_populates="posts")
     collections: Mapped[list["Collection"]] = relationship(
         secondary=collections_posts_association_table, back_populates="posts"
-    )  # what does this do? Allow for a post to belong to multiple collections? | YES
+    )
     likes: Mapped[list["Like"]] = relationship(back_populates="post")
     comments: Mapped[list["Comment"]] = relationship(back_populates="post")
-    # content # TODO: Figure out how we represent a post's content. If it's a link, it can be stored here. If raw data...
 
     # For debugging in terminal
     def __repr__(self):
