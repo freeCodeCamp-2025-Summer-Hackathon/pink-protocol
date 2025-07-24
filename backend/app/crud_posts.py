@@ -37,7 +37,7 @@ def post_post(
         caption=caption,
         published=published,
         img_url=img_url,
-        # img_delete_hash=post.img_delete_hash
+        # img_delete_url=post.img_delete_url
         user_id=user_id,
     )
     session.add(db_post)
