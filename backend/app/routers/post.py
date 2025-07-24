@@ -48,7 +48,6 @@ async def post_post(
 ):
     uploaded_img_data = await upload_img(image_file)
     img_url = uploaded_img_data.get("url")
-    # img_delete_hash = uploaded_img_data.get('delete_hash')
 
     if not img_url:
         raise HTTPException(status_code=500, detail="Invalid URL")
