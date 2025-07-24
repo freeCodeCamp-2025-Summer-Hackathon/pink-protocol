@@ -35,7 +35,6 @@ def post_post(
     db_post = models.Post(
         title=title,
         caption=caption,
-        # content=post.content,
         published=published,
         img_url=img_url,
         # img_delete_hash=post.img_delete_hash
