@@ -9,7 +9,7 @@ IMGBB_UPLOAD_URL = "https://api.imgbb.com/1/upload"
 # Uploads image to imgBB and returns parsed JSON data
 async def upload_img(file: UploadFile) -> dict:
     if not settings.IMGBB_API_KEY:
-        raise ValueError("IMGBB_API_KEY not set in environment viariables.")
+        raise ValueError("IMGBB_API_KEY not set in environment variables.")
 
     files = {"image": (file.filename, file.file, file.content_type)}
     data = {"key": settings.IMGBB_API_KEY}
