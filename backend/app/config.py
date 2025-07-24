@@ -37,7 +37,7 @@ def get_db_password():
         return secret_path.read_text().strip()
 
     # get local password
-    local_path = Path("../db_password.txt")
+    local_path = Path("db_password.txt")
     if local_path.exists():
         return local_path.read_text().strip()
 
