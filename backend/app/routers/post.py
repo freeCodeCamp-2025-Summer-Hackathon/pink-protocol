@@ -55,7 +55,6 @@ async def post_post(
 
     db_post, err = crud_posts.post_post(
         session=session,
-        # post=post,
         title=title,
         caption=caption,
         published=published,
