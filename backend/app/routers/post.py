@@ -39,7 +39,6 @@ def get_posts(
 
 @router.post("/posts", response_model=schemas.PostResponse)
 async def post_post(
-    # post: schemas.PostCreate,
     user_id: int = Form(..., alias="user_id"),
     session: Session = Depends(get_session),
     title: str = Form(...),
