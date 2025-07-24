@@ -36,5 +36,5 @@ async def upload_img(file: UploadFile) -> dict:
             raise Exception("Image upload failed due to network error.")
 
         except Exception as e:
-            print(f"An unexpected error ocurred during image upload: {e}")
+            print(f"An unexpected error occurred during image upload: {e}")
             raise
