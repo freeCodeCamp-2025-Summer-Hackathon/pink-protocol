@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # from starlette.middleware.sessions import SessionMiddleware # Might be needed for session auth later
 from .config import Settings
-from .routers import post, user
+from .routers import collection, post, user
 
 settings = Settings()
 app = FastAPI()
@@ -26,6 +26,7 @@ app.add_middleware(
 
 app.include_router(user.router)
 app.include_router(post.router)
+app.include_router(collection.router)
 
 
 @app.get("/")

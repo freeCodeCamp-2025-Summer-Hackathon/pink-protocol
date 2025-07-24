@@ -58,7 +58,7 @@ class PostUpdate(PostBase):
 class PostResponse(PostBase):
     id: int
     title: str
-    caption: Optional[str] = None
+    caption: str
     created_at: datetime
     user_id: int
     img_url: str
@@ -80,12 +80,11 @@ class Like(BaseModel):
 
 # Collection related schemas
 class CollectionBase(BaseModel):
-    user_id: int
-    posts: Optional[list[PostBase]] = None
-    owner: str
+    # posts: Optional[list[int]] = None
+    # user: str # is this necessary? we have the user_id
     name: str
     # keeping this as required for now to match Alfredo's Collection model
-    description: str
+    description: Optional[str] = None
 
 
 class CollectionCreate(CollectionBase):
@@ -93,13 +92,20 @@ class CollectionCreate(CollectionBase):
 
 
 class CollectionUpdate(BaseModel):
-    posts: Optional[list[PostBase]] = None
     name: Optional[str] = None
     description: Optional[str] = None
+
+
+class CollectionAddPost(BaseModel):
+    posts: list[int]  # It should be a post ID. could also make it a list of post IDs if we so chose
 
 
 class CollectionResponse(CollectionBase):
     id: int
     name: str
-    owner: str
-    posts: Optional[list[PostBase]]
+    description: str
+    user_id: int
+    posts: list[
+        int
+    ]  # I (Cooper) also changed this to int. I think we should stick with ints and refernce the association table.
+    # just need to make sure to keep updating the association table.
