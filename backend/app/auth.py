@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from .config import settings
 
@@ -10,7 +10,7 @@ ACCESS_EXPIRE = timedelta(
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
-    to_encode["exp"] = datetime.now(UTC) + ACCESS_EXPIRE
+    to_encode["exp"] = datetime.now(timezone.utc) + ACCESS_EXPIRE
     return jwt.encode(to_encode, settings.secret_key, algorithm=ALGORITHM)
 
 
