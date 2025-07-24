@@ -26,7 +26,7 @@ def post_post(
     caption: str,
     published: bool,
     img_url: str,
-) -> tuple[models.User, str]:
+):
     err = validate_post_fields(title, caption)
     err = validate_post_title(session=session, title=title)
     if err is not None:
