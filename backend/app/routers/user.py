@@ -45,7 +45,6 @@ def post_user(
 
 @router.post("/users/login", response_model=schemas.UserResponse)
 def login_user(
-    # request: Request,
     user: schemas.UserLogin,
     session: Session = Depends(get_session),
 ):
