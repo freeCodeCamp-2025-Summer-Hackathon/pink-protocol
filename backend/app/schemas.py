@@ -62,7 +62,6 @@ class PostResponse(PostBase):
     created_at: datetime
     user_id: int
     img_url: str
-    # img_delete_hash: str
     # comments : list[Comment]
     # like_count: int  # to be computed from Like table
 
