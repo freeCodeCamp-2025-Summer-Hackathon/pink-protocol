@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from ..auth import create_access_token, verify_token
 from sqlalchemy.orm import Session
 
 from .. import crud_users, schemas
@@ -6,6 +8,8 @@ from ..database import get_session
 
 # User-related endpoints
 router = APIRouter()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
 
 
 @router.get("/users/{user_id}", response_model=schemas.UserResponse)
@@ -43,20 +47,36 @@ def post_user(
     return user
 
 
-@router.post("/users/login", response_model=schemas.UserResponse)
+@router.post("/users/login")
 def login_user(
-    user: schemas.UserLogin,
+    form: OAuth2PasswordRequestForm = Depends(),
     session: Session = Depends(get_session),
 ):
     user, err = crud_users.login_user(
-        session=session, username=user.username, email=user.email, password=user.password
+        session=session, email=form.username, password=form.password
     )
     if err:
-        err_lower = err.lower()
-        if "incorrect" in err_lower:
-            raise HTTPException(status_code=409, detail=f"error: {err}")
-        elif "does not exist" in err_lower:
-            raise HTTPException(status_code=404, detail=f"error: {err}")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=err)
+
+    token = create_access_token({"sub": str(user.id)})
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "user": user
+    }
+
+
+def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    session: Session = Depends(get_session),
+):
+    payload = verify_token(token)
+    if not payload:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid token")
+
+    user = crud_users.get_user(session=session, user_id=int(payload["sub"]))
+    if user is None:
+        raise HTTPException(status_code=404, detail="user not found")
     return user
 
 
