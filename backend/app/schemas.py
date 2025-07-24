@@ -16,6 +16,7 @@ class UserUpdate(BaseModel):
     name: Optional[str] = None
     email: Optional[EmailStr] = None
     username: Optional[str] = None
+    # password: Optional[str] = None
 
 
 class UserLogin(BaseModel):
@@ -38,8 +39,10 @@ class UserResponse(BaseModel):
 # Post related schemas
 class PostBase(BaseModel):
     title: str
-    # content: {type}
     caption: Optional[str] = None
+    published: bool = False
+    img_url: str
+    # img_delete_hash: str
 
 
 class PostCreate(PostBase):
@@ -58,6 +61,7 @@ class PostResponse(PostBase):
     caption: Optional[str] = None
     created_at: datetime
     user_id: int
+    img_url: str
     # comments : list[Comment]
     # like_count: int  # to be computed from Like table
 

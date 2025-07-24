@@ -1,10 +1,13 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 from .. import crud_posts, schemas
 from ..database import get_session
+
+# from ..helper_functions import get_current_user
+from ..image_upload import upload_img
 
 # Post-related endpoints
 router = APIRouter()
@@ -18,10 +21,7 @@ router = APIRouter()
 
 
 @router.get("/posts/{post_id}", response_model=schemas.PostResponse)
-def get_post(
-    post_id: int,
-    session: Session = Depends(get_session),
-):
+def get_post(post_id: int, session: Session = Depends(get_session)):
     post = crud_posts.get_post(session=session, post_id=post_id)
     if post is None:
         raise HTTPException(status_code=404, detail="a post with this id does not exist")
@@ -37,20 +37,32 @@ def get_posts(
     return crud_posts.get_posts(session=session, skip=skip, limit=limit)
 
 
-@router.post(
-    "/posts",
-    response_model=schemas.PostResponse,
-    status_code=status.HTTP_201_CREATED,
-)
-def post_post(
-    post: schemas.PostCreate,
-    user_id: Annotated[int | None, Header()],
+@router.post("/posts", response_model=schemas.PostResponse)
+async def post_post(
+    user_id: int = Form(..., alias="user_id"),
     session: Session = Depends(get_session),
+    title: str = Form(...),
+    caption: str = Form(...),
+    published: bool = Form(False),
+    image_file: UploadFile = File(...),
 ):
-    post, err = crud_posts.post_post(session=session, post=post, user_id=user_id)
-    if err:
-        raise HTTPException(status_code=409, detail=f"unable to add post: {err}")
-    return post
+    uploaded_img_data = await upload_img(image_file)
+    img_url = uploaded_img_data.get("url")
+
+    if not img_url:
+        raise HTTPException(status_code=500, detail="Invalid URL")
+
+    db_post, err = crud_posts.post_post(
+        session=session,
+        title=title,
+        caption=caption,
+        published=published,
+        img_url=img_url,
+        user_id=user_id,
+    )
+    if err is not None:
+        raise HTTPException(status_code=404, detail=f"unable to add post: {err}")
+    return db_post
 
 
 @router.put("/posts/{post_id}", response_model=schemas.PostResponse)

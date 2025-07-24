@@ -1,9 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# from starlette.middleware.sessions import SessionMiddleware # Might be needed for session auth later
+from .config import Settings
 from .routers import post, user
 
+settings = Settings()
 app = FastAPI()
+
 
 origins = [
     "http://localhost:5173",

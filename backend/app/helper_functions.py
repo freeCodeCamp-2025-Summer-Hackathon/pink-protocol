@@ -120,3 +120,22 @@ def verify_post_owner(session: sa.orm.Session, post_id: int, user_id: int):
     if post.user_id != user_id:
         err = "Can not delete post, only post owners can delete their posts"
     return err
+
+
+# Might be needed later for a session user
+"""
+def get_current_user(
+    request: Request, session: sa.orm.Session = Depends(get_session)
+) -> models.User:
+    user_id = request.session.get("user_id")
+
+    if user_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not logged in.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    user = session.get(models.User, user_id)
+
+    return user"""
