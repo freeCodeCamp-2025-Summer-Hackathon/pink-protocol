@@ -1,15 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from ..auth import create_access_token, verify_token
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
+from ..auth import create_access_token, verify_token
 from .. import crud_users, schemas
 from ..database import get_session
 
 # User-related endpoints
 router = APIRouter()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
+bearer_scheme = HTTPBearer(auto_error=False)
 
 
 @router.get("/users/{user_id}", response_model=schemas.UserResponse)
@@ -47,32 +47,41 @@ def post_user(
     return user
 
 
-@router.post("/users/login")
+@router.post(
+    "/users/login",
+    response_model=schemas.TokenResponse,
+    status_code=status.HTTP_200_OK,
+)
 def login_user(
-    form: OAuth2PasswordRequestForm = Depends(),
+    creds: schemas.LoginRequest,
     session: Session = Depends(get_session),
 ):
     user, err = crud_users.login_user(
-        session=session, email=form.username, password=form.password
+        session=session,
+        email=str(creds.email),
+        password=creds.password,
     )
     if err:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=err)
+        raise HTTPException(status_code=401, detail=err)
 
     token = create_access_token({"sub": str(user.id)})
+
     return {
         "access_token": token,
-        "token_type": "bearer",
-        "user": user
+        "user": schemas.UserResponse.model_validate(user),
     }
 
 
 def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    creds: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     session: Session = Depends(get_session),
 ):
-    payload = verify_token(token)
+    if creds is None:
+        raise HTTPException(status_code=401, detail="missing or invalid token")
+
+    payload = verify_token(creds.credentials)
     if not payload:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid token")
+        raise HTTPException(status_code=401, detail="invalid token")
 
     user = crud_users.get_user(session=session, user_id=int(payload["sub"]))
     if user is None:
