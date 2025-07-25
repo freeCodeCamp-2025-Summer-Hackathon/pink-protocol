@@ -97,7 +97,7 @@ class CollectionUpdate(BaseModel):
 
 
 class CollectionAddPost(BaseModel):
-    posts: list[int]  # It should be a post ID. could also make it a list of post IDs if we so chose
+    posts: list[int]
 
 
 class CollectionResponse(CollectionBase):
@@ -105,7 +105,4 @@ class CollectionResponse(CollectionBase):
     name: str
     description: str
     user_id: int
-    posts: list[
-        int
-    ]  # I (Cooper) also changed this to int. I think we should stick with ints and refernce the association table.
-    # just need to make sure to keep updating the association table.
+    posts: list[PostResponse]

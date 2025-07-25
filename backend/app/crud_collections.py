@@ -4,7 +4,7 @@ from datetime import timezone
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
-from . import models, schemas
+from . import crud_posts, models, schemas
 from .helper_functions import *
 
 
@@ -84,13 +84,33 @@ def add_posts_to_collection(
             return None, err
 
     collection_to_update = session.query(models.Collection).filter_by(id=collection_id).first()
+    posts_to_collections = (
+        session.query(models.collections_posts_association_table)
+        .filter_by(collections=collection_id)
+        .all()
+    )
 
-    update_data = collection_data.model_dump(exclude_unset=True)
-    update_data["updated_at"] = datetime.datetime.now(tz=timezone.utc)
+    # get sets of posts to be added and subtracted
+    posts_in_collection = set(map(lambda x: x[0], posts_to_collections))
+    posts_from_request = set(collection_data.posts)
+    posts_to_be_added = posts_from_request.difference(posts_in_collection)
 
-    # Update the selected record with each key-val pair provided in the request
-    for key, val in update_data.items():
-        setattr(collection_to_update, key, val)
+    # # does the same as the for loop below
+    post_list = map(
+        lambda session, id: crud_posts.get_post(session=session, post_id=id),
+        session,
+        posts_to_be_added,
+    )
+
+    # post_list = []
+
+    # for post_id in posts_to_be_added:
+    #     post = crud_posts.get_post(session=session, post_id=post_id)
+    #     post_list.append(post) #use case for `map()`
+
+    collection_to_update.posts.extend(post_list)
+    collection_to_update.updated_at = datetime.datetime.now(tz=timezone.utc)
+
     session.commit()
 
     # Get updated object
