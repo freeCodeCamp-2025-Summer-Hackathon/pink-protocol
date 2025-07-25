@@ -68,7 +68,7 @@ def update_collection(
     return collection
 
 
-@router.put("/collections/{collection_id}/posts", response_model=schemas.CollectionResponse)
+@router.put("/collections/{collection_id}/add-posts", response_model=schemas.CollectionResponse)
 def add_posts_to_collection(
     collection_id: int,
     collection_data: schemas.CollectionAddPost,
@@ -76,6 +76,26 @@ def add_posts_to_collection(
     session: Session = Depends(get_session),
 ):
     collection, err = crud_collections.add_posts_to_collection(
+        session=session,
+        collection_id=collection_id,
+        collection_data=collection_data,
+        user_id=user_id,
+    )
+    if err:
+        raise HTTPException(
+            status_code=404, detail=f"error: {err}"
+        )  # TODO: update error handling behavior
+    return collection
+
+
+@router.put("/collections/{collection_id}/delete-posts", response_model=schemas.CollectionResponse)
+def delete_posts_from_collection(
+    collection_id: int,
+    collection_data: schemas.CollectionAddPost,
+    user_id: Annotated[int | None, Header()],
+    session: Session = Depends(get_session),
+):
+    collection, err = crud_collections.delete_posts_from_collection(
         session=session,
         collection_id=collection_id,
         collection_data=collection_data,

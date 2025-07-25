@@ -90,25 +90,68 @@ def add_posts_to_collection(
         .all()
     )
 
-    # get sets of posts to be added and subtracted
+    # get sets of posts to be added
     posts_in_collection = set(map(lambda x: x[0], posts_to_collections))
     posts_from_request = set(collection_data.posts)
     posts_to_be_added = posts_from_request.difference(posts_in_collection)
 
-    # # does the same as the for loop below
-    post_list = map(
-        lambda session, id: crud_posts.get_post(session=session, post_id=id),
-        session,
-        posts_to_be_added,
-    )
+    post_list = []
 
-    # post_list = []
-
-    # for post_id in posts_to_be_added:
-    #     post = crud_posts.get_post(session=session, post_id=post_id)
-    #     post_list.append(post) #use case for `map()`
+    for post_id in (
+        posts_to_be_added
+    ):  # I can do this better with just the associations table similar to delete functionality
+        post = crud_posts.get_post(session=session, post_id=post_id)
+        post_list.append(post)  # use case for `map()`
 
     collection_to_update.posts.extend(post_list)
+    collection_to_update.updated_at = datetime.datetime.now(tz=timezone.utc)
+
+    session.commit()
+
+    # Get updated object
+    updated_collection = get_collection(session=session, collection_id=collection_id)
+
+    # print(f"\n\n\n{updated_collection}\n\n\n")
+    return updated_collection, None
+
+
+def delete_posts_from_collection(
+    session: Session, collection_id: int, collection_data: schemas.CollectionAddPost, user_id: int
+):
+    # Check that the collection to be updated actually exists
+    err = validate_is_collection(session=session, collection_id=collection_id)
+    if err is not None:
+        return None, err
+
+    # Check that user owns collection
+    err = verify_collection_user(session=session, collection_id=collection_id, user_id=user_id)
+    if err is not None:
+        return None, err
+
+    # Check that each post ID is actually a post
+    for post_id in collection_data.posts:
+        err = validate_is_post(session=session, post_id=post_id)
+        if err is not None:
+            return None, err
+
+    collection_to_update = session.query(models.Collection).filter_by(id=collection_id).first()
+    posts_to_collections = (
+        session.query(models.collections_posts_association_table)
+        .filter_by(collections=collection_id)
+        .all()
+    )
+
+    # get sets of posts to be deleted
+    posts_in_collection = set(map(lambda x: x[0], posts_to_collections))
+    posts_from_request = set(collection_data.posts)
+    posts_to_be_deleted = posts_from_request.intersection(posts_in_collection)
+
+    stmt = sa.delete(models.collections_posts_association_table).where(
+        models.collections_posts_association_table.c.collections == collection_id,
+        models.collections_posts_association_table.c.posts.in_(list(posts_to_be_deleted)),
+    )
+    session.execute(stmt)
+
     collection_to_update.updated_at = datetime.datetime.now(tz=timezone.utc)
 
     session.commit()
