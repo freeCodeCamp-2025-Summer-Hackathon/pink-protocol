@@ -9,8 +9,6 @@ from ..database import get_session
 # User-related endpoints
 router = APIRouter()
 
-bearer_scheme = HTTPBearer(auto_error=False)
-
 
 @router.get("/users/{user_id}", response_model=schemas.UserResponse)
 def get_user(
@@ -70,23 +68,6 @@ def login_user(
         "access_token": token,
         "user": schemas.UserResponse.model_validate(user),
     }
-
-
-def get_current_user(
-    creds: HTTPAuthorizationCredentials = Depends(bearer_scheme),
-    session: Session = Depends(get_session),
-):
-    if creds is None:
-        raise HTTPException(status_code=401, detail="missing or invalid token")
-
-    payload = verify_token(creds.credentials)
-    if not payload:
-        raise HTTPException(status_code=401, detail="invalid token")
-
-    user = crud_users.get_user(session=session, user_id=int(payload["sub"]))
-    if user is None:
-        raise HTTPException(status_code=404, detail="user not found")
-    return user
 
 
 @router.put("/users/{user_id}", response_model=schemas.UserResponse)
