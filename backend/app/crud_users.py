@@ -27,20 +27,22 @@ def post_user(session: Session, user: schemas.UserCreate) -> tuple[models.User, 
     return user, None
 
 
-def login_user(session: Session, password: str, username: str = None, email: str = None):
-    err = validate_is_user(session=session, username=username, email=email)
-    err = validate_password(session=session, password=password, username=username, email=email)
-    statement = None
+def login_user(
+    session: Session, *,
+    email: str, password: str
+) -> tuple[models.User | None, str | None]:
+    err = validate_is_user(session=session, email=email)
+    if err is not None:
+        return None, err
 
-    if username is not None:
-        statement = sa.select(models.User).where(models.User.username == username)
+    err = validate_password(session=session, password=password, email=email)
+    if err is not None:
+        return None, err
 
-    if email is not None:
-        statement = sa.select(models.User).where(models.User.email == email)
+    stmt = sa.select(models.User).where(models.User.email == email)
+    user = session.scalars(stmt).first()
 
-    user = session.scalars(statement).first()
-
-    return user, err
+    return user, None
 
 
 def get_user(session: Session, user_id: int):
