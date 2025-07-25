@@ -49,6 +49,10 @@ def post_post(
 def update_post(session: Session, post_id: int, post_data: schemas.PostUpdate, user_id: int):
     post_to_update = session.query(models.Post).filter_by(id=post_id).first()
     err = validate_is_post(session=session, post_id=post_id)
+    err = verify_post_user(session=session, post_id=post_id, user_id=user_id)
+
+    # we will never see the first error state here. Need to check error between these
+
     if err is not None:
         return None, err
 
@@ -65,8 +69,10 @@ def update_post(session: Session, post_id: int, post_data: schemas.PostUpdate, u
     return updated_post
 
 
-def delete_post(session: Session, post_id: int):
+def delete_post(session: Session, post_id: int, user_id: int):
     err = validate_is_post(session=session, post_id=post_id)
+    err = verify_post_user(session=session, post_id=post_id, user_id=user_id)
+
     if err is not None:
         return None, None, None, err
 
