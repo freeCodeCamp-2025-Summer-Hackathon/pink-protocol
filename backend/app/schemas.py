@@ -19,12 +19,6 @@ class UserUpdate(BaseModel):
     # password: Optional[str] = None
 
 
-class UserLogin(BaseModel):
-    email: Optional[EmailStr] = None
-    username: Optional[str] = None
-    password: str
-
-
 class UserResponse(BaseModel):
     id: int
     name: str
@@ -34,6 +28,17 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
 
 
 # Post related schemas
@@ -62,6 +67,7 @@ class PostResponse(PostBase):
     created_at: datetime
     user_id: int
     img_url: str
+
     # comments : list[Comment]
     # like_count: int  # to be computed from Like table
 

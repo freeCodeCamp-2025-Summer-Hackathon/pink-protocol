@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { saveAuth } from '../../../_lib/authStore'
 import { loginUser } from '../services/loginUser'
 
 export const useLogin = () => {
@@ -8,19 +9,20 @@ export const useLogin = () => {
   const [apiError, setApiError] = useState(null)
   const navigate = useNavigate()
 
-  const submit = async (payload) => {
+  const submit = async (creds) => {
     setSubmitting(true)
     setApiError(null)
 
     try {
-      await loginUser(payload)
+      const { access_token, user } = await loginUser(creds)
+      saveAuth({ token: access_token, user })
       navigate('/', { replace: true })
     } catch (err) {
       const code = err?.response?.status
-      if (code === 404) {
-        setApiError('🐝 Account not found - check your email!')
-      } else if (code === 409) {
-        setApiError('🐝 Incorrect password - give it another buzz!')
+      if (code === 401) {
+        setApiError('🐝 Invalid credentials – give it another buzz!')
+      } else if (code === 422) {
+        setApiError('🐝 Missing or invalid fields – check your inputs!')
       } else {
         setApiError("🐝 Stung by a glitch! We couldn't log you in.")
       }

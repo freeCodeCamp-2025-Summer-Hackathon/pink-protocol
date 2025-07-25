@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
+from ..auth import create_access_token, verify_token
 from .. import crud_users, schemas
 from ..database import get_session
 
@@ -43,21 +45,29 @@ def post_user(
     return user
 
 
-@router.post("/users/login", response_model=schemas.UserResponse)
+@router.post(
+    "/users/login",
+    response_model=schemas.TokenResponse,
+    status_code=status.HTTP_200_OK,
+)
 def login_user(
-    user: schemas.UserLogin,
+    creds: schemas.LoginRequest,
     session: Session = Depends(get_session),
 ):
     user, err = crud_users.login_user(
-        session=session, username=user.username, email=user.email, password=user.password
+        session=session,
+        email=str(creds.email),
+        password=creds.password,
     )
     if err:
-        err_lower = err.lower()
-        if "incorrect" in err_lower:
-            raise HTTPException(status_code=409, detail=f"error: {err}")
-        elif "does not exist" in err_lower:
-            raise HTTPException(status_code=404, detail=f"error: {err}")
-    return user
+        raise HTTPException(status_code=401, detail=err)
+
+    token = create_access_token({"sub": str(user.id)})
+
+    return {
+        "access_token": token,
+        "user": schemas.UserResponse.model_validate(user),
+    }
 
 
 @router.put("/users/{user_id}", response_model=schemas.UserResponse)
