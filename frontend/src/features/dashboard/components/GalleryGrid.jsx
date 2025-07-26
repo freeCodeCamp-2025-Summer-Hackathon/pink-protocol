@@ -1,7 +1,8 @@
+import { useGallery } from '../hooks/useGallery.js'
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll.js'
+
 import { ArtCard } from './ArtCard.jsx'
 import { ArtCardSkeleton } from './ArtCardSkeleton.jsx'
-import { useGallery } from './hooks/useGallery.js'
-import { useInfiniteScroll } from './hooks/useInfiniteScroll.js'
 
 export const GalleryGrid = () => {
   const { items: visibleArt, loading: isLoading, end, loadMore } = useGallery()

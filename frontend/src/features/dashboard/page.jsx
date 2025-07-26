@@ -1,4 +1,4 @@
-import { GalleryGrid } from './GalleryGrid.jsx'
+import { GalleryGrid } from './components/GalleryGrid.jsx'
 
 const Page = () => (
   <main className="min-h-screen">
