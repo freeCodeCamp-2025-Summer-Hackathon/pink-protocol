@@ -41,7 +41,7 @@ export const Modal = ({ isOpen, onClose, children, title }) => {
         ref={modalRef}
         role="dialog"
       >
-        <div className="mb-4 flex items-center justify-between">
+        <div className={`mb-4 flex items-center ${title ? 'justify-between' : 'justify-end'}`}>
           {title && (
             <h3 className="text-xl font-bold text-gray-800" id="modal-title">
               {title}
