@@ -9,9 +9,6 @@ from passlib.hash import pbkdf2_sha256
 from app.database import SessionLocal
 from app.models import Collection, Post, User
 
-# TODO: create pink-protocol ImgBB account & API key -> poste img urls in place
-
-
 DEMO_USERS = [
     {
         "name": "Alex Johnson",
@@ -23,31 +20,31 @@ DEMO_USERS = [
                 "title": "Morning Coffee Ritual",
                 "caption": "Starting the day right with a perfect cup of coffee",
                 "published": True,
-                "img_url": "https://example.com/coffee1.jpg",
+                "img_url": "https://i.ibb.co/hFs5P4JR/8-1080x810.jpg",
             },
             {
                 "title": "Weekend Hiking Adventure",
                 "caption": "Exploring mountain trails and enjoying nature",
                 "published": True,
-                "img_url": "https://example.com/hiking1.jpg",
+                "img_url": "https://i.ibb.co/1JmHH83C/120-810x1080.jpg",
             },
             {
                 "title": "Homemade Pizza Night",
                 "caption": "Tried making pizza from scratch - turned out amazing!",
                 "published": False,
-                "img_url": "https://example.com/pizza1.jpg",
+                "img_url": "https://i.ibb.co/qL43dNSh/124-1080x1080.jpg",
             },
             {
                 "title": "Book Review: Tech Trends",
                 "caption": "Thoughts on the latest technology book I read",
                 "published": True,
-                "img_url": "https://example.com/book1.jpg",
+                "img_url": "https://i.ibb.co/kVSNmmKG/145-1080x1080.jpg",
             },
             {
                 "title": "City Sunset Views",
                 "caption": "Captured this beautiful sunset from my apartment",
                 "published": True,
-                "img_url": "https://example.com/sunset1.jpg",
+                "img_url": "https://i.ibb.co/3qxhF6Q/294-810x1080.jpg",
             },
         ],
         "collections": [
@@ -93,31 +90,31 @@ DEMO_USERS = [
                 "title": "Photography Workshop",
                 "caption": "Learning new techniques for portrait photography",
                 "published": True,
-                "img_url": "https://example.com/photo2.jpg",
+                "img_url": "https://i.ibb.co/pSF9KWW/168-1080x810.jpg",
             },
             {
                 "title": "Garden Progress Update",
                 "caption": "My tomatoes are finally starting to grow!",
                 "published": True,
-                "img_url": "https://example.com/garden1.jpg",
+                "img_url": "https://i.ibb.co/1fGVmgBg/260-810x1080.jpg",
             },
             {
                 "title": "Yoga Morning Routine",
                 "caption": "Finding peace through morning yoga practice",
                 "published": True,
-                "img_url": "https://example.com/yoga1.jpg",
+                "img_url": "https://i.ibb.co/gZdqRHVw/175-810x1080.jpg",
             },
             {
                 "title": "Art Museum Visit",
                 "caption": "Incredible modern art exhibition downtown",
                 "published": False,
-                "img_url": "https://example.com/museum1.jpg",
+                "img_url": "https://i.ibb.co/NnF8KGqR/198-810x1080.jpg",
             },
             {
                 "title": "Healthy Smoothie Recipe",
                 "caption": "My go-to green smoothie for busy mornings",
                 "published": True,
-                "img_url": "https://example.com/smoothie1.jpg",
+                "img_url": "https://i.ibb.co/KxW9V1K8/238-1080x810.jpg",
             },
         ],
         "collections": [
@@ -163,31 +160,31 @@ DEMO_USERS = [
                 "title": "New Gaming Setup",
                 "caption": "Finally upgraded my gaming rig with RGB lighting",
                 "published": True,
-                "img_url": "https://example.com/gaming1.jpg",
+                "img_url": "https://i.ibb.co/9kTftcMt/310-1080x810.jpg",
             },
             {
                 "title": "Cooking Experiment",
                 "caption": "Tried making ramen from scratch - it was challenging!",
                 "published": True,
-                "img_url": "https://example.com/ramen1.jpg",
+                "img_url": "https://i.ibb.co/Hf9hwkmv/404-1080x810.jpg",
             },
             {
                 "title": "Beach Day Memories",
                 "caption": "Perfect weather for a day at the coast",
                 "published": True,
-                "img_url": "https://example.com/beach1.jpg",
+                "img_url": "https://i.ibb.co/8gPdK5KX/436-1080x1080.jpg",
             },
             {
                 "title": "Code Project Update",
                 "caption": "Making progress on my web development portfolio",
                 "published": False,
-                "img_url": "https://example.com/code1.jpg",
+                "img_url": "https://i.ibb.co/V0hWV3WF/514-810x1080.jpg",
             },
             {
                 "title": "Concert Night Out",
                 "caption": "Amazing live music performance downtown",
                 "published": True,
-                "img_url": "https://example.com/concert1.jpg",
+                "img_url": "https://i.ibb.co/k632YGS3/515-1080x810.jpg",
             },
         ],
         "collections": [
@@ -233,31 +230,31 @@ DEMO_USERS = [
                 "title": "Marathon Training Week 8",
                 "caption": "Long run completed - feeling stronger every week",
                 "published": True,
-                "img_url": "https://example.com/running1.jpg",
+                "img_url": "https://i.ibb.co/KC1vrsH/543-810x1080.jpg",
             },
             {
                 "title": "Baking Sourdough Bread",
                 "caption": "My starter is finally ready for the perfect loaf",
                 "published": True,
-                "img_url": "https://example.com/bread1.jpg",
+                "img_url": "https://i.ibb.co/8D3ssfmR/810-1080x1080.jpg",
             },
             {
                 "title": "Dog Park Adventures",
                 "caption": "Max made so many new friends today",
                 "published": True,
-                "img_url": "https://example.com/dog1.jpg",
+                "img_url": "https://i.ibb.co/DfZfJgwK/820-1080x810.jpg",
             },
             {
                 "title": "Interior Design Ideas",
                 "caption": "Redecorating the living room with plants and art",
                 "published": False,
-                "img_url": "https://example.com/interior1.jpg",
+                "img_url": "https://i.ibb.co/HJV9rPF/853-1080x1080.jpg",
             },
             {
                 "title": "Farmers Market Haul",
                 "caption": "Fresh vegetables and local honey for the week",
                 "published": True,
-                "img_url": "https://example.com/market1.jpg",
+                "img_url": "https://i.ibb.co/J1cqbdt/863-1080x1080.jpg",
             },
         ],
         "collections": [
@@ -303,31 +300,31 @@ DEMO_USERS = [
                 "title": "Woodworking Project",
                 "caption": "Building a custom bookshelf for the office",
                 "published": True,
-                "img_url": "https://example.com/woodwork1.jpg",
+                "img_url": "https://i.ibb.co/MD03cGNZ/873-1080x1080.jpg",
             },
             {
                 "title": "Local Food Truck Tour",
                 "caption": "Trying different cuisines around the city",
                 "published": True,
-                "img_url": "https://example.com/foodtruck1.jpg",
+                "img_url": "https://i.ibb.co/jPQvWdg1/916-1080x1080.jpg",
             },
             {
                 "title": "Mountain Biking Trail",
                 "caption": "Challenging new trail with amazing views",
                 "published": True,
-                "img_url": "https://example.com/biking1.jpg",
+                "img_url": "https://i.ibb.co/b5fdcBWR/939-1080x1080.jpg",
             },
             {
                 "title": "Chess Tournament Prep",
                 "caption": "Studying opening strategies for the weekend tournament",
                 "published": False,
-                "img_url": "https://example.com/chess1.jpg",
+                "img_url": "https://i.ibb.co/ywWCbFs/1040-810x1080.jpg",
             },
             {
                 "title": "Stargazing Night",
                 "caption": "Clear skies perfect for astronomy observations",
                 "published": True,
-                "img_url": "https://example.com/stars1.jpg",
+                "img_url": "https://i.ibb.co/rKKfsJXz/1067-1080x1080.jpg",
             },
         ],
         "collections": [
