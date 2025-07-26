@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import { UploadModal } from '../features/upload/UploadModal.jsx'
+import { UploadModal } from '../features/upload/components/UploadModal.jsx'
 import { Sidebar } from '../sidebar/Sidebar.jsx'
 
 import { MobileHeader } from './MobileHeader.jsx'

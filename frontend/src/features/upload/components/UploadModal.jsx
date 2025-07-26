@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Modal } from './Modal.jsx'
-import { createPost } from './services/createPost.js'
+import { Modal } from '../../../ui/Modal/Modal.jsx'
+import { createPost } from '../services/createPost.js'
 import { UploadForm } from './UploadForm.jsx'
 
 export const UploadModal = ({ isOpen, onClose }) => {
