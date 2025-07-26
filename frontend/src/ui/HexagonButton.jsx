@@ -16,15 +16,7 @@ export const HexagonButton = ({
     xl: 'w-24 h-28 text-lg',
   }
   const variantClasses = {
-    green: `
-      bg-green-leaf-500 hover:bg-green-leaf-600 text-white
-      focus:ring-green-leaf-500 disabled:bg-green-leaf-300 disabled:cursor-not-allowed
-    `,
-    red: `
-      bg-red-terra-500 hover:bg-red-terra-600 text-white
-      focus:ring-red-terra-500 disabled:bg-red-terra-300 disabled:cursor-not-allowed
-    `,
-    primary: `
+   primary: `
       bg-blue-500 hover:bg-blue-600 text-white
       focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed
     `,
@@ -33,16 +25,16 @@ export const HexagonButton = ({
       focus:ring-gray-500 disabled:bg-gray-300 disabled:cursor-not-allowed
     `,
     success: `
-      bg-green-500 hover:bg-green-600 text-white
-      focus:ring-green-500 disabled:bg-green-300 disabled:cursor-not-allowed
+      bg-green-leaf-500 hover:bg-green-leaf-600 text-white
+      focus:ring-green-leaf-500 disabled:bg-green-leaf-300 disabled:cursor-not-allowed
     `,
     warning: `
       bg-yellow-500 hover:bg-yellow-600 text-white
       focus:ring-yellow-500 disabled:bg-yellow-300 disabled:cursor-not-allowed
     `,
     danger: `
-      bg-red-500 hover:bg-red-600 text-white
-      focus:ring-red-500 disabled:bg-red-300 disabled:cursor-not-allowed
+      bg-red-terra-500 hover:bg-red-terra-600 text-white
+      focus:ring-red-terra-500 disabled:bg-red-terra-300 disabled:cursor-not-allowed
     `,
     hive: `
       bg-honey-500 hover:bg-honey-600 text-white
