@@ -1,63 +1,37 @@
-import { useState, useEffect } from 'react'
-
 import { ArtCard } from './ArtCard.jsx'
 import { ArtCardSkeleton } from './ArtCardSkeleton.jsx'
-import { generateMockArt } from './mock.js'
-
-const ITEMS_PER_PAGE = 10
+import { useGallery } from './hooks/useGallery.js'
+import { useInfiniteScroll } from './hooks/useInfiniteScroll.js'
 
 export const GalleryGrid = () => {
-  const [visibleArt, setVisibleArt] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const initialArt = generateMockArt(ITEMS_PER_PAGE).map((art, index) => ({
-        ...art,
-        id: `initial-${index}`,
-      }))
-      setVisibleArt(initialArt)
-      setIsLoading(false)
-    }, 1500)
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  const handleLoadMore = () => {
-    const newArt = generateMockArt(ITEMS_PER_PAGE).map((art, index) => ({
-      ...art,
-      id: `more-${Date.now()}-${index}`,
-    }))
-    setVisibleArt((prevArt) => [...prevArt, ...newArt])
-  }
+  const { items: visibleArt, loading: isLoading, end, loadMore } = useGallery()
+  const observerRef = useInfiniteScroll(loadMore, isLoading, !end)
 
   return (
     <section>
-      <header className="mb-6 sm:mb-8">
-        <h1 className="font-inter text-2xl font-black tracking-wide text-stone-900 uppercase sm:text-3xl lg:text-4xl">
+      <header className="mb-8 sm:mb-12">
+        <h1 className="font-inter text-3xl font-black tracking-wide text-stone-900 uppercase sm:text-4xl lg:text-5xl">
           The Hive
         </h1>
-        <p className="font-source-serif-pro mt-2 text-lg leading-relaxed font-light text-stone-600 sm:text-xl">
+        <p className="font-source-serif-pro mt-3 text-xl leading-relaxed font-light text-stone-600 sm:text-2xl">
           Buzz through the hive&#39;s latest creations
         </p>
       </header>
 
-      <div className="columns-1 gap-3 space-y-3 sm:columns-2 sm:gap-4 sm:space-y-4 lg:columns-3 xl:columns-4 2xl:columns-5">
-        {isLoading
-          ? Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
-              <ArtCardSkeleton key={`skeleton-${index}`} />
-            ))
-          : visibleArt.map((art) => <ArtCard art={art} key={art.id} />)}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {visibleArt.map((art) => (
+          <ArtCard art={art} key={art.id} />
+        ))}
+        {isLoading && Array.from({ length: 8 }).map((_, i) => <ArtCardSkeleton key={i} />)}
       </div>
 
-      <div className="mt-8 flex justify-center sm:mt-10">
-        <button
-          className="focus:ring-opacity-50 rounded-full bg-stone-800 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-stone-900 focus:ring-2 focus:ring-stone-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-stone-500 sm:px-8 sm:py-3 sm:text-base"
-          disabled={isLoading}
-          onClick={handleLoadMore}
-        >
-          {isLoading ? 'Loading...' : 'Load More'}
-        </button>
+      <div aria-hidden="true" className="mt-8 h-8" ref={observerRef}>
+        {isLoading && !end && (
+          <div className="flex items-center justify-center gap-3 text-stone-600">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-stone-300 border-t-stone-600" />
+            <span className="text-sm font-medium">Loading more...</span>
+          </div>
+        )}
       </div>
     </section>
   )
