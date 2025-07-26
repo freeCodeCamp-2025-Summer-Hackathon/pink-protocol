@@ -16,7 +16,7 @@ export const HexagonButton = ({
     xl: 'w-24 h-28 text-lg',
   }
   const variantClasses = {
-   primary: `
+    primary: `
       bg-blue-500 hover:bg-blue-600 text-white
       focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed
     `,
