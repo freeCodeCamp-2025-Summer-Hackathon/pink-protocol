@@ -1,5 +1,3 @@
-'use client'
-
 import { ArtCard } from './ArtCard.jsx'
 import { ArtCardSkeleton } from './ArtCardSkeleton.jsx'
 import { useGallery } from './hooks/useGallery.js'
@@ -24,20 +22,15 @@ export const GalleryGrid = () => {
         {visibleArt.map((art) => (
           <ArtCard art={art} key={art.id} />
         ))}
-
-        {isLoading &&
-          Array.from({ length: 8 }).map((_, idx) => <ArtCardSkeleton key={`skeleton-${idx}`} />)}
+        {isLoading && Array.from({ length: 8 }).map((_, i) => <ArtCardSkeleton key={i} />)}
       </div>
 
-      <div className="mt-8 flex h-20 items-center justify-center" ref={observerRef}>
-        {isLoading && (
-          <div className="flex items-center gap-3 text-stone-600">
+      <div aria-hidden="true" className="mt-8 h-8" ref={observerRef}>
+        {isLoading && !end && (
+          <div className="flex items-center justify-center gap-3 text-stone-600">
             <div className="h-6 w-6 animate-spin rounded-full border-2 border-stone-300 border-t-stone-600" />
             <span className="text-sm font-medium">Loading more...</span>
           </div>
-        )}
-        {end && visibleArt.length > 0 && (
-          <p className="text-sm font-medium text-stone-500">You&#39;ve reached the end</p>
         )}
       </div>
     </section>

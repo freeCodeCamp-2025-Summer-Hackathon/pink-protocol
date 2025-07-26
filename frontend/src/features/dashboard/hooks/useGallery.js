@@ -20,30 +20,31 @@ export const useGallery = () => {
 
   const load = useCallback(async () => {
     if (loading || end) return
-
     setLoading(true)
+    const start = skip
     try {
-      const data = await fetchPosts(skip, PAGE_SIZE)
-      if (data.length === 0) {
-        setEnd(true)
-      } else {
-        setItems((prev) => [...prev, ...data.map(mapPost)])
-        setSkip((prev) => prev + PAGE_SIZE)
-      }
-    } catch (error) {
-      // TODO: set error state/toast
+      const data = await fetchPosts(start, PAGE_SIZE)
+
+      setItems((prev) => {
+        const seen = new Set(prev.map((x) => x.id))
+        const next = data.filter((p) => !seen.has(p.id)).map(mapPost)
+        return [...prev, ...next]
+      })
+
+      setSkip(start + PAGE_SIZE)
+      if (data.length < PAGE_SIZE) setEnd(true)
+    } catch {
+      // TODO: show toast / retry
     } finally {
       setLoading(false)
     }
   }, [skip, loading, end])
 
   useEffect(() => {
-    if (initialLoadPerformed.current) {
-      return
-    }
+    if (initialLoadPerformed.current) return
     initialLoadPerformed.current = true
     load()
-  }, [])
+  }, [load])
 
   return { items, loading, end, loadMore: load }
 }

@@ -1,34 +1,27 @@
-'use client'
-
 import { useEffect, useRef } from 'react'
 
 export const useInfiniteScroll = (callback, loading, hasMore) => {
-  const observerRef = useRef()
+  const sentinelRef = useRef(null)
+  const ioRef = useRef(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const target = entries[0]
-        if (target.isIntersecting && !loading && hasMore) {
-          callback()
-        }
+    if (!sentinelRef.current) return
+
+    ioRef.current?.disconnect()
+    ioRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !loading && hasMore) callback()
       },
-      {
-        threshold: 0.1,
-        rootMargin: '100px',
-      }
+      { threshold: 0.01, rootMargin: '200px 0px' }
     )
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current)
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current)
-      }
-    }
+    ioRef.current.observe(sentinelRef.current)
+    return () => ioRef.current?.disconnect()
   }, [callback, loading, hasMore])
 
-  return observerRef
+  useEffect(() => {
+    if (!hasMore) ioRef.current?.disconnect()
+  }, [hasMore])
+
+  return sentinelRef
 }

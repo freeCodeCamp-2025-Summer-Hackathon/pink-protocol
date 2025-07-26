@@ -1,5 +1,3 @@
-'use client'
-
 import { Bookmark, Download, Share2 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -14,14 +12,16 @@ export const ArtCard = ({ art }) => {
     <article className="group relative cursor-pointer overflow-hidden rounded-3xl bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
       <div className="relative aspect-[3/4] w-full bg-gradient-to-br from-gray-100 to-gray-200">
         <img
-          alt={art.title}
+          alt={art.title || 'Artwork'}
           className={`h-full w-full object-cover transition-all duration-700 group-hover:scale-105 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
+          decoding="async"
+          loading="lazy"
           src={art.imageUrl || '/placeholder.svg?height=800&width=600'}
           onError={(e) => {
-            e.target.onerror = null
-            e.target.src = IMAGE_NOT_FOUND_PLACEHOLDER
+            e.currentTarget.onerror = null
+            e.currentTarget.src = IMAGE_NOT_FOUND_PLACEHOLDER
             setImageLoaded(true)
           }}
           onLoad={() => setImageLoaded(true)}
@@ -33,6 +33,7 @@ export const ArtCard = ({ art }) => {
           <button
             aria-label={isSaved ? 'Remove from saved' : 'Save art'}
             className="rounded-full bg-white/90 p-2.5 text-gray-700 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white hover:text-gray-900"
+            type="button"
             onClick={(e) => {
               e.stopPropagation()
               setIsSaved((prev) => !prev)
@@ -44,6 +45,7 @@ export const ArtCard = ({ art }) => {
           <button
             aria-label="Share art"
             className="rounded-full bg-white/90 p-2.5 text-gray-700 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white hover:text-gray-900"
+            type="button"
             onClick={(e) => {
               e.stopPropagation()
             }}
@@ -54,6 +56,7 @@ export const ArtCard = ({ art }) => {
           <button
             aria-label="Download art"
             className="rounded-full bg-white/90 p-2.5 text-gray-700 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white hover:text-gray-900"
+            type="button"
             onClick={(e) => {
               e.stopPropagation()
             }}
