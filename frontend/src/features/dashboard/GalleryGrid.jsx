@@ -1,35 +1,44 @@
+'use client'
+
 import { ArtCard } from './ArtCard.jsx'
 import { ArtCardSkeleton } from './ArtCardSkeleton.jsx'
 import { useGallery } from './hooks/useGallery.js'
+import { useInfiniteScroll } from './hooks/useInfiniteScroll.js'
 
 export const GalleryGrid = () => {
   const { items: visibleArt, loading: isLoading, end, loadMore } = useGallery()
+  const observerRef = useInfiniteScroll(loadMore, isLoading, !end)
 
   return (
     <section>
-      <header className="mb-6 sm:mb-8">
-        <h1 className="font-inter text-2xl font-black tracking-wide text-stone-900 uppercase sm:text-3xl lg:text-4xl">
+      <header className="mb-8 sm:mb-12">
+        <h1 className="font-inter text-3xl font-black tracking-wide text-stone-900 uppercase sm:text-4xl lg:text-5xl">
           The Hive
         </h1>
-        <p className="font-source-serif-pro mt-2 text-lg leading-relaxed font-light text-stone-600 sm:text-xl">
+        <p className="font-source-serif-pro mt-3 text-xl leading-relaxed font-light text-stone-600 sm:text-2xl">
           Buzz through the hive&#39;s latest creations
         </p>
       </header>
 
-      <div className="columns-1 gap-3 space-y-3 sm:columns-2 sm:gap-4 sm:space-y-4 lg:columns-3 xl:columns-4 2xl:columns-5">
-        {isLoading && visibleArt.length === 0
-          ? Array.from({ length: 10 }).map((_, idx) => <ArtCardSkeleton key={`skeleton-${idx}`} />)
-          : visibleArt.map((art) => <ArtCard art={art} key={art.id} />)}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {visibleArt.map((art) => (
+          <ArtCard art={art} key={art.id} />
+        ))}
+
+        {isLoading &&
+          Array.from({ length: 8 }).map((_, idx) => <ArtCardSkeleton key={`skeleton-${idx}`} />)}
       </div>
 
-      <div className="mt-8 flex justify-center sm:mt-10">
-        <button
-          className="focus:ring-opacity-50 rounded-full bg-stone-800 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-stone-900 focus:ring-2 focus:ring-stone-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-stone-500 sm:px-8 sm:py-3 sm:text-base"
-          disabled={isLoading || end}
-          onClick={loadMore}
-        >
-          {isLoading ? 'Loading…' : end ? 'No more posts' : 'Load more'}
-        </button>
+      <div className="mt-8 flex h-20 items-center justify-center" ref={observerRef}>
+        {isLoading && (
+          <div className="flex items-center gap-3 text-stone-600">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-stone-300 border-t-stone-600" />
+            <span className="text-sm font-medium">Loading more...</span>
+          </div>
+        )}
+        {end && visibleArt.length > 0 && (
+          <p className="text-sm font-medium text-stone-500">You&#39;ve reached the end</p>
+        )}
       </div>
     </section>
   )
