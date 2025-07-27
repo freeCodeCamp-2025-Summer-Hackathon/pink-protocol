@@ -63,7 +63,7 @@ class PostUpdate(PostBase):
 class PostResponse(PostBase):
     id: int
     title: str
-    caption: Optional[str] = None
+    caption: str
     created_at: datetime
     user_id: int
     img_url: str
@@ -86,12 +86,11 @@ class Like(BaseModel):
 
 # Collection related schemas
 class CollectionBase(BaseModel):
-    user_id: int
-    posts: Optional[list[PostBase]] = None
-    owner: str
+    # posts: Optional[list[int]] = None
+    # user: str # is this necessary? we have the user_id
     name: str
     # keeping this as required for now to match Alfredo's Collection model
-    description: str
+    description: Optional[str] = None
 
 
 class CollectionCreate(CollectionBase):
@@ -99,13 +98,17 @@ class CollectionCreate(CollectionBase):
 
 
 class CollectionUpdate(BaseModel):
-    posts: Optional[list[PostBase]] = None
     name: Optional[str] = None
     description: Optional[str] = None
+
+
+class CollectionAddPost(BaseModel):
+    posts: list[int]
 
 
 class CollectionResponse(CollectionBase):
     id: int
     name: str
-    owner: str
-    posts: Optional[list[PostBase]]
+    description: str
+    user_id: int
+    posts: list[PostResponse]

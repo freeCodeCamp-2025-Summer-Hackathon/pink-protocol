@@ -114,11 +114,28 @@ def validate_post_title(session: sa.orm.Session, title: str):
     return err
 
 
-def verify_post_owner(session: sa.orm.Session, post_id: int, user_id: int):
+def verify_post_user(session: sa.orm.Session, post_id: int, user_id: int):
     err = None
     post = session.query(models.Post).filter_by(id=post_id).first()
     if post.user_id != user_id:
-        err = "Can not delete post, only post owners can delete their posts"
+        err = "User {user_id} does not own post {post_id}"
+    return err
+
+
+# Collection related helpers
+def validate_is_collection(session: sa.orm.Session, collection_id: int):
+    err = None
+    collection = session.query(models.Collection).filter_by(id=collection_id).first()
+    if collection is None:
+        err = f"Collection id: {collection_id} does not exist"
+    return err
+
+
+def verify_collection_user(session: sa.orm.Session, collection_id: int, user_id: int):
+    err = None
+    collection = session.query(models.Collection).filter_by(id=collection_id).first()
+    if collection.user_id != user_id:
+        err = "User {user_id} does not own collection {collection_id}"
     return err
 
 
