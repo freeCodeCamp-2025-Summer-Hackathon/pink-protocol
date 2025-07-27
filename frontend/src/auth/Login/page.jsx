@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
 
 import { PromoPanel } from '../../components/PromoPanel/PromoPanel.jsx'
+import { Popup } from '../../ui/Popup.jsx'
 
 import { LoginForm } from './components/LoginForm'
 import { useLogin } from './hooks/useLogin'
 
 const LoginPage = () => {
-  const { submit, submitting, apiError } = useLogin()
+  const { submit, submitting, apiError, apiSuccess } = useLogin()
 
   return (
     <div className="relative min-h-screen">
@@ -55,6 +56,24 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+      {apiError && (
+        <Popup
+          message={apiError}
+          position="top-center"
+          showCloseButton={false}
+          type="error"
+          onClose={() => {}}
+        />
+      )}
+      {apiSuccess && (
+        <Popup
+          message={apiSuccess}
+          position="top-center"
+          showCloseButton={false}
+          type="success"
+          onClose={() => {}}
+        />
+      )}
     </div>
   )
 }

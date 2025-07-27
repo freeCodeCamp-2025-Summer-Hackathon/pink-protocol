@@ -7,16 +7,19 @@ import { loginUser } from '../services/loginUser'
 export const useLogin = () => {
   const [submitting, setSubmitting] = useState(false)
   const [apiError, setApiError] = useState(null)
+  const [apiSuccess, setApiSuccess] = useState(null)
   const navigate = useNavigate()
 
   const submit = async (creds) => {
     setSubmitting(true)
     setApiError(null)
+    setApiSuccess(null)
 
     try {
       const { access_token, user } = await loginUser(creds)
       saveAuth({ token: access_token, user })
-      navigate('/', { replace: true })
+      setApiSuccess('🐝 Welcome back! You’ve successfully logged in.')
+      setTimeout(() => navigate('/', { replace: true }), 1500)
     } catch (err) {
       const code = err?.response?.status
       if (code === 401) {
@@ -31,5 +34,5 @@ export const useLogin = () => {
     }
   }
 
-  return { submit, submitting, apiError }
+  return { submit, submitting, apiError, apiSuccess }
 }
