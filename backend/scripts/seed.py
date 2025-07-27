@@ -1,4 +1,3 @@
-# scripts/seed.py
 import os
 import sys
 
