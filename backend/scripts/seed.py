@@ -374,8 +374,7 @@ def seed_database():
                 password_hash=pbkdf2_sha256.hash(user_data["password"]),
             )
             session.add(user)
-            session.commit()
-            session.refresh(user)
+            session.flush()
 
             user_posts = {}
             for post_data in user_data["posts"]:
@@ -387,8 +386,6 @@ def seed_database():
                     img_url=post_data["img_url"],
                 )
                 session.add(post)
-                session.commit()
-                session.refresh(post)
                 user_posts[post.title] = post
 
             for collection_data in user_data["collections"]:
@@ -405,9 +402,8 @@ def seed_database():
                     posts=collection_posts,
                 )
                 session.add(collection)
-                session.commit()
-                session.refresh(collection)
 
+        session.commit()
         print("Database seeded successfully!")
 
     except Exception as e:
