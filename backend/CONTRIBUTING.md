@@ -23,3 +23,13 @@ rename the functions & classes, these do not get auto-fixed.
 > It's important to note that when the checks fail, the commit will be rejected with the Ruff-made
 > fixes and you will have to manually fix naming errors (if any) then re-stage all new changes to
 > try committing again.
+
+## Running the seed script for DB population
+The seed service & script wont run with the other services unless specifically invoked. To start the seed service along with all the other listed services, from the root directory, run
+```bash
+docker compose --profile seed up
+```
+If you want to run only the seed service itself (and the other services it depends on), from the root directory, run
+```bash
+docker compose --profile seed up seed
+```

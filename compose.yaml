@@ -7,7 +7,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: [ "sh", "-c", "alembic upgrade head && fastapi run" ] # TODO: consider using fastapi command
+    command: [ "sh", "-c", "alembic upgrade head && fastapi run" ]
     ports:
       - "8000:8000"
     working_dir: /app
@@ -41,6 +41,25 @@ services:
       start_period: 30s
     secrets:
       - db_password
+
+  seed:
+    build: ./backend
+    command: python scripts/seed.py
+    env_file:
+    - .env
+    working_dir: /app
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      app-backend:
+        condition: service_started
+    environment:
+      DATABASE_PASSWORD: /run/secrets/db_password
+      DATABASE_HOSTNAME: postgres-db
+    volumes:
+      - ./backend:/app
+    profiles:
+      - seed
 
 secrets:
   db_password:
