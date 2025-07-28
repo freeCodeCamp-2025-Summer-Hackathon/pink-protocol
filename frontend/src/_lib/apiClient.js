@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { getToken } from './authStore.js'
 
 export const apiClient = axios.create({

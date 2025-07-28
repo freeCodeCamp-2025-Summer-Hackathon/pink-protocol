@@ -23,7 +23,7 @@ export const useGallery = () => {
     setLoading(true)
     const start = skip
     try {
-      const data = await fetchPosts(start, PAGE_SIZE) ?? []
+      const data = (await fetchPosts(start, PAGE_SIZE)) ?? []
 
       setItems((prev) => {
         const seen = new Set(prev.map((x) => x.id))
