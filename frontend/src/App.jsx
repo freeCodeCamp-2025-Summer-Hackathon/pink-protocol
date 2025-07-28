@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
+import { RequireAuth } from './auth/_lib/requireAuth.jsx'
 import { Layout } from './layout/Layout.jsx'
 
 const PagePlaceholder = () => <></>
@@ -13,13 +14,20 @@ const PostPage = lazy(() => import('./features/post/page.jsx'))
 export const App = () => (
   <Suspense fallback={null}>
     <Routes>
-      <Route element={<Layout />}>
+      <Route
+        element={
+          <RequireAuth>
+            <Layout />
+          </RequireAuth>
+        }
+      >
         <Route element={<DashboardPage />} index />
         <Route element={<PagePlaceholder title="Upload" />} path="/upload" />
         <Route element={<PagePlaceholder title="Collections" />} path="/collections" />
         <Route element={<PagePlaceholder title="Settings" />} path="/settings" />
         <Route element={<PostPage />} path="/posts/:postId" />
       </Route>
+
       <Route element={<SignUpPage />} path="/signup" />
       <Route element={<LoginPage />} path="/login" />
     </Routes>
