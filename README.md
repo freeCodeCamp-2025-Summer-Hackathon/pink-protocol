@@ -13,13 +13,14 @@ This project was completed by pink-protocol as part of [freeCodeCamp's](https://
 
 ```
 DATABASE_NAME=arthive
-DATABASE_HOSTNAME=localhost
+DATABASE_HOSTNAME=postgres-db
 DATABASE_USERNAME=postgres
-DATABASE_PASSWORD= [password] # (note: this password will not be used in the docker setup)
+DATABASE_PASSWORD=[password] # (note: this password will not be used in the docker setup)
 DATABASE_PORT=5432
-SECRET_KEY=[somerandom64charstring]
-ALGORITHM=SHA256
+SECRET_KEY=password # A random 64 char string
+ALGORITHM=HS256 # The algorithm used for encoding the JWT token, note that SHA256 is not supported!
 ACCESS_TOKEN_EXPIRE_MINUTES=60
+IMGBB_API_KEY=[yourImgbbApiKey] # The imgBB API key used for image uploads, https://api.imgbb.com/
 ```
 
 ### Docker Setup
