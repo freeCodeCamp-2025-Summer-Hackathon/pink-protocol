@@ -27,7 +27,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+      - VITE_BACKEND_URL=${VITE_BACKEND_URL}
 
   postgres-db:
     image: postgres:latest
