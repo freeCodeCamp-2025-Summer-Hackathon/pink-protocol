@@ -6,9 +6,12 @@ import {
   Cog6ToothIcon,
   Squares2X2Icon,
   XMarkIcon,
+  ArrowRightEndOnRectangleIcon,
 } from '@heroicons/react/24/outline'
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+
+import { useAuth } from '../providers/AuthProvider/AuthProvider.jsx'
 
 const SidebarItem = ({ icon: Icon, text, to, open, onClick, isUpload = false }) => {
   const base =
@@ -45,8 +48,7 @@ const SidebarItem = ({ icon: Icon, text, to, open, onClick, isUpload = false }) 
       end
       onClick={onClick}
     >
-      <Icon className="h-6 w-6" />
-      <span className={`overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}>{text}</span>
+      <Icon className="h-6 w-6" />      <span className={`overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}>{text}</span>
       {!open && (
         <div className="bg-honey-50 text-honey-700 invisible absolute left-full ml-6 -translate-x-3 rounded-md px-2 py-1 text-sm opacity-20 transition-all group-hover:visible group-hover:translate-x-0 group-hover:opacity-100">
           {text}
@@ -58,15 +60,19 @@ const SidebarItem = ({ icon: Icon, text, to, open, onClick, isUpload = false }) 
 
 export const Sidebar = ({ isOpen, onClose, onUploadClick }) => {
   const [open, setOpen] = useState(true)
+  const navigate = useNavigate()
+  const { logout } = useAuth()
 
   const handleItemClick = () => {
-    if (window.innerWidth < 1024) {
-      onClose()
-    }
+    if (window.innerWidth < 1024) onClose()
   }
 
-  const handleUploadClick = () => {
-    onUploadClick()
+  const handleUploadClick = () => onUploadClick()
+
+  const handleLogout = () => {
+    logout()
+    onClose()
+    navigate('/login', { replace: true })
   }
 
   const navItems = [
@@ -77,7 +83,9 @@ export const Sidebar = ({ isOpen, onClose, onUploadClick }) => {
 
   return (
     <aside
-      className={`fixed top-0 left-0 z-50 h-screen w-full transition-transform duration-300 ease-in-out sm:w-80 lg:sticky lg:w-auto lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} `}
+      className={`fixed top-0 left-0 z-50 h-screen w-full transition-transform duration-300 ease-in-out sm:w-80 lg:sticky lg:w-auto lg:translate-x-0 ${
+        isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      } `}
     >
       <nav className="flex h-full w-full flex-col border-r border-stone-200 bg-white shadow-lg lg:w-auto lg:shadow-sm">
         <div className="flex items-center justify-between p-4 pb-2">
@@ -102,6 +110,7 @@ export const Sidebar = ({ isOpen, onClose, onUploadClick }) => {
             <XMarkIcon className="h-6 w-6 text-stone-600" />
           </button>
         </div>
+
         <ul className="flex-1 px-3">
           {navItems.map((item) => (
             <li key={item.label}>
@@ -116,20 +125,41 @@ export const Sidebar = ({ isOpen, onClose, onUploadClick }) => {
             </li>
           ))}
         </ul>
-        <div className="flex border-t border-stone-200 p-3">
-          <div className="font-inter bg-honey-100 text-honey-800 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md font-semibold">
-            FF
-          </div>
-          <div
-            className={`flex items-center justify-between overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}
-          >
-            <div className="leading-4">
+
+        <div className="flex items-center justify-between border-t border-stone-200 p-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="font-inter bg-honey-100 text-honey-800 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md font-semibold">
+              FF
+            </div>
+            <div
+              className={`leading-4 transition-all ${
+                open ? 'max-w-xs opacity-100' : 'w-0 opacity-0'
+              } overflow-hidden`}
+            >
               <h4 className="font-inter font-semibold text-stone-700">Name</h4>
               <span className="font-source-serif text-xs text-stone-500">email@example.com</span>
             </div>
-            <NavLink to="/settings" onClick={handleItemClick}>
-              <Cog6ToothIcon className="hover:text-honey-600 h-6 w-6 cursor-pointer text-stone-500" />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <NavLink
+              aria-label="Settings"
+              className="hover:text-honey-700 rounded-lg p-1.5 text-stone-500 hover:bg-stone-100"
+              title="Settings"
+              to="/settings"
+              onClick={handleItemClick}
+            >
+              <Cog6ToothIcon className="h-6 w-6" />
             </NavLink>
+            <button
+              aria-label="Sign out"
+              className="hover:text-honey-700 rounded-lg p-1.5 text-stone-500 hover:bg-stone-100"
+              title="Sign out"
+              type="button"
+              onClick={handleLogout}
+            >
+              <ArrowRightEndOnRectangleIcon className="h-6 w-6" />
+            </button>
           </div>
         </div>
       </nav>
