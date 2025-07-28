@@ -20,6 +20,7 @@ DATABASE_PORT=5432
 SECRET_KEY=password # A random 64 char string
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
+IMGBB_API_KEY=yourImgbbApiKey # The imgBB API key used for image uploads, https://api.imgbb.com/
 ```
 
 ### Docker Setup
