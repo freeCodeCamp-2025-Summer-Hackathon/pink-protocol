@@ -17,7 +17,7 @@ DATABASE_HOSTNAME=postgres-db
 DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=password # (note: this password will not be used in the docker setup)
 DATABASE_PORT=5432
-SECRET_KEY=[somerandom64charstring]
+SECRET_KEY=password # A random 64 char string
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 ```
