@@ -23,9 +23,11 @@ export const useGallery = () => {
     setLoading(true)
     const start = skip
     try {
-      const data = (await fetchPosts(start, PAGE_SIZE)) ?? []
+      const raw = await fetchPosts(start, PAGE_SIZE)
+      const data = Array.isArray(raw) ? raw : []
 
       setItems((prev) => {
+        if (data.length === 0) return prev
         const seen = new Set(prev.map((x) => x.id))
         const next = data.filter((p) => !seen.has(p.id)).map(mapPost)
         return [...prev, ...next]
@@ -34,7 +36,7 @@ export const useGallery = () => {
       setSkip(start + PAGE_SIZE)
       if (data.length < PAGE_SIZE) setEnd(true)
     } catch {
-      // TODO: show toast / retry
+      // TODO: toast / retry
     } finally {
       setLoading(false)
     }
