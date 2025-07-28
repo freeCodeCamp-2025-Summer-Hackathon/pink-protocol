@@ -48,7 +48,8 @@ const SidebarItem = ({ icon: Icon, text, to, open, onClick, isUpload = false }) 
       end
       onClick={onClick}
     >
-      <Icon className="h-6 w-6" />      <span className={`overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}>{text}</span>
+      <Icon className="h-6 w-6" />{' '}
+      <span className={`overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}>{text}</span>
       {!open && (
         <div className="bg-honey-50 text-honey-700 invisible absolute left-full ml-6 -translate-x-3 rounded-md px-2 py-1 text-sm opacity-20 transition-all group-hover:visible group-hover:translate-x-0 group-hover:opacity-100">
           {text}
