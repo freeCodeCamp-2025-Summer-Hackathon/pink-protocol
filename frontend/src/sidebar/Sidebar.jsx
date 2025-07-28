@@ -3,7 +3,6 @@ import {
   HomeIcon,
   PlusIcon,
   BookmarkIcon,
-  Cog6ToothIcon,
   Squares2X2Icon,
   XMarkIcon,
   ArrowRightEndOnRectangleIcon,
@@ -13,17 +12,17 @@ import { NavLink, useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../providers/AuthProvider/AuthProvider.jsx'
 
-const SidebarItem = ({ icon: Icon, text, to, open, onClick, isUpload = false }) => {
-  const base =
-    'font-source-serif-pro relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group'
-  const active = 'bg-honey-100 text-honey-800'
-  const rest = 'hover:bg-honey-50 text-stone-600'
+const NAV_BASE =
+  'font-source-serif-pro relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group'
+const NAV_ACTIVE = 'bg-honey-100 text-honey-800'
+const NAV_REST = 'hover:bg-honey-50 text-stone-600'
 
+const SidebarItem = ({ icon: Icon, text, to, open, onClick, isUpload = false }) => {
   if (isUpload) {
     return (
       <button
         aria-label="Upload"
-        className={`${base} ${rest} w-full text-left`}
+        className={`${NAV_BASE} ${NAV_REST} w-full text-left`}
         title="Upload"
         type="button"
         onClick={onClick}
@@ -43,12 +42,12 @@ const SidebarItem = ({ icon: Icon, text, to, open, onClick, isUpload = false }) 
 
   return (
     <NavLink
-      className={({ isActive }) => `${base} ${isActive ? active : rest}`}
+      className={({ isActive }) => `${NAV_BASE} ${isActive ? NAV_ACTIVE : NAV_REST}`}
       to={to}
       end
       onClick={onClick}
     >
-      <Icon className="h-6 w-6" />{' '}
+      <Icon className="h-6 w-6" />
       <span className={`overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}>{text}</span>
       {!open && (
         <div className="bg-honey-50 text-honey-700 invisible absolute left-full ml-6 -translate-x-3 rounded-md px-2 py-1 text-sm opacity-20 transition-all group-hover:visible group-hover:translate-x-0 group-hover:opacity-100">
@@ -127,41 +126,24 @@ export const Sidebar = ({ isOpen, onClose, onUploadClick }) => {
           ))}
         </ul>
 
-        <div className="flex items-center justify-between border-t border-stone-200 p-3">
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="font-inter bg-honey-100 text-honey-800 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md font-semibold">
-              FF
-            </div>
-            <div
-              className={`leading-4 transition-all ${
-                open ? 'max-w-xs opacity-100' : 'w-0 opacity-0'
-              } overflow-hidden`}
-            >
-              <h4 className="font-inter font-semibold text-stone-700">Name</h4>
-              <span className="font-source-serif text-xs text-stone-500">email@example.com</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <NavLink
-              aria-label="Settings"
-              className="hover:text-honey-700 rounded-lg p-1.5 text-stone-500 hover:bg-stone-100"
-              title="Settings"
-              to="/settings"
-              onClick={handleItemClick}
-            >
-              <Cog6ToothIcon className="h-6 w-6" />
-            </NavLink>
-            <button
-              aria-label="Sign out"
-              className="hover:text-honey-700 rounded-lg p-1.5 text-stone-500 hover:bg-stone-100"
-              title="Sign out"
-              type="button"
-              onClick={handleLogout}
-            >
-              <ArrowRightEndOnRectangleIcon className="h-6 w-6" />
-            </button>
-          </div>
+        <div className="border-t border-stone-200 p-3">
+          <button
+            aria-label="Sign out"
+            className={`${NAV_BASE} ${NAV_REST} w-full justify-start`}
+            title="Sign out"
+            type="button"
+            onClick={handleLogout}
+          >
+            <ArrowRightEndOnRectangleIcon className="h-6 w-6" />
+            <span className={`overflow-hidden transition-all ${open ? 'ml-3 w-40' : 'w-0'}`}>
+              Sign out
+            </span>
+            {!open && (
+              <div className="bg-honey-50 text-honey-700 invisible absolute left-full ml-6 -translate-x-3 rounded-md px-2 py-1 text-sm opacity-20 transition-all group-hover:visible group-hover:translate-x-0 group-hover:opacity-100">
+                Sign out
+              </div>
+            )}
+          </button>
         </div>
       </nav>
     </aside>
