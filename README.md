@@ -15,7 +15,7 @@ This project was completed by pink-protocol as part of [freeCodeCamp's](https://
 DATABASE_NAME=arthive
 DATABASE_HOSTNAME=postgres-db
 DATABASE_USERNAME=postgres
-DATABASE_PASSWORD= [password] # (note: this password will not be used in the docker setup)
+DATABASE_PASSWORD=password # (note: this password will not be used in the docker setup)
 DATABASE_PORT=5432
 SECRET_KEY=[somerandom64charstring]
 ALGORITHM=HS256
