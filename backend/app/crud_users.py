@@ -42,7 +42,11 @@ def login_user(
     stmt = sa.select(models.User).where(models.User.email == email)
     user = session.scalars(stmt).first()
 
+    if not user:
+        return None, "User not found"
+
     return user, None
+
 
 
 def get_user(session: Session, user_id: int):

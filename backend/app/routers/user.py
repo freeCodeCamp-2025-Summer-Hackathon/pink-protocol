@@ -55,10 +55,10 @@ def login_user(
     session: Session = Depends(get_session),
 ):
     user, err = crud_users.login_user(
-        session=session,
-        email=str(creds.email),
-        password=creds.password,
-    )
+    session=session,
+    email=str(creds.email),
+    password=creds.password,
+)
     if err:
         raise HTTPException(status_code=401, detail=err)
 
